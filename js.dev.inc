@@ -1,0 +1,15 @@
+lib/svg-1.5.0/jquery.svg.min.js
+lib/svg-1.5.0/jquery.svggraph.min.js
+lib/svgpathdata-1.0.3/SVGPathData.js
+lib/paho.javascript-1.0.2/mqttws31-min.js
+src/GUI.js
+src/SVGWidget.js
+src/SVGImpl/Gauge.js
+src/SVGImpl/Gradient.js
+src/SVGImpl/Text.js
+src/SVGImpl/Class.js
+src/SVGImpl/Chart.js
+src/SVG.js
+src/MQTT.js
+src/HTML.js
+src/Core.js
