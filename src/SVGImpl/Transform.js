@@ -53,6 +53,8 @@ if (typeof Scotty.SVGImpl.Transform === "undefined") {
         this.opts.cls.base.forEach(function (cl) {
             this.el.classList.add(cl);
         }, this);
+        this.el.style.stroke = "";
+        this.el.style.fill = "";
 
         /* Set qtip if available */
         if (typeof qtip !== "undefined") {
