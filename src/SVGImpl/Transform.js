@@ -74,7 +74,7 @@ if (typeof Scotty.SVGImpl.Transform === "undefined") {
         }, this);
 
         var f = val / this.opts.max;
-        this.el.css('transform', this.opts.transform.split('%').join(f));
+        this.el.style.transform = this.opts.transform.split('%').join(f);
         
         this.last_val = val;
         this.last_state = state;
