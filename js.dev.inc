@@ -5,6 +5,7 @@ lib/paho.javascript-1.0.2/mqttws31-min.js
 src/GUI.js
 src/SVGWidget.js
 src/SVGImpl/Gauge.js
+src/SVGImpl/Transform.js
 src/SVGImpl/Gradient.js
 src/SVGImpl/Text.js
 src/SVGImpl/Class.js
