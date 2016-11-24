@@ -75,7 +75,7 @@ if (typeof Scotty.SVGImpl.StrokeWidth === "undefined") {
             this.el.classList.add(cl + state);
         }, this);
 
-        var f = val / this.opts.max;
+        var f = val * this.opts.width[1] / this.opts.max;
         if (f < this.opts.width[0]) {
             f = this.opts.width[0];
         } else {
@@ -83,7 +83,7 @@ if (typeof Scotty.SVGImpl.StrokeWidth === "undefined") {
                 f = this.opts.width[1];
             }
         }
-        this.el.style.StrokeWidth = f.toString() + "px";
+        this.el.style.strokeWidth = f;
         
         this.last_val = val;
         this.last_state = state;
