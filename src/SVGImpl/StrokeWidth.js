@@ -60,6 +60,13 @@ if (typeof Scotty.SVGImpl.StrokeWidth === "undefined") {
         if (typeof qtip !== "undefined") {
             this.el.qtip(qtip);
         }
+
+        /* Adjust max for log scale */
+        if (this.opts.hasOwnProperty("scale") && this.opts.scale === "log") {
+            this.opts.max = Math.log2(this.opts.max);
+        } else {
+            this.opts.scale = "linear";
+        }
     };
     
     StrokeWidth.prototype.update = function (val, state) {
@@ -74,6 +81,14 @@ if (typeof Scotty.SVGImpl.StrokeWidth === "undefined") {
         this.opts.cls.state.forEach(function (cl) {
             this.el.classList.add(cl + state);
         }, this);
+
+        if (this.opts.scale === "log") {
+            if (val <= 2) {
+                val = 1;
+            } else {
+                val = Math.log2(val);
+            }
+        }
 
         var f = val * this.opts.width[1] / this.opts.max;
         if (f < this.opts.width[0]) {
