@@ -83,7 +83,7 @@ if (typeof Scotty.SVGImpl.StrokeWidth === "undefined") {
                 f = this.opts.width[1];
             }
         }
-        this.el.style.StrokeWidth = f + "px";
+        this.el.style.StrokeWidth = f.toString() + "px";
         
         this.last_val = val;
         this.last_state = state;
