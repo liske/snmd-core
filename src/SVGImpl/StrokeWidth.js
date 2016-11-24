@@ -62,10 +62,8 @@ if (typeof Scotty.SVGImpl.StrokeWidth === "undefined") {
         }
 
         /* Adjust max for log scale */
-        if (this.opts.hasOwnProperty("scale") && this.opts.scale === "log") {
+        if (this.opts.scale === "log") {
             this.opts.max = Math.log2(this.opts.max);
-        } else {
-            this.opts.scale = "linear";
         }
     };
     
