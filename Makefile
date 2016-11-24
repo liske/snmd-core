@@ -9,7 +9,7 @@ all: dist/snmd-core.min.js
 	    echo $$lib; \
 	done > js.min.inc
 
-dist/snmd-core.min.js: $(shell find src -name '*.js')
+dist/snmd-core.min.js: src/*.js src/SVGImpl/*.js
 	@for lib in $(LIBS) $+; do \
 	    echo $$lib; \
 	done > js.dev.inc
