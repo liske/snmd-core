@@ -80,6 +80,10 @@ if (typeof Scotty.SVGImpl.StrokeWidth === "undefined") {
             this.el.classList.add(cl + state);
         }, this);
 
+        if (this.opts.abs) {
+            val = Math.abs(val);
+        }
+        
         if (this.opts.scale === "log") {
             if (val <= 2) {
                 val = 1;
