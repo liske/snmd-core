@@ -117,9 +117,6 @@ if (typeof Scotty.Core === "undefined") {
     this.srSiFormatNum = (function (value, unit, defstr, fracts) {
         if (typeof value === "undefined") { return defstr; }
         if (isNaN(value)) { return defstr; }
-        if (typeof fracts === "undefined" || isNaN(fracts)) {
-            fracts = 0;
-        }
 
         var neg = 0;
         if (value < 0) {
@@ -136,10 +133,19 @@ if (typeof Scotty.Core === "undefined") {
 	       }
         }
 
+        value = value / this.si_facts[j];
+        if (typeof fracts === "undefined" || isNaN(fracts)) {
+            if (value < 20 && this.si_facts[j] > 1) {
+                fracts = 1;
+            } else {
+                fracts = 0;
+            }
+        }
         if (neg) {
             value = value * -1;
         }
-        return  sprintf("%." + fracts + "f%s%s", value / this.si_facts[j], this.si_prefs[j], unit);
+
+        return  sprintf("%." + fracts + "f%s%s", value, this.si_prefs[j], unit);
     }).bind(this);
     
     this.srNagStateColor = (function (state) {
