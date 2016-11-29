@@ -121,15 +121,24 @@ if (typeof Scotty.Core === "undefined") {
             fracts = 0;
         }
 
-        var j = 4;
-        var f = 1;
+        var neg = 0;
+        if (value < 0) {
+            value = value * -1;
+            neg = 1;
+        }
+
+        var j = 4,
+            f = 1;
         for (var i = 0; i < this.si_facts.length; i++) {
             if(value >= this.si_facts[i]*0.99) {
                 j = i;
 	           break;
 	       }
         }
-        
+
+        if (neg) {
+            value = value * -1;
+        }
         return  sprintf("%." + fracts + "f%s%s", value / this.si_facts[j], this.si_prefs[j], unit);
     }).bind(this);
     
