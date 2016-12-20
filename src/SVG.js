@@ -25,20 +25,35 @@ License:
 */
 
 /*jslint
-    devel: true
+    devel: true,
+    plusplus: true,
+    vars: true
 */
 
-if (typeof Scotty === "undefined") {
-    Scotty = {};
-}
-if (typeof Scotty.SVG === "undefined") {
-    Scotty.SVG = {};
-}
+/*global
+    define
+*/
 
-(function ($) {
-    "use strict";
+define(["snmd-core/SVGWidget", "jquery", "jquery.svg", "jquery.svggraph"], function (SVGWidget, $) {
+    'use strict';
 
-    this.srParseSVG = function (svg, error) {
+    var instance = null;
+
+    var SVG = function () {
+        if (instance !== null) {
+            throw new Error("Cannot instantiate more than one instance, use getInstance()!");
+        }
+    };
+
+    SVG.getInstance = function () {
+        if (instance === null) {
+            instance = new SVG();
+        }
+
+        return instance;
+    };
+
+    SVG.prototype.srParseSVG = function (svg, error) {
         if (error) {
             console.error('Failed loading SVG: ' + error);
             svg.text(10, 20, error, {fill: 'red'});
@@ -58,18 +73,17 @@ if (typeof Scotty.SVG === "undefined") {
                 console.debug($(this).find("desc").text());
             }
             if (json) {
-//                svg.remove(this);
-                Scotty.SVGWidget.srCreateWidget(svg, this, json);
+                SVGWidget.srCreateWidget(svg, this, json);
             }
         });
     };
     
-    this.srLoadSVG = function (id, url) {
+    SVG.prototype.srLoadSVG = function (id, url) {
         console.debug('Loading #' + id + ': ' + url);
         $('#' + id).svg({loadURL: url + '?nonce=' + Math.random(), 'max-width': '100%', 'max-height': '100%', onLoad: this.srParseSVG});
     };
     
-    this.srRelToAbsPos = function (root, svg) {
+    SVG.prototype.srRelToAbsPos = function (root, svg) {
         var rrect = root.getBoundingClientRect();
         var crect = svg.getBoundingClientRect();
         var ctm = svg.getScreenCTM();
@@ -80,14 +94,17 @@ if (typeof Scotty.SVG === "undefined") {
         };
     };
     
-    this.srGetStrokeFill = function (svg) {
+    SVG.prototype.srGetStrokeFill = function (svg) {
         var opts = ['stroke', 'strokeLinecap', 'strokeLinejoin', 'strokeWidth', 'fill'];
         var res = [];
-        for (var i = 0; i < opts.length; i++) {
+        var i;
+        for (i = 0; i < opts.length; i++) {
             console.warn(opts[i] + " => " + svg.style[opts[i]]);
             res[opts[i]] = svg.style[opts[i]];
         }
         
         return res;
-    }
-}).call(Scotty.SVG, jQuery);
+    };
+
+    return SVG.getInstance();
+});

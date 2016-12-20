@@ -25,30 +25,44 @@ License:
 */
 
 /*jslint
-    devel: true
+    devel: true,
+    plusplus: true,
+    vars: true
 */
 
-if (typeof Scotty === "undefined") {
-    Scotty = {};
-}
-if (typeof Scotty.Core === "undefined") {
-    Scotty.Core = {};
-}
+/*global
+    define
+*/
 
-(function ($) {
-    "use strict";
+define(["snmd-core/GUI", "snmd-core/MQTT", "sprintf", "jquery"], function (GUI, MQTT, sprintf, $) {
+    'use strict';
 
-    var version = '0.1',
-        config;
-    this.si_prefs = ['T', 'G', 'M', 'k', '']; //, 'm', 'µ'
-    this.si_facts = [ Math.pow(10, 12), Math.pow(10, 9), Math.pow(10, 6), Math.pow(10, 3), 1]; //, Math.pow(10, -3), Math.pow(10, -6)
-    this.genid = 0;
+    var instance = null;
 
-    this.srVersion = function () {
-        return version;
+    var Core = function () {
+        if (instance !== null) {
+            throw new Error("Cannot instantiate more than one instance, use getInstance()!");
+        }
+
+        this.version = '0.1';
+        this.si_prefs = ['T', 'G', 'M', 'k', '']; //, 'm', 'µ'
+        this.si_facts = [ Math.pow(10, 12), Math.pow(10, 9), Math.pow(10, 6), Math.pow(10, 3), 1]; //, Math.pow(10, -3), Math.pow(10, -6)
+        this.genid = 0;
     };
 
-    this.srURLParam = function (name, defval) {
+    Core.getInstance = function () {
+        if (instance === null) {
+            instance = new Core();
+        }
+
+        return instance;
+    };
+
+    Core.prototype.srVersion = function () {
+        return this.version;
+    };
+
+    Core.prototype.srURLParam = function (name, defval) {
         var results = new RegExp('[?&]' + name + '=([^&#/]*)([&#/]|$)').exec(window.location.href);
         if (results && results[1]) {
             return decodeURIComponent(results[1]);
@@ -57,7 +71,7 @@ if (typeof Scotty.Core === "undefined") {
         return defval;
     };
 
-    this.srConfigLoaded = function (json) {
+    Core.prototype.srConfigLoaded = function (json) {
         this.config = json;
 
         console.debug('Loading ' + this.config.default_view);
@@ -67,7 +81,7 @@ if (typeof Scotty.Core === "undefined") {
             'url': this.config.default_view + '?nonce=' + Math.random(),
             'dataType': 'json',
             'success': (function (json) {
-                Scotty.GUI.srInit(json);
+                GUI.srInit(json);
 
                 /* MQTT defaults */
                 if (typeof this.config.mqttws_host === "undefined") {
@@ -77,7 +91,7 @@ if (typeof Scotty.Core === "undefined") {
                     this.config.mqttws_port = 9001;
                 }
 
-                Scotty.MQTT.srInit(this.config.mqttws_host, this.config.mqttws_port);
+                MQTT.srInit(this.config.mqttws_host, this.config.mqttws_port);
             }).bind(this),
             'error': (function (jqXHR, textStatus, errorThrown) {
                 console.error('Failed to load view list: ' + textStatus + ' - ' + errorThrown);
@@ -85,7 +99,7 @@ if (typeof Scotty.Core === "undefined") {
         });
     };
     
-    this.srInitLoad = function (configURI, failfn) {
+    Core.prototype.srInitLoad = function (configURI, failfn) {
         console.debug('Loading ' + configURI);
 
         $.ajax({
@@ -97,8 +111,8 @@ if (typeof Scotty.Core === "undefined") {
         });
     };
     
-    this.srInit = function () {
-        console.info('Initializing Scotty REVOLUTION ' + version);
+    Core.prototype.srInit = function () {
+        console.info('Initializing Scotty REVOLUTION ' + this.version);
 
         var configName = this.srURLParam('config', 'default');
         if (configName !== 'default') {
@@ -114,7 +128,7 @@ if (typeof Scotty.Core === "undefined") {
         }).bind(this));
     };
 
-    this.srSiFormatNum = (function (value, unit, defstr, fracts) {
+    Core.prototype.srSiFormatNum = function (value, unit, defstr, fracts) {
         if (typeof value === "undefined") { return defstr; }
         if (isNaN(value)) { return defstr; }
 
@@ -124,18 +138,19 @@ if (typeof Scotty.Core === "undefined") {
             neg = 1;
         }
 
-        var j = 4,
+        var i,
+            j = 4,
             f = 1;
-        for (var i = 0; i < this.si_facts.length; i++) {
-            if(value >= this.si_facts[i]*0.99) {
+        for (i = 0; i < this.si_facts.length; i++) {
+            if (value >= this.si_facts[i] * 0.99) {
                 j = i;
-	           break;
-	       }
+                break;
+            }
         }
 
         value = value / this.si_facts[j];
         if (typeof fracts === "undefined" || isNaN(fracts)) {
-            if (value < 20 && this.si_facts[j] > 1) {
+            if (value < 20) {
                 fracts = 1;
             } else {
                 fracts = 0;
@@ -145,31 +160,33 @@ if (typeof Scotty.Core === "undefined") {
             value = value * -1;
         }
 
-        return  sprintf("%." + fracts + "f%s%s", value, this.si_prefs[j], unit);
-    }).bind(this);
+        return sprintf.sprintf("%." + fracts + "f%s%s", value, this.si_prefs[j], unit);
+    };
     
-    this.srNagStateColor = (function (state) {
-        if(typeof state === "undefined") {
+    Core.prototype.srNagStateColor = function (state) {
+        if (typeof state === "undefined") {
             return "Grey";
         }
             
-        if (state == 0) {
+        if (state === 0) {
             return 'LimeGreen';
-        } 
+        }
         
-        if (state == 1) {
+        if (state === 1) {
             return 'Gold';
         }
 
-        if (state == 2) {
+        if (state === 2) {
             return 'Crimson';
-        } 
+        }
 
         return "Orange";
-    });
+    };
     
-    this.srGenID = (function (prefix) {
+    Core.prototype.srGenID = function (prefix) {
         this.genid += 1;
         return 'snmd-genid-' + prefix + '-' + this.genid;
-    }).bind(this);
-}).call(Scotty.Core, jQuery);
+    };
+
+    return Core.getInstance();
+});

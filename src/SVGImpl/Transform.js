@@ -25,22 +25,18 @@ License:
 */
 
 /*jslint
-    devel: true
+    devel: true,
+    plusplus: true,
+    vars: true
 */
 
-if (typeof Scotty === "undefined") {
-    Scotty = {};
-}
-if (typeof Scotty.SVGImpl === "undefined") {
-    Scotty.SVGImpl = {};
-}
-if (typeof Scotty.SVGImpl.Transform === "undefined") {
-    Scotty.SVGImpl.Transform = {};
-}
+/*global
+    define
+*/
 
-(function ($) {
-    "use strict";
-    
+define([], function () {
+    'use strict';
+
     var Transform = function (root, svg, opts, qtip) {
         /* Root SVG */
         this.root = root;
@@ -82,8 +78,5 @@ if (typeof Scotty.SVGImpl.Transform === "undefined") {
         this.last_state = state;
     };
 
-    Scotty.SVGWidget.srRegisterImpl(
-        "Transform",
-        Transform
-    );
-}).call(Scotty.SVGImpl.Transform, jQuery);
+    return Transform;
+});

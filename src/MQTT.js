@@ -25,30 +25,46 @@ License:
 */
 
 /*jslint
-    devel: true
+    devel: true,
+    plusplus: true,
+    vars: true
 */
 
-if (typeof Scotty === "undefined") {
-    Scotty = {};
-}
-if (typeof Scotty.MQTT === "undefined") {
-    Scotty.MQTT = {};
-}
+/*global
+    define,
+    Paho
+*/
 
-(function ($) {
-    "use strict";
+define(["jquery", "paho"], function ($, Paho) {
+    'use strict';
+
+    var instance = null;
+
+    var MQTT = function () {
+        if (instance !== null) {
+            throw new Error("Cannot instantiate more than one instance, use getInstance()!");
+        }
+
+        this.client = undefined;
+        this.flashTO = undefined;
+        this.reconnTO = undefined;
+        this.topics = {};
+    };
     
-    var client,
-        flashTO,
-        reconnTO,
-        topics = {};
-    
-    this.srReconnect = function () {
+    MQTT.getInstance = function () {
+        if (instance === null) {
+            instance = new MQTT();
+        }
+
+        return instance;
+    };
+
+    MQTT.prototype.srReconnect = function () {
         console.debug('Reconnecting...');
         this.srConnect();
     };
     
-    this.srRegisterTopic = function (topic, watcher) {
+    MQTT.prototype.srRegisterTopic = function (topic, watcher) {
         if (typeof this.topics === "undefined") {
             this.topics = {};
         }
@@ -63,11 +79,11 @@ if (typeof Scotty.MQTT === "undefined") {
         }
     };
 
-    this.srStatus = function (color) {
+    MQTT.prototype.srStatus = function (color) {
         $('#snmd-hb').css('background', color);
-    }.bind(this);
+    };
 
-    this.srConnect = function () {
+    MQTT.prototype.srConnect = function () {
         this.srStatus('yellow');
         console.debug('Connecting to MQTT broker ' + this.broker_host + ':' + this.broker_port + '...');
         this.client = new Paho.MQTT.Client(this.broker_host, this.broker_port, '', this.clientId);
@@ -94,18 +110,19 @@ if (typeof Scotty.MQTT === "undefined") {
             }.bind(this), 100);
             
             if (typeof this.topics[msg.destinationName] !== "undefined") {
-                for (var i = 0; i < this.topics[msg.destinationName].length; i++) {
+                var i;
+                for (i = 0; i < this.topics[msg.destinationName].length; i++) {
                     var watcher = this.topics[msg.destinationName][i];
                     try {
                         watcher.handleUpdate.call(watcher, msg.destinationName, msg.payloadString);
                     } catch (err) {
-                        console.error("Failure updating " + msg.destinationName + " in " + watcher + ": " + err.message);
+                        console.error("Failure handling update on '" + msg.destinationName + "' in class '" + watcher.constructor.name + ": " + err.message);
+                        console.warn(err.stack);
                         return;
                     }
                 }
-            }
-            else {
-                console.warn("Received MQTT message for unknown topic " + msg.destinationName + "!")
+            } else {
+                console.warn("Received MQTT message for unknown topic " + msg.destinationName + "!");
             }
             
             return 1;
@@ -117,7 +134,8 @@ if (typeof Scotty.MQTT === "undefined") {
                 console.info('Connected to mqtt://' + this.broker_host + ':' + this.broker_port);
                 this.srStatus('#7f0000');
 
-                for(var topic in this.topics) {
+                var topic;
+                for (topic in this.topics) {
                     this.client.subscribe(topic);
                 }
 
@@ -132,9 +150,9 @@ if (typeof Scotty.MQTT === "undefined") {
         });
     };
     
-    this.srInit = function (host, port, clientId) {
-        if(typeof clientId === "undefined") {
-            clientId = 'RND'+Math.floor(Math.random()*16777215).toString(16);
+    MQTT.prototype.srInit = function (host, port, clientId) {
+        if (typeof clientId === "undefined") {
+            clientId = 'RND' + Math.floor(Math.random() * 16777215).toString(16);
         }
         console.debug('MQTT broker = ' + host + ':' + port);
         console.debug('MQTT clientId = ' + clientId);
@@ -144,4 +162,6 @@ if (typeof Scotty.MQTT === "undefined") {
          
         this.srConnect();
     };
-}).call(Scotty.MQTT, jQuery);
+
+    return MQTT.getInstance();
+});

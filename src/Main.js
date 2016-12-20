@@ -1,5 +1,5 @@
 /*
-SNMP - Scotty Network Monitoring Dashboard
+scotty-rev - Scotty REVOLUTION Network Management Dashboard
 
 Authors:
   Thomas Liske <liske@ibh.de>
@@ -31,45 +31,40 @@ License:
 */
 
 /*global
-    define
+    require
 */
 
-define([], function () {
+require.config({
+    baseUrl: "blib",
+    map: {
+        '*': {
+            'css': 'require-css'
+        }
+    },
+    paths: {
+        "snmd-core": "snmd-core/src",
+        "snmd-widgets-nagios": "snmd-widgets-nagios/src",
+        "sprintf": "sprintf/src/sprintf",
+        "jquery": "jquery/dist/jquery",
+        "jquery.svg": "snmd-core/lib/svg-1.5.0/jquery.svg.min",
+        "jquery.svggraph": "snmd-core/lib/svg-1.5.0/jquery.svggraph.min",
+        "svgpathdata": "snmd-core/lib/svgpathdata-1.0.3/SVGPathData",
+        "paho": "snmd-core/lib/paho.javascript-1.0.2/mqttws31-min",
+        "require-css": "snmd-core/blib/require-css/css"
+    },
+    shim: {
+        "jquery.svg" : ["jquery"],
+        "jquery.svggraph" : ["jquery.svg", "jquery"],
+        "paho": {
+            exports: "Paho"
+        }
+    },
+    enforceDefine: true,
+    urlArgs: "bust=0.124s"
+});
+
+require(["snmd-core/Core"], function (Core) {
     'use strict';
 
-    var Class = function (root, svg, opts, qtip) {
-        /* Root SVG */
-        this.root = root;
-
-        /* Meta data */
-        this.opts = opts;
-        
-        /* SVG element */
-        this.el = svg;
-        this.opts.cls.base.forEach(function (cl) {
-            this.el.classList.add(cl);
-        }, this);
-        /* Set qtip if available */
-        if (typeof qtip !== "undefined") {
-            this.el.qtip(qtip);
-        }
-    };
-    
-    Class.prototype.update = function (state) {
-        if (state === this.last_state) {
-            return;
-        }
-        
-        this.opts.cls.state.forEach(function (cl) {
-            this.el.classList.remove(cl + this.last_state);
-        }, this);
-
-        this.opts.cls.state.forEach(function (cl) {
-            this.el.classList.add(cl + state);
-        }, this);
-
-        this.last_state = state;
-    };
-
-    return Class;
+    Core.srInit();
 });

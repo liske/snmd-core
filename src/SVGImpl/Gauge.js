@@ -25,22 +25,18 @@ License:
 */
 
 /*jslint
-    devel: true
+    devel: true,
+    plusplus: true,
+    vars: true
 */
 
-if (typeof Scotty === "undefined") {
-    Scotty = {};
-}
-if (typeof Scotty.SVGImpl === "undefined") {
-    Scotty.SVGImpl = {};
-}
-if (typeof Scotty.SVGImpl.Gauge === "undefined") {
-    Scotty.SVGImpl.Gauge = {};
-}
+/*global
+    define
+*/
 
-(function ($) {
-    "use strict";
-    
+define(["snmd-core/GUI", "svgpathdata"], function (GUI, SVGPathData) {
+    'use strict';
+
     var Gauge = function (root, svg, opts, lines, qtip) {
         /* Meta data */
         this.opts = opts;
@@ -123,12 +119,9 @@ if (typeof Scotty.SVGImpl.Gauge === "undefined") {
         if (state !== this.last_state) {
             this.last_state = state;
 
-            Scotty.GUI.srStateChanged(this.root._svg.parentElement.id, this.opts.dim.id, state);
+            GUI.srStateChanged(this.root._svg.parentElement.id, this.opts.dim.id, state);
         }
     };
 
-    Scotty.SVGWidget.srRegisterImpl(
-        "Gauge",
-        Gauge
-    );
-}).call(Scotty.SVGImpl.Gauge, jQuery);
+    return Gauge;
+});

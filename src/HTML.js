@@ -25,26 +25,28 @@ License:
 */
 
 /*jslint
-    devel: true
+    devel: true,
+    plusplus: true,
+    vars: true
 */
 
-if (typeof Scotty === "undefined") {
-    Scotty = {};
-}
-if (typeof Scotty.HTML === "undefined") {
-    Scotty.HTML = {};
-}
+/*global
+    define
+*/
 
-(function ($) {
-    "use strict";
+define([], function () {
+    'use strict';
 
-    this.srLoadHTML = function (id, url, reload) {
+    var HTML = function () {
+    };
+
+    HTML.prototype.srLoadHTML = function (id, url, reload) {
         console.debug('Loading #' + id + ': ' + url);
 
         var iframe = $('<iframe>', {
             src: url,
-	    width: '95%',
-	    height: '95%',
+            width: '95%',
+            height: '95%',
             scrolling: 'no'
         }).addClass('htmlview').appendTo($('#' + id));
 
@@ -54,4 +56,6 @@ if (typeof Scotty.HTML === "undefined") {
             }, reload * 1000);
         }
     };
-}).call(Scotty.HTML, jQuery);
+
+    return HTML;
+});

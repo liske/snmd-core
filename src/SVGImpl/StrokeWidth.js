@@ -25,22 +25,18 @@ License:
 */
 
 /*jslint
-    devel: true
+    devel: true,
+    plusplus: true,
+    vars: true
 */
 
-if (typeof Scotty === "undefined") {
-    Scotty = {};
-}
-if (typeof Scotty.SVGImpl === "undefined") {
-    Scotty.SVGImpl = {};
-}
-if (typeof Scotty.SVGImpl.StrokeWidth === "undefined") {
-    Scotty.SVGImpl.StrokeWidth = {};
-}
+/*global
+    define
+*/
 
-(function ($) {
-    "use strict";
-    
+define([], function () {
+    'use strict';
+
     var StrokeWidth = function (root, svg, opts, qtip) {
         /* Root SVG */
         this.root = root;
@@ -106,8 +102,5 @@ if (typeof Scotty.SVGImpl.StrokeWidth === "undefined") {
         this.last_state = state;
     };
 
-    Scotty.SVGWidget.srRegisterImpl(
-        "StrokeWidth",
-        StrokeWidth
-    );
-}).call(Scotty.SVGImpl.StrokeWidth, jQuery);
+    return StrokeWidth;
+});

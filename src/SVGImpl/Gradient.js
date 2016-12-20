@@ -25,22 +25,18 @@ License:
 */
 
 /*jslint
-    devel: true
+    devel: true,
+    plusplus: true,
+    vars: true
 */
 
-if (typeof Scotty === "undefined") {
-    Scotty = {};
-}
-if (typeof Scotty.SVGImpl === "undefined") {
-    Scotty.SVGImpl = {};
-}
-if (typeof Scotty.SVGImpl.Gradient === "undefined") {
-    Scotty.SVGImpl.Gradient = {};
-}
+/*global
+    define
+*/
 
-(function ($) {
-    "use strict";
-    
+define(["snmd-core/Core"], function (Core) {
+    'use strict';
+
     var Gradient = function (root, svg, opts, qtip) {
         /* Meta data */
         this.opts = opts;
@@ -60,16 +56,17 @@ if (typeof Scotty.SVGImpl.Gradient === "undefined") {
         }
 
         var s = [];
-        for (var stop in this.opts.stops) {
+        var stop;
+        for (stop in this.opts.stops) {
             s.push([this.opts.stops[stop], '#404040']);
         }
 
-        this.grad = root.linearGradient(null, Scotty.Core.srGenID('lgrd'), s, this.opts.coords[0], this.opts.coords[1], this.opts.coords[2], this.opts.coords[3]);
+        this.grad = root.linearGradient(null, Core.srGenID('lgrd'), s, this.opts.coords[0], this.opts.coords[1], this.opts.coords[2], this.opts.coords[3]);
 
         this.stops = {};
         var i = 0;
-        for (var stop in this.opts.stops) {
-            this.stops[ this.opts.stops[stop] ] = this.grad.childNodes[i];
+        for (stop in this.opts.stops) {
+            this.stops[this.opts.stops[stop]] = this.grad.childNodes[i];
             i++;
         }
 
@@ -85,18 +82,15 @@ if (typeof Scotty.SVGImpl.Gradient === "undefined") {
             return;
         }
 
-        for (var stop in stops) {
+        var stop;
+        for (stop in stops) {
             if (typeof stops[stop] !== "undefined") {
-                this.stops[stop].setAttribute('stop-color', 'hsl(' + stops[stop] + ',100%,50%)')
-            }
-            else {
-                this.stops[stop].setAttribute('stop-color', '#404040')
+                this.stops[stop].setAttribute('stop-color', 'hsl(' + stops[stop] + ',100%,50%)');
+            } else {
+                this.stops[stop].setAttribute('stop-color', '#404040');
             }
         }
     };
 
-    Scotty.SVGWidget.srRegisterImpl(
-        "Gradient",
-        Gradient
-    );
-}).call(Scotty.SVGImpl.Gradient, jQuery);
+    return Gradient;
+});

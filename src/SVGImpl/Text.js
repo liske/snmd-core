@@ -25,22 +25,18 @@ License:
 */
 
 /*jslint
-    devel: true
+    devel: true,
+    plusplus: true,
+    vars: true
 */
 
-if (typeof Scotty === "undefined") {
-    Scotty = {};
-}
-if (typeof Scotty.SVGImpl === "undefined") {
-    Scotty.SVGImpl = {};
-}
-if (typeof Scotty.SVGImpl.Text === "undefined") {
-    Scotty.SVGImpl.Text = {};
-}
+/*global
+    define
+*/
 
-(function ($) {
-    "use strict";
-    
+define(["snmd-core/Core", "snmd-core/GUI"], function (Core, GUI) {
+    'use strict';
+
     var Text = function (root, svg, opts, qtip) {
         /* Meta data */
         this.opts = opts;
@@ -73,7 +69,7 @@ if (typeof Scotty.SVGImpl.Text === "undefined") {
         }
         
         /* Update text elements. */
-        this.txt.textContent = (formatNumeric ? Scotty.Core.srSiFormatNum(val, this.opts.uom, '-', this.opts.fracts) : val);
+        this.txt.textContent = (formatNumeric ? Core.srSiFormatNum(val, this.opts.uom, '-', this.opts.fracts) : val);
         this.last_val = val;
 
         /* Add state classes. */
@@ -88,12 +84,9 @@ if (typeof Scotty.SVGImpl.Text === "undefined") {
 
             this.last_state = state;
 
-            Scotty.GUI.srStateChanged(this.root._svg.parentElement.id, this.txt.id, state);
+            GUI.srStateChanged(this.root._svg.parentElement.id, this.txt.id, state);
         }
     };
 
-    Scotty.SVGWidget.srRegisterImpl(
-        "Text",
-        Text
-    );
-}).call(Scotty.SVGImpl.Text, jQuery);
+    return Text;
+});

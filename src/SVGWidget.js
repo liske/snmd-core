@@ -25,39 +25,54 @@ License:
 */
 
 /*jslint
-    devel: true
+    devel: true,
+    plusplus: true,
+    vars: true
 */
 
-if (typeof Scotty === "undefined") {
-    Scotty = {};
-}
-if (typeof Scotty.SVGWidget === "undefined") {
-    Scotty.SVGWidget = {};
-}
+/*global
+    define
+*/
 
-(function ($) {
-    "use strict";
-    
-    this.Impl = {};
-    this.Widgets = {};
-    
-    this.srRegisterImpl = (function (name, impl) {
+define(["snmd-core/MQTT", "require"], function (MQTT, require) {
+    'use strict';
+
+    var instance = null;
+
+    var SVGWidget = function () {
+        if (instance !== null) {
+            throw new Error("Cannot instantiate more than one instance, use getInstance()!");
+        }
+
+        this.Impl = {};
+        this.Widgets = {};
+    };
+
+    SVGWidget.getInstance = function () {
+        if (instance === null) {
+            instance = new SVGWidget();
+        }
+
+        return instance;
+    };
+
+    SVGWidget.prototype.srRegisterImpl = function (name, impl) {
         this.Impl[name] = impl;
-    }).bind(this);
+    };
 
-    this.srLookupImpl = (function (name) {
+    SVGWidget.prototype.srLookupImpl = function (name) {
         return this.Impl[name];
-    }).bind(this);
+    };
     
-    this.srRegisterWidget = (function (name, widget) {
+    SVGWidget.prototype.srRegisterWidget = function (name, widget) {
         this.Widgets[name] = widget;
-    }).bind(this);
+    };
 
-    this.srLookupWidget = (function (name) {
+    SVGWidget.prototype.srLookupWidget = function (name) {
         return this.Widgets[name];
-    }).bind(this);
+    };
     
-    this.srClassOpts = (function (desc, impl) {
+    SVGWidget.prototype.srClassOpts = function (desc, impl) {
         var cls = {
             base: ['snmd-bcl-' + impl],
             state: ['snmd-scl-', 'snmd-scl-' + impl + '-']
@@ -87,30 +102,30 @@ if (typeof Scotty.SVGWidget === "undefined") {
         }
 
         return cls;
-    }).bind(this);
+    };
     
-    this.srCreateWidget = (function (root, svg, desc) {
-
+    SVGWidget.prototype.srCreateWidget = function (root, svg, desc) {
         if (typeof desc.type === "undefined") {
             console.error("Widget " + svg.id + " has no type set!");
             return;
         }
-        
-        if (typeof this.Widgets[desc.type] === "undefined") {
-            console.error("Widget " + svg.id + " has unknown type: " + desc.type);
-            return;
-        }
 
-        try {
-            var obj = new (this.Widgets[desc.type])(root, svg, desc, this.Widgets[desc.type]);
-            if (typeof desc.topics !== "undefined") {
-                desc.topics.forEach(function (topic) {
-                    Scotty.MQTT.srRegisterTopic(topic, obj);
-                });
+        //console.error(require.toUrl("/blib/snmd-widgets-nagios/src/" + desc.type));
+        require(["snmd-widgets-nagios/" + desc.type], function (WClass) {
+            try {
+                var obj = new WClass(root, svg, desc);
+                if (typeof desc.topics !== "undefined") {
+                    desc.topics.forEach(function (topic) {
+                        MQTT.srRegisterTopic(topic, obj);
+                    });
+                }
+            } catch (err) {
+                console.error("Failed to create widget " + svg.id + " of type " + desc.type + ": " + err.message);
+                return;
             }
-        } catch (err) {
-            console.error("Failed to create widget " + svg.id + " of type " + desc.type + ": " + err.message);
-            return;
-        }
-    }).bind(this);
-}).call(Scotty.SVGWidget, jQuery);
+        });
+        //            this.Widgets[desc.type] = require("../../snmd-widgets-nagios/blib/src/" + desc.type);
+    };
+
+    return SVGWidget.getInstance();
+});

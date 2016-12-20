@@ -25,41 +25,58 @@ License:
 */
 
 /*jslint
-    devel: true
+    devel: true,
+    plusplus: true,
+    vars: true
 */
 
-if (typeof Scotty === "undefined") {
-    Scotty = {};
-}
-if (typeof Scotty.GUI === "undefined") {
-    Scotty.GUI = {};
-}
+/*global
+    define
+*/
 
-(function ($) {
-    "use strict";
+define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "../blib/moment/min/moment.min.js", "require", "jquery", "css!../../snmd-core/css/gui.css"], function (Core, HTML, SVG, moment, require, $) {
+    'use strict';
 
-    var idCounter = 0;
-    this.TO_SCREEN = 600000;
-    this.TO_SWITCH = 30000;
-    this.screenState = 0;
-    this.viewStates = {};
-    this.viewFinalStates = {};
-    this.currentStep = 0;
+    var instance = null;
 
-    this.srScreenTimeOut = (function () {
+    var GUI = function () {
+        if (instance !== null) {
+            throw new Error("Cannot instantiate more than one instance, use getInstance()!");
+        }
+
+        this.idCounter = 0;
+        this.TO_SCREEN = 600000;
+        this.TO_SWITCH = 30000;
+        this.screenState = 0;
+        this.viewStates = {};
+        this.viewFinalStates = {};
+        this.currentStep = 0;
+    };
+
+    GUI.getInstance = function () {
+        if (instance === null) {
+            instance = new GUI();
+        }
+
+        return instance;
+    };
+
+    GUI.prototype.srScreenTimeOut = (function () {
         if (this.screenState === 0) {
             this.screenState += 1;
             $(document.body).addClass('on-screensaver');
         }
-        
+
+        var that = this;
         $('.srViews').each(function () {
             var a = $(this).children('.srViewsNav').find('a');
             var cur = 0;
-            for (var i = 0; i < a.length; i++) {
-                if (a[i].hash === Scotty.GUI.currentView) {
+            var i;
+            for (i = 0; i < a.length; i++) {
+                if (a[i].hash === that.currentView) {
                     cur = i;
                 }
-            }   
+            }
 
             cur += 1;
             if (cur >= a.length) {
@@ -72,102 +89,106 @@ if (typeof Scotty.GUI === "undefined") {
         this.screenTimeOut = window.setTimeout(this.srScreenTimeOut, this.TO_SWITCH);
     }).bind(this);
     
-    this.srStateChanged = (function (root, svg, state) {
+    GUI.prototype.srStateChanged = function (root, svg, state) {
         this.viewStates[root][svg] = state;
 
-        if(this.viewFinalStates[root] < state) {
+        if (this.viewFinalStates[root] < state) {
             this.viewFinalStates[root] = state;
-            $('#switch-' + root).css('color', Scotty.Core.srNagStateColor(this.viewFinalStates[root]))
-        }
-        else {
-            if(this.viewFinalStates[root] > state) {
+            $('#switch-' + root).css('color', require("snmd-core/Core").srNagStateColor(this.viewFinalStates[root]));
+        } else {
+            if (this.viewFinalStates[root] > state) {
                 var fs = state;
+                var that = this;
                 Object.keys(this.viewStates[root]).forEach(function (k) {
-                    if(Scotty.GUI.viewStates[root][k] > fs) {
-                        fs = Scotty.GUI.viewStates[root][k];
+                    if (that.viewStates[root][k] > fs) {
+                        fs = that.viewStates[root][k];
                     }
                 });
                 this.viewFinalStates[root] = fs;
-                $('#switch-' + root).css('color', Scotty.Core.srNagStateColor(this.viewFinalStates[root]))
+                $('#switch-' + root).css('color', require("snmd-core/Core").srNagStateColor(this.viewFinalStates[root]));
             }
             
         }
-    }).bind(this);
+    };
     
-    this.srInit = (function (views) {
+    GUI.prototype.srInit = function (views) {
+        var that = this;
         $('.srViews').each(function () {
             var views2id = {};
             
             var nav = $(this).children('.srViewsNav');
             Object.keys(views).forEach(function (k) {
-                views2id[k] = 'srView-' + (idCounter += 1).toString(16);
-                Scotty.GUI.viewStates[views2id[k]] = {};
-                Scotty.GUI.viewFinalStates[views2id[k]] = -1;
-                nav.append('<li><a id="switch-' + views2id[k] + '" href="#' + views2id[k] + '"><span>' + views[k]['title'] + "</span></a></li>");
-            });
+                views2id[k] = 'srView-' + (this.idCounter += 1).toString(16);
+                this.viewStates[views2id[k]] = {};
+                this.viewFinalStates[views2id[k]] = -1;
+                nav.append('<li><a id="switch-' + views2id[k] + '" href="#' + views2id[k] + '"><span>' + views[k].title + "</span></a></li>");
+            }, that);
 
             var div = $('#snmd-views');
             var dps = 360 / Object.keys(views).length;
             var step = 0;
-            var r = (Object.keys(views).length > 1 ? (1906/2) / Math.tan( Math.PI / Object.keys(views).length) : 0);
-            var oy = ($('#snmd-views').height() - 30 - 1038)/2 + 30;
+            var r = (Object.keys(views).length > 1 ? (1906 / 2) / Math.tan(Math.PI / Object.keys(views).length) : 0);
+            var oy = ($('#snmd-views').height() - 30 - 1038) / 2 + 30;
             
             Object.keys(views).forEach(function (k) {
                 div.append('<div class="svgview" id="' + views2id[k] + '"></div>');
 
-                if($(document.body).hasClass('enable-3d')) {
-                    $('#'+views2id[k]).css(
-                        'transform', 'rotateY(' + (dps * step) + 'deg) translateZ(' + r + 'px)'
+                if ($(document.body).hasClass('enable-3d')) {
+                    $('#' + views2id[k]).css(
+                        'transform',
+                        'rotateY(' + (dps * step) + 'deg) translateZ(' + r + 'px)'
                     );
                 }
 
-                switch(views[k]['render']) {
-                    case 'html':
-                        Scotty.HTML.srLoadHTML(views2id[k], views[k]['url'], views[k]['reload']);
-                        break;
+                switch (views[k].render) {
+                case 'html':
+                    HTML.srLoadHTML(views2id[k], views[k].url, views[k].reload);
+                    break;
 
-                    case 'svg':
-                    default:
-                        Scotty.SVG.srLoadSVG(views2id[k], views[k]['url']);
-                        break;
+//              case 'svg':
+                default:
+                    SVG.srLoadSVG(views2id[k], views[k].url);
+                    break;
                 }
 
                 step += 1;
             });
 
             $('#snmd-views').css(
-                'transform-origin', '100% 50% 50%'
+                'transform-origin',
+                '100% 50% 50%'
             );
             var tabDivs = div;
 
-            var alignView = (function() {
+            var alignView = (function () {
                 var f = 1; //Math.min(($('#snmd-views').width() - 10) / 1906, ($('#snmd-views').height()) / 1038);
 
-                if($(document.body).hasClass('enable-3d')) {
+                if ($(document.body).hasClass('enable-3d')) {
                     $('#snmd-views').css(
-                        'transform', 'scale(' + f + ') translateZ(-' + r  + 'px) rotateY(' + (-1 * dps * Scotty.GUI.currenStep) + 'deg)'
+                        'transform',
+                        'scale(' + f + ') translateZ(-' + r  + 'px) rotateY(' + (-1 * dps * this.currenStep) + 'deg)'
                     );
                 }
             }).bind(this);
             
             nav.find('a').click(function (event) {
                 console.debug('Viewing '  + this.hash);
-                Scotty.GUI.currentView = this.hash;
+                that.currentView = this.hash;
 
                 div.children().removeClass('current').filter(this.hash).removeClass('next').removeClass('prev').addClass('current');
-                $(Scotty.GUI.currentView).prevAll().removeClass('next').addClass('prev');
-                $(Scotty.GUI.currentView).nextAll().removeClass('prev').addClass('next');
+                $(that.currentView).prevAll().removeClass('next').addClass('prev');
+                $(that.currentView).nextAll().removeClass('prev').addClass('next');
 
                 nav.find('a').removeClass('selected').filter(this).addClass('selected');
 
-                Scotty.GUI.currenStep = $(Scotty.GUI.currentView).prevAll().length;
+                that.currenStep = $(that.currentView).prevAll().length;
                 alignView();
                 
                 return false;
             }).filter(':first').click();
 
-            if(window.location.hash !== "undefined") {
-                var nth = parseInt( window.location.hash.replace(/^#srView-/, "") ) - 1;
+            if (window.location.hash !== "undefined") {
+                var nth = parseInt(window.location.hash.replace(/^#srView-/, ""), 10) - 1;
                 var a = nav.find('a:eq(' + nth + ')').click();
             }
 
@@ -176,11 +197,11 @@ if (typeof Scotty.GUI === "undefined") {
 
                 return false;
             }).filter(':first').click();
-        }).bind(this);
+        }, this);
 
         // Update time of day
         window.setInterval(function () {
-            $('div#snmd_clock').text( moment().format("YYYY-MM-DDTHH:mm:ssZZ") );
+            $('div#snmd_clock').text(moment().format("YYYY-MM-DDTHH:mm:ssZZ"));
         }, 1000);
 
         // Screensaver
@@ -207,11 +228,13 @@ if (typeof Scotty.GUI === "undefined") {
             }
 
             // Select view by numpad
-            if(ev.which > 47 && ev.which < 58) {
-                var key = (ev.which == 48 ? '10' : String.fromCharCode(ev.which));
+            if (ev.which > 47 && ev.which < 58) {
+                var key = (ev.which === 48 ? '10' : String.fromCharCode(ev.which));
 
                 $('a[href="#srView-' + key + '"]').click();
             }
         }).bind(this));
-    }).bind(this);
-}).call(Scotty.GUI, jQuery);
+    };
+
+    return GUI.getInstance();
+});

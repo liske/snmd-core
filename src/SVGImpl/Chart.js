@@ -25,30 +25,27 @@ License:
 */
 
 /*jslint
-    devel: true
+    devel: true,
+    plusplus: true,
+    vars: true
 */
 
-if (typeof Scotty === "undefined") {
-    Scotty = {};
-}
-if (typeof Scotty.SVGImpl === "undefined") {
-    Scotty.SVGImpl = {};
-}
-if (typeof Scotty.SVGImpl.Chart === "undefined") {
-    Scotty.SVGImpl.Chart = {};
-}
+/*global
+    define
+*/
 
-(function ($) {
-    "use strict";
-    
+define(["snmd-core/Core", "snmd-core/GUI"], function (Core, GUI) {
+    'use strict';
+
     var Chart = function (root, svg, opts, lines, qtip) {
         /* Meta data */
         this.opts = opts;
         this.lines = lines;
 
         /* Prepare line classes */
-        if(typeof this.opts.lcls !== "undefined") {
-            for (var l = 0; l < this.lines.length; l++) {
+        if (typeof this.opts.lcls !== "undefined") {
+            var l;
+            for (l = 0; l < this.lines.length; l++) {
                 var classes = this.opts.lcls.slice(0);
                 this.opts.lcls.forEach(function (cl) {
                     classes.push(cl + "-" + this.lines[l].name);
@@ -58,7 +55,7 @@ if (typeof Scotty.SVGImpl.Chart === "undefined") {
         }
 
         /* Prepare scaling line classes */
-        if(typeof this.opts.mcls !== "undefined") {
+        if (typeof this.opts.mcls !== "undefined") {
             this.maxline_style =  {
                 'class': this.opts.mcls.join(' ')
             };
@@ -101,8 +98,9 @@ if (typeof Scotty.SVGImpl.Chart === "undefined") {
         if (lines.length > 1) {
             this.txt[1] = root.text(opts.dim.x + opts.dim.width, opts.dim.y, '');
         }
-        for (var l = 0; l < this.txt.length; l++) {
-            if(typeof this.opts.tcls !== "undefined") {
+        var l;
+        for (l = 0; l < this.txt.length; l++) {
+            if (typeof this.opts.tcls !== "undefined") {
                 this.opts.tcls.forEach(function (cl) {
                     this.txt[l].classList.add(cl);
                     this.txt[l].classList.add(cl + "-" + this.lines[l].name);
@@ -116,7 +114,8 @@ if (typeof Scotty.SVGImpl.Chart === "undefined") {
         this.data_ts = [];
         this.data_lines = [];
         this.data_svg = [];
-        for (var i = 0; i < lines.length; i++) {
+        var i;
+        for (i = 0; i < lines.length; i++) {
             this.data_lines[i] = [];
         }
 
@@ -125,12 +124,13 @@ if (typeof Scotty.SVGImpl.Chart === "undefined") {
     };
     
     Chart.prototype.update = function (ts, data, state) {
-        var stroke = Scotty.Core.srNagStateColor(state);
+        var stroke = Core.srNagStateColor(state);
         
         /* Record current data points */
         this.data_ts.push(ts);
         var maxy = (typeof this.opts.axis[0].max === "undefined" ? 0 : this.opts.axis[0].max);
-        for (var i = 0; i < this.data_lines.length; i++) {
+        var i;
+        for (i = 0; i < this.data_lines.length; i++) {
             this.data_lines[i].push(data[i]);
             maxy = Math.max(maxy, Math.max.apply(null, this.data_lines[i]));
         }
@@ -138,36 +138,36 @@ if (typeof Scotty.SVGImpl.Chart === "undefined") {
         /* Drop old data reaching TS window */
         var shift_ts;
         var shift_data = [];
-        while(this.data_ts[0] < ts - this.data_tswin) {
+        while (this.data_ts[0] < ts - this.data_tswin) {
             shift_ts = this.data_ts.shift();
-            for (var i = 0; i < this.data_lines.length; i++) {
+            for (i = 0; i < this.data_lines.length; i++) {
                 shift_data[i] = this.data_lines[i].shift();
             }
         }
 
         /* Linear approximate values at last visible timestamp */
-        if(typeof shift_ts !== "undefined") {
-            if(this.data_ts.length > 0) {
+        if (typeof shift_ts !== "undefined") {
+            if (this.data_ts.length > 0) {
                 var nts = ts - this.data_tswin;
                 this.data_ts.unshift(nts);
 
-                for (var i = 0; i < this.data_lines.length; i++) {
+                for (i = 0; i < this.data_lines.length; i++) {
                     this.data_lines[i].unshift(
-                        shift_data[i] + (this.data_lines[i][0] - shift_data[i])*(nts - shift_ts)/(this.data_ts[1] - shift_ts)
+                        shift_data[i] + (this.data_lines[i][0] - shift_data[i]) * (nts - shift_ts) / (this.data_ts[1] - shift_ts)
                     );
                 }
             }
         }
 
         /* Axis scaling */
-        if(typeof this.opts.axis[0].max !== "undefined") {
-            if(this.axis_maxlasts[0] != maxy) {
+        if (typeof this.opts.axis[0].max !== "undefined") {
+            if (this.axis_maxlasts[0] !== maxy) {
                 this.axis_maxlasts[0] = maxy;
             }
         }
 
         /* Adjust max Y for log scale */
-        if(this.opts.axis[0].scale == "log") {
+        if (this.opts.axis[0].scale === "log") {
             maxy = Math.log10(maxy);
         }
 
@@ -180,55 +180,56 @@ if (typeof Scotty.SVGImpl.Chart === "undefined") {
         var last = [];
 
         /* Axis max lines */
-        if(typeof this.opts.axis[0].max !== "undefined") {
+        if (typeof this.opts.axis[0].max !== "undefined") {
             var numlines = (this.opts.axis[0].max < this.axis_maxlasts[0] ? Math.floor(this.axis_maxlasts[0] / this.opts.axis[0].max) : 0);
-            for(var i = 0; i < numlines; i++) {
-                if(typeof this.axis_maxlines[i] !== "undefined") {
+            for (i = 0; i < numlines; i++) {
+                if (typeof this.axis_maxlines[i] !== "undefined") {
                     clean.push(this.axis_maxlines[i]);
                 }
 
                 var y = oy - (i + 1) * this.opts.axis[0].max * fy;
                 this.axis_maxlines[i] = this.root.line(this.opts.dim.x, y, this.opts.dim.x + this.opts.dim.width, y, this.maxline_style);
             }
-            if(this.axis_maxlines.length > numlines) {
-                clean = clean.concat( this.axis_maxlines.splice(numlines, this.axis_maxlines.length - numlines) );
+            if (this.axis_maxlines.length > numlines) {
+                clean = clean.concat(this.axis_maxlines.splice(numlines, this.axis_maxlines.length - numlines));
             }
         }
 
         /* Data lines */
-        for (var l = 0; l < this.data_lines.length; l++) {
+        var l;
+        for (l = 0; l < this.data_lines.length; l++) {
             var points = [];
             var is_polygon = true;
 
             /* assume the line is just a polyline if the style does not apply a fill pattern */
-            if(typeof this.data_svg[l] !== "undefined") {
+            if (typeof this.data_svg[l] !== "undefined") {
                 var style = window.getComputedStyle(this.data_svg[l]);
-                if(style['fill'] === 'none' || style['fill'] === '') {
+                if (style.fill === 'none' || style.fill === '') {
                     is_polygon = false;
                 }
             }
-            
-            for (var t = 0; t < this.data_ts.length; t++) {
-                var x = ox + (this.data_ts[t] - ts)*this.opts.dpi;
 
-                if(is_polygon && t == 0) {
+            var t;
+            for (t = 0; t < this.data_ts.length; t++) {
+                var x = ox + (this.data_ts[t] - ts) * this.opts.dpi;
+
+                if (is_polygon && t === 0) {
                     points.push([x, oy]);
                 }
 
                 var v = this.data_lines[l][t];
-                if(typeof v === "undefined") {
+                if (typeof v === "undefined") {
                     v = 0;
                 }
-                if(isNaN(v)) {
+                if (isNaN(v)) {
                     v = 0;
                 }
 
                 /* Prepare for log scale */
-                if(this.opts.axis[0].scale == "log") {
-                    if(v > 1) {
+                if (this.opts.axis[0].scale === "log") {
+                    if (v > 1) {
                         v = Math.log10(v);
-                    }
-                    else {
+                    } else {
                         v = 0;
                     }
                 }
@@ -236,8 +237,8 @@ if (typeof Scotty.SVGImpl.Chart === "undefined") {
 
                 points.push([x, oy - v]);
 
-                if(t == this.data_ts.length - 1) {
-                    if(is_polygon) {
+                if (t === this.data_ts.length - 1) {
+                    if (is_polygon) {
                         points.push([x, oy]);
                     }
 
@@ -245,27 +246,27 @@ if (typeof Scotty.SVGImpl.Chart === "undefined") {
                 }
             }
             
-            if(typeof this.data_svg[l] !== "undefined")
+            if (typeof this.data_svg[l] !== "undefined") {
                 clean.push(this.data_svg[l]);
+            }
 
             try {
-                if(is_polygon) {
+                if (is_polygon) {
                     this.data_svg[l] = this.root.polygon(points, this.lines[l].style);
-                }
-                else {
+                } else {
                     this.data_svg[l] = this.root.polyline(points, this.lines[l].style);
                 }
             } catch (err) {
                 console.error("Failed to create poly for " + this.rect.id);
             }
 
-            if(typeof this.txt[l] !== "undefined") {
-                this.txt[l].textContent = Scotty.Core.srSiFormatNum(last[l], (typeof this.lines[l].unit === "undefined" ? '' : this.lines[l].unit), '-')
+            if (typeof this.txt[l] !== "undefined") {
+                this.txt[l].textContent = Core.srSiFormatNum(last[l], (typeof this.lines[l].unit === "undefined" ? '' : this.lines[l].unit), '-');
             }
         }
 
         /* Remove old lines */
-        while(clean.length) {
+        while (clean.length) {
             var s = clean.shift();
             this.root.remove(s);
         }
@@ -281,12 +282,9 @@ if (typeof Scotty.SVGImpl.Chart === "undefined") {
             
             this.last_state = state;
 
-            Scotty.GUI.srStateChanged(this.rect.parentElement.parentElement.id, this.rect.id, state);
+            GUI.srStateChanged(this.rect.parentElement.parentElement.id, this.rect.id, state);
         }
     };
 
-    Scotty.SVGWidget.srRegisterImpl(
-        "Chart",
-        Chart
-    );
-}).call(Scotty.SVGImpl.Chart, jQuery);
+    return Chart;
+});
