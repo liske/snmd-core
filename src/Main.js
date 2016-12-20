@@ -32,40 +32,47 @@ License:
 */
 
 /*global
+    define,
     require
 */
 
-require.config({
-    baseUrl: "blib",
-    map: {
-        '*': {
-            'css': 'require-css'
-        }
-    },
-    paths: {
-        "snmd-core": "snmd-core/src",
-        "snmd-widgets-nagios": "snmd-widgets-nagios/src",
-        "sprintf": "sprintf/src/sprintf",
-        "jquery": "jquery/dist/jquery",
-        "jquery.svg": "snmd-core/lib/svg-1.5.0/jquery.svg.min",
-        "jquery.svggraph": "snmd-core/lib/svg-1.5.0/jquery.svggraph.min",
-        "svgpathdata": "snmd-core/lib/svgpathdata-1.0.3/SVGPathData",
-        "paho": "snmd-core/lib/paho.javascript-1.0.2/mqttws31-min",
-        "require-css": "snmd-core/blib/require-css/css"
-    },
-    shim: {
-        "jquery.svg" : ["jquery"],
-        "jquery.svggraph" : ["jquery.svg", "jquery"],
-        "paho": {
-            exports: "Paho"
-        }
-    },
-    enforceDefine: true,
-    urlArgs: "bust=0.124s"
-});
-
-require(["snmd-core/Core"], function (Core) {
+define([], function (Core) {
     'use strict';
 
-    Core.srInit();
+    var Main = function (config) {
+        require.config({
+            baseUrl: "blib",
+            map: {
+                '*': {
+                    'css': 'require-css'
+                }
+            },
+            paths: {
+//                "snmd-core": "snmd-core/src",
+//                "snmd-widgets-nagios": "snmd-widgets-nagios/src",
+                "sprintf": "sprintf/src/sprintf",
+                "jquery": "jquery/dist/jquery",
+                "jquery.svg": "snmd-core/lib/svg-1.5.0/jquery.svg.min",
+                "jquery.svggraph": "snmd-core/lib/svg-1.5.0/jquery.svggraph.min",
+                "svgpathdata": "snmd-core/lib/svgpathdata-1.0.3/SVGPathData",
+                "paho": "snmd-core/lib/paho.javascript-1.0.2/mqttws31-min",
+                "require-css": "snmd-core/blib/require-css/css"
+            },
+            shim: {
+                "jquery.svg" : ["jquery"],
+                "jquery.svggraph" : ["jquery.svg", "jquery"],
+                "paho": {
+                    exports: "Paho"
+                }
+            },
+            urlArgs: "bust=0.15a"
+        });
+
+        require(["snmd-core/Core"], function (Core) {
+            Core.srInit();
+        });
+
+    };
+
+    return Main;
 });
