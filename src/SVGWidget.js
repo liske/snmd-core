@@ -46,6 +46,7 @@ define(["snmd-core/MQTT", "require"], function (MQTT, require) {
 
         this.Impl = {};
         this.Widgets = {};
+        this.ReWidgetName = /^([\w\-]+):([\w\-]+)$/;
     };
 
     SVGWidget.getInstance = function () {
@@ -110,21 +111,24 @@ define(["snmd-core/MQTT", "require"], function (MQTT, require) {
             return;
         }
 
-        //console.error(require.toUrl("/blib/snmd-widgets-nagios/src/" + desc.type));
-        require(["snmd-widgets-nagios/" + desc.type], function (WClass) {
-            try {
-                var obj = new WClass(root, svg, desc);
-                if (typeof desc.topics !== "undefined") {
-                    desc.topics.forEach(function (topic) {
-                        MQTT.srRegisterTopic(topic, obj);
-                    });
+        var res = this.ReWidgetName.exec(desc.type);
+        if (res) {
+            require(["snmd-widgets-nagios/" + res[2]], function (WClass) {
+                try {
+                    var obj = new WClass(root, svg, desc);
+                    if (typeof desc.topics !== "undefined") {
+                        desc.topics.forEach(function (topic) {
+                            MQTT.srRegisterTopic(topic, obj);
+                        });
+                    }
+                } catch (err) {
+                    console.error("Failed to create widget " + svg.id + " of type " + desc.type + ": " + err.message);
+                    return;
                 }
-            } catch (err) {
-                console.error("Failed to create widget " + svg.id + " of type " + desc.type + ": " + err.message);
-                return;
-            }
-        });
-        //            this.Widgets[desc.type] = require("../../snmd-widgets-nagios/blib/src/" + desc.type);
+            });
+        } else {
+            console.error("Widget " + svg.id + " has a invalid syntax for 'type'!");
+        }
     };
 
     return SVGWidget.getInstance();
