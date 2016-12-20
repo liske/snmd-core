@@ -1,4 +1,4 @@
 # -*- coding: utf-8 -*-
 
-project = 'snmd'
+project = 'SNMD'
 master_doc = 'index'
