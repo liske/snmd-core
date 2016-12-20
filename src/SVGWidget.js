@@ -44,8 +44,6 @@ define(["snmd-core/MQTT", "require"], function (MQTT, require) {
             throw new Error("Cannot instantiate more than one instance, use getInstance()!");
         }
 
-        this.Impl = {};
-        this.Widgets = {};
         this.ReWidgetName = /^([\w\-]+):([\w\-]+)$/;
     };
 
@@ -57,22 +55,6 @@ define(["snmd-core/MQTT", "require"], function (MQTT, require) {
         return instance;
     };
 
-    SVGWidget.prototype.srRegisterImpl = function (name, impl) {
-        this.Impl[name] = impl;
-    };
-
-    SVGWidget.prototype.srLookupImpl = function (name) {
-        return this.Impl[name];
-    };
-    
-    SVGWidget.prototype.srRegisterWidget = function (name, widget) {
-        this.Widgets[name] = widget;
-    };
-
-    SVGWidget.prototype.srLookupWidget = function (name) {
-        return this.Widgets[name];
-    };
-    
     SVGWidget.prototype.srClassOpts = function (desc, impl) {
         var cls = {
             base: ['snmd-bcl-' + impl],
