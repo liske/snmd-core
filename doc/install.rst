@@ -5,25 +5,25 @@ Installation
 Prerequisites
 =============
 
-In order to rollout SNMD you require different components at you requirement.
+In order to rollout SNMD you require different components at the target environment.
 
 MQTT message broker
 -------------------
 
-A MQTT v3.1 message broker with Web Socket support is required. The usage of `Mosquitto <https://mosquitto.org/>`_ is recommended. Rember enable Web Socket remote access in Mosqitto::
+A MQTT v3.1 message broker with web socket support is required. The usage of `Mosquitto <https://mosquitto.org/>`_ is recommended. Rember you need to explicitly enable web socket access in Mosqitto::
 
    listener 9001
    protocol websockets
 
-MQTT publisher
---------------
+MQTT publishing
+---------------
 
-Data need to be published on MQTT so it can be visualized with SNMD. Look at `nag2mqtt <https://github.com/DE-IBH/nag2mqtt/>`_ to publish Nagios state and performance data via MQTT.
+Data needs to be published on MQTT so it can be visualized by SNMD. Look at `nag2mqtt <https://github.com/DE-IBH/nag2mqtt/>`_ to publish Nagios performance data to MQTT.
 
-Webserver deploying SNMD
-------------------------
+Web server for SNMD
+-------------------
 
-A simple web server publishing the SNMD files is required. To download SNMD a local installation of `bower <https://bower.io/>`_ is required.
+A simple web server publishing the static SNMD files is sufficiant. To download SNMD an installation of `bower <https://bower.io/>`_ is required.
 
 
 
