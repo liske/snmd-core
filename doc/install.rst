@@ -18,7 +18,7 @@ A MQTT v3.1 message broker with Web Socket support is required. The usage of `Mo
 MQTT publisher
 --------------
 
-Data need to be published on MQTT so it can be visualized with SNMD. Look at `nag2mqtt <https://github.com/liske/nag2mqtt/>`_ to publish Nagios state and performance data via MQTT.
+Data need to be published on MQTT so it can be visualized with SNMD. Look at `nag2mqtt <https://github.com/DE-IBH/nag2mqtt/>`_ to publish Nagios state and performance data via MQTT.
 
 Webserver deploying SNMD
 ------------------------
