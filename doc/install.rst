@@ -27,15 +27,27 @@ A simple web server publishing the static SNMD files is sufficiant. To download 
 
 
 
-Install & Setup
-===============
+Installation
+============
+
+Preparation
+-----------
+
+Install ``git``, ``nodejs``, ``npm`` and ``bower``[#]_::
+   # apt-get install git nodejs nodejs-legacy npm
+   # npm install --global bower
+
+.. [#]  The package ``nodejs-legacy`` is required as the ``bower`` command uses
+	the legacy shebang ``/usr/bin/env node`` to run ``nodejs``.
 
 
-Download SNMD
--------------
+Download or clone SNMD
+----------------------
 
+Download the latest `release archive <https://github.com/DE-IBH/snmd/releases>` or clone it using ``git``::
+  $ git clone --branch $VERSION https://github.com/DE-IBH/snmd.git
 
-Customize Config
-----------------
-
+Pull all ``bower`` dependencies by running the following command in the new
+created directory::
+  $ bower update
 
