@@ -33,21 +33,22 @@ Installation
 Preparation
 -----------
 
-Install *git*, *nodejs*, *npm* and *bower* [#]_.
+Install *git*, *nodejs*, *npm* and *bower*:
 
 .. code:: console
 
   # apt-get install git nodejs nodejs-legacy npm
   # npm install --global bower
 
-.. [#]  The package *nodejs-legacy* is required as the *bower* command uses
-	the legacy shebang ``/usr/bin/env node`` to run *nodejs*.
+.. hint::
+  The package *nodejs-legacy* is required as the *bower* command uses
+  the legacy shebang ``/usr/bin/env node`` to run *nodejs*.
 
 
 Download or clone SNMD
 ----------------------
 
-Download the latest `release archive <https://github.com/DE-IBH/snmd/releases>` or clone it using *git*.
+Download the latest `release archive <https://github.com/DE-IBH/snmd/releases>` or clone it using *git*:
 
 .. code:: console
 
@@ -60,3 +61,4 @@ created directory:
 
   $ bower update
 
+This will download the *snmd-core* and *snmd-widgets-nagios* components including any 3rd party library required by them.
