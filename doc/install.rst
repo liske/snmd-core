@@ -33,7 +33,9 @@ Installation
 Preparation
 -----------
 
-Install *git*, *nodejs*, *npm* and *bower* [#]_ ::
+Install *git*, *nodejs*, *npm* and *bower* [#]_.
+
+::
    # apt-get install git nodejs nodejs-legacy npm
    # npm install --global bower
 
@@ -44,7 +46,7 @@ Install *git*, *nodejs*, *npm* and *bower* [#]_ ::
 Download or clone SNMD
 ----------------------
 
-Download the latest `release archive <https://github.com/DE-IBH/snmd/releases>` or clone it using *git* ::
+Download the latest `release archive <https://github.com/DE-IBH/snmd/releases>` or clone it using *git*.
 
 ::
   $ git clone --branch $VERSION https://github.com/DE-IBH/snmd.git
