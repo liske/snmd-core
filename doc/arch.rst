@@ -30,6 +30,7 @@ Web Server
 ==========
 
 A simple web server is required to serve static files:
+
 * SNMD package
 * config files (JSON)
 * views (SVG)
