@@ -125,8 +125,6 @@ define(["snmd-core/Core", "snmd-core/GUI"], function (Core, GUI) {
     };
     
     Chart.prototype.update = function (ts, data, state) {
-        var stroke = Core.srNagStateColor(state);
-        
         /* Record current data points */
         this.data_ts.push(ts);
         var maxy = (typeof this.opts.axis[0].max === "undefined" ? 0 : this.opts.axis[0].max);

@@ -140,8 +140,7 @@ define(["snmd-core/GUI", "snmd-core/MQTT", "sprintf", "jquery"], function (GUI, 
         }
 
         var i,
-            j = 4,
-            f = 1;
+            j = 4;
         for (i = 0; i < this.si_facts.length; i++) {
             if (value >= this.si_facts[i] * 0.99) {
                 j = i;

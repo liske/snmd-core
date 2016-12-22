@@ -129,7 +129,6 @@ define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "../blib/moment/min
             var dps = 360 / Object.keys(views).length;
             var step = 0;
             var r = (Object.keys(views).length > 1 ? (1906 / 2) / Math.tan(Math.PI / Object.keys(views).length) : 0);
-            var oy = ($('#snmd-views').height() - 30 - 1038) / 2 + 30;
             
             Object.keys(views).forEach(function (k) {
                 div.append('<div class="svgview" id="' + views2id[k] + '"></div>');
@@ -159,7 +158,6 @@ define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "../blib/moment/min
                 'transform-origin',
                 '100% 50% 50%'
             );
-            var tabDivs = div;
 
             var alignView = (function () {
                 var f = 1; //Math.min(($('#snmd-views').width() - 10) / 1906, ($('#snmd-views').height()) / 1038);
@@ -172,7 +170,7 @@ define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "../blib/moment/min
                 }
             }).bind(this);
             
-            nav.find('a').click(function (event) {
+            nav.find('a').click(function () {
                 console.debug('Viewing '  + this.hash);
                 that.currentView = this.hash;
 
@@ -190,10 +188,10 @@ define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "../blib/moment/min
 
             if (window.location.hash !== "undefined") {
                 var nth = parseInt(window.location.hash.replace(/^#srView-/, ""), 10) - 1;
-                var a = nav.find('a:eq(' + nth + ')').click();
+                nav.find('a:eq(' + nth + ')').click();
             }
 
-            $('#snmd-ctrl').find('a').click(function (event) {
+            $('#snmd-ctrl').find('a').click(function () {
                 console.debug('Control: '  + this.hash);
 
                 return false;

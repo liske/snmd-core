@@ -129,7 +129,6 @@ define(["jquery", "paho"], function ($, Paho) {
             return 1;
         }).bind(this);
 
-        var me = this;
         this.client.connect({
             onSuccess: (function () {
                 console.info('Connected to mqtt://' + this.broker_host + ':' + this.broker_port);
@@ -141,7 +140,7 @@ define(["jquery", "paho"], function ($, Paho) {
                 }
 
             }).bind(this),
-            onFailure: (function (res) {
+            onFailure: (function () {
                 if (this.reconnTO) {
                     clearTimeout(this.reconnTO);
                 }

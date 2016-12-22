@@ -36,7 +36,7 @@ License:
     require
 */
 
-define([], function (Core) {
+define([], function () {
     'use strict';
 
     var Main = function (config) {
