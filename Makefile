@@ -1,21 +1,27 @@
 
-LIBS:=lib/svg-1.5.0/jquery.svg.min.js \
-    lib/svg-1.5.0/jquery.svggraph.min.js \
-    lib/svgpathdata-1.0.3/SVGPathData.js \
-    lib/paho.javascript-1.0.2/mqttws31-min.js
+DISTS:= \
+	dist/Core.js \
+	dist/GUI.js \
+	dist/HTML.js \
+	dist/Main.js \
+	dist/MQTT.js \
+	dist/SVG.js \
+	dist/SVGWidget.js \
+	dist/SVGImpl/Chart.js \
+	dist/SVGImpl/Class.js \
+	dist/SVGImpl/Gauge.js \
+	dist/SVGImpl/Gradient.js \
+	dist/SVGImpl/StrokeWidth.js \
+	dist/SVGImpl/Text.js \
+	dist/SVGImpl/Transform.js
 
-all: dist/snmd-core.min.js
-	@for lib in $(LIBS) $+; do \
-	    echo $$lib; \
-	done > js.min.inc
 
-dist/snmd-core.min.js: src/*.js src/SVGImpl/*.js
-	@for lib in $(LIBS) $+; do \
-	    echo $$lib; \
-	done > js.dev.inc
+all: $(DISTS)
+
+dist/%.js: src/%.js
 	uglifyjs \
 	    --output $@ \
-	    --source-map dist/snmd-core.min.map \
+	    --source-map $(subst .js,.map,$@) \
 	    --compress \
 	    --mangle \
 	    --lint \
@@ -23,4 +29,4 @@ dist/snmd-core.min.js: src/*.js src/SVGImpl/*.js
 	    -- $+
 
 clean:
-	rm -f js.min.inc js.dev.inc dist/snmd-core.min.js dist/snmd-core.min.map
+	rm -f dist/*.js dist/*.map dist/SVGImpl/*.js dist/SVGImpl/*.map

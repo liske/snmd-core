@@ -1,0 +1,2 @@
+define([],function(){"use strict";var n=function(){};return n.prototype.srLoadHTML=function(n,o,e){console.debug("Loading #"+n+": "+o);var t=$("<iframe>",{src:o,width:"95%",height:"95%",scrolling:"no"}).addClass("htmlview").appendTo($("#"+n));"undefined"!=typeof e&&window.setInterval(function(){t[0].contentWindow.location.reload(!1)},1e3*e)},n});
+//# sourceMappingURL=dist/HTML.map
