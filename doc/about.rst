@@ -3,9 +3,7 @@ About
 *****
 
 SNMD uses HTML5 and JavaScript code to build a monitoring dashboard. Any data
-which is to be visualized needs to be published via MQTT. The nagios plugin
-`nag2mqtt <https://github.com/DE-IBH/nag2mqtt/>`_ can be used to publish nagios
-performance data to a MQTT broker.
+to be visualized needs to be published via MQTT.
 
 .. include:: ../AUTHORS.rst
 

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created by diasvg.py -->
+<svg width="42.100cm" height="28.546cm" viewBox="1.975 -11.050 42.100 28.546"
+ xmlns="http://www.w3.org/2000/svg"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+<!-- Layer: Hintergrund -->
+<g id="Hintergrund">
+<!-- Standard - Box -->
+<rect x="3.000" y="2.000" width="15.000" height="13.000" fill="#FFFFFF" stroke="#000000" stroke-width="0.050"  stroke-linejoin="round" rx="1.000" />
+<!-- Standard - Box -->
+<rect x="2.000" y="3.000" width="15.000" height="13.000" fill="#FFFFFF" stroke="#000000" stroke-width="0.050"  stroke-linejoin="round" rx="1.000" />
+<!-- Standard - Box -->
+<rect x="12.000" y="-11.000" width="10.000" height="5.000" fill="#FFFFFF" stroke="#005AB4" stroke-width="0.100"  rx="0.000" />
+<!-- Standard - Box -->
+<rect x="24.000" y="-11.000" width="10.000" height="5.000" fill="#FFFFFF" stroke="#404040" stroke-width="0.100"  rx="0.000" />
+<!-- Standard - Box -->
+<rect x="4.000" y="5.000" width="5.000" height="5.000" fill="#FFFFFF" stroke="#404040" stroke-width="0.100"  rx="0.000" />
+<!-- Standard - Text -->
+<text x="6.500" y="7.764"  fill="#404040" text-anchor="middle" font-size="0.85" font-family="Open Sans" font-style="normal" font-weight="700">
+nagios</text>
+<!-- Standard - Box -->
+<rect x="4.000" y="10.000" width="5.000" height="2.000" fill="#FFFFFF" stroke="#00B45A" stroke-width="0.100"  rx="0.000" />
+<!-- Standard - Text -->
+<text x="6.500" y="11.264"  fill="#00B45A" text-anchor="middle" font-size="0.85" font-family="Open Sans" font-style="normal" font-weight="700">
+neb2mqtt.so</text>
+<!-- Standard - Box -->
+<rect x="10.000" y="5.000" width="5.000" height="5.000" fill="#FFFFFF" stroke="#00B45A" stroke-width="0.100"  rx="0.000" />
+<!-- Standard - Text -->
+<text x="12.500" y="7.764"  fill="#00B45A" text-anchor="middle" font-size="0.85" font-family="Open Sans" font-style="normal" font-weight="700">
+nag2mqttd</text>
+<!-- Standard - Box -->
+<rect x="20.000" y="5.000" width="10.000" height="5.000" fill="#FFFFFF" stroke="#404040" stroke-width="0.100"  rx="0.000" />
+<!-- Standard - Text -->
+<text x="25.000" y="7.340"  fill="#404040" text-anchor="middle" font-size="0.85" font-family="Open Sans" font-style="normal" font-weight="700">
+MQTT Message Broker</text>
+<text x="25.000" y="8.187"  fill="#404040" text-anchor="middle" font-size="0.85" font-family="Open Sans" font-style="normal" font-weight="700">
+[mosquitto]</text>
+<!-- Standard - Box -->
+<rect x="23.000" y="-10.000" width="10.000" height="5.000" fill="#FFFFFF" stroke="#404040" stroke-width="0.100"  rx="0.000" />
+<!-- Standard - Text -->
+<text x="28.000" y="-7.660"  fill="#404040" text-anchor="middle" font-size="0.85" font-family="Open Sans" font-style="normal" font-weight="700">
+(WebKit-)Browser</text>
+<text x="28.000" y="-6.813"  fill="#404040" text-anchor="middle" font-size="0.85" font-family="Open Sans" font-style="normal" font-weight="700">
+[Chromium]</text>
+<!-- Standard - Box -->
+<rect x="20.000" y="10.000" width="5.000" height="2.000" fill="#FFFFFF" stroke="#404040" stroke-width="0.100"  rx="0.000" />
+<!-- Standard - Box -->
+<rect x="25.000" y="10.000" width="5.000" height="2.000" fill="#FFFFFF" stroke="#404040" stroke-width="0.100"  rx="0.000" />
+<!-- Standard - Text -->
+<text x="22.500" y="11.264"  fill="#404040" text-anchor="middle" font-size="0.85" font-family="Open Sans" font-style="normal" font-weight="700">
+MQTT</text>
+<!-- Standard - Text -->
+<text x="27.500" y="11.264"  fill="#404040" text-anchor="middle" font-size="0.85" font-family="Open Sans" font-style="normal" font-weight="700">
+WebSocket</text>
+<!-- Standard - Box -->
+<rect x="34.000" y="5.000" width="10.000" height="5.000" fill="#FFFFFF" stroke="#B42D2D" stroke-width="0.150"  rx="0.000" />
+<!-- Standard - Text -->
+<text x="39.000" y="7.764"  fill="#B42D2D" text-anchor="middle" font-size="0.85" font-family="Open Sans" font-style="normal" font-weight="700">
+SNMD (Web Server)</text>
+<!-- Standard - Box -->
+<rect x="34.000" y="10.000" width="5.000" height="2.000" fill="#FFFFFF" stroke="#B42D2D" stroke-width="0.150"  rx="0.000" />
+<!-- Standard - Text -->
+<text x="36.500" y="11.264"  fill="#B42D2D" text-anchor="middle" font-size="0.85" font-family="Open Sans" font-style="normal" font-weight="700">
+Configs</text>
+<!-- Standard - Box -->
+<rect x="39.000" y="10.000" width="5.000" height="2.000" fill="#FFFFFF" stroke="#B42D2D" stroke-width="0.150"  rx="0.000" />
+<!-- Standard - Text -->
+<text x="41.500" y="11.264"  fill="#B42D2D" text-anchor="middle" font-size="0.85" font-family="Open Sans" font-style="normal" font-weight="700">
+Views</text>
+<!-- Standard - BezierLine -->
+<path stroke="#000000" fill="none" stroke-width="0.100"  d="M 28.000,-5.000 C 33.000,0.000 35.000,8.000 30.417,10.750 "/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.100"  points="30.096,10.942 30.396,10.471 30.417,10.750 30.653,10.900 "/>
+<!-- Standard - BezierLine -->
+<path stroke="#000000" fill="none" stroke-width="0.100"  d="M 6.500,12.000 C 8.000,14.000 11.000,14.000 12.329,10.456 "/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.100"  points="12.461,10.105 12.519,10.661 12.329,10.456 12.051,10.485 "/>
+<!-- Standard - BezierLine -->
+<path stroke="#000000" fill="none" stroke-width="0.100"  d="M 12.500,10.000 C 13.000,14.000 21.000,16.000 22.329,12.456 "/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.100"  points="22.461,12.105 22.519,12.661 22.329,12.456 22.051,12.485 "/>
+<!-- Standard - BezierLine -->
+<path stroke="#000000" fill="none" stroke-width="0.100"  d="M 28.000,-5.000 C 31.000,-4.000 39.000,2.000 39.000,4.513 "/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.100"  points="39.000,4.888 38.750,4.388 39.000,4.513 39.250,4.388 "/>
+<!-- Standard - Box -->
+<rect x="11.000" y="-10.000" width="10.000" height="5.000" fill="#FFFFFF" stroke="#005AB4" stroke-width="0.100"  rx="0.000" />
+<!-- Standard - Text -->
+<text x="16.000" y="-7.660"  fill="#005AB4" text-anchor="middle" font-size="0.85" font-family="Open Sans" font-style="normal" font-weight="700">
+Embedded Browser</text>
+<text x="16.000" y="-6.813"  fill="#005AB4" text-anchor="middle" font-size="0.85" font-family="Open Sans" font-style="normal" font-weight="700">
+[Barkery]</text>
+<!-- Standard - BezierLine -->
+<path stroke="#000000" fill="none" stroke-width="0.100"  d="M 16.000,-5.000 C 21.000,0.000 38.000,6.000 30.413,10.742 "/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.100"  points="30.095,10.941 30.386,10.464 30.413,10.742 30.651,10.888 "/>
+<!-- Standard - BezierLine -->
+<path stroke="#000000" fill="none" stroke-width="0.100"  d="M 16.000,-5.000 C 19.000,-4.000 39.000,2.000 39.000,4.513 "/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.100"  points="39.000,4.888 38.750,4.388 39.000,4.513 39.250,4.388 "/>
+<!-- Standard - BezierLine -->
+<path stroke="#000000" fill="none" stroke-width="0.100"  d="M 16.000,-5.000 C 21.000,0.000 18.000,10.000 19.565,10.782 "/>
+<polygon fill="#000000" stroke="#000000" stroke-width="0.100"  points="19.900,10.950 19.341,10.950 19.565,10.782 19.565,10.503 "/>
+<!-- Standard - Text -->
+<text x="10.500" y="15.000"  fill="#000000" text-anchor="start" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+MQTT/PUB</text>
+<text x="10.500" y="15.800"  fill="#000000" text-anchor="start" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+Performance Data</text>
+<!-- Standard - Text -->
+<text x="3.000" y="15.000"  fill="#000000" text-anchor="start" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+Files/JSON</text>
+<text x="3.000" y="15.800"  fill="#000000" text-anchor="start" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+Performance Data</text>
+<!-- Standard - Text -->
+<!-- Standard - Text -->
+<rect x="35.000" y="1.405" width="3.645" height="1.545" fill="#FFFFFF" stroke="none" stroke-width="0.100" />
+<text x="35.000" y="2.000"  fill="#000000" text-anchor="start" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+HTTP/GET</text>
+<text x="35.000" y="2.800"  fill="#000000" text-anchor="start" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+HTML5 App</text>
+<!-- Standard - Text -->
+<!-- Standard - Text -->
+<rect x="25.000" y="1.405" width="5.788" height="1.545" fill="#FFFFFF" stroke="none" stroke-width="0.100" />
+<text x="25.000" y="2.000"  fill="#000000" text-anchor="start" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+MQTT/SUB</text>
+<text x="25.000" y="2.800"  fill="#000000" text-anchor="start" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+Performance Data</text>
+<!-- Standard - Text -->
+<rect x="17.000" y="-0.595" width="4.988" height="1.545" fill="#FFFFFF" stroke="none" stroke-width="0.100" />
+<text x="17.000" y="0.000"  fill="#000000" text-anchor="start" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+MQTT/SUB</text>
+<text x="17.000" y="0.800"  fill="#000000" text-anchor="start" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+Remote Control</text>
+<!-- Standard - Text -->
+<text x="9.000" y="17.252"  fill="#000000" text-anchor="middle" font-size="0.85" font-family="Open Sans" font-style="normal" font-weight="700">
+DAQ</text>
+</g>
+</svg>

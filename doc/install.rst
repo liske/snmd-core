@@ -33,7 +33,7 @@ Installation
 Preparation
 -----------
 
-Install *git*, *nodejs*, *npm* and *bower*:
+Install *git*, *nodejs*, *npm* and *bower* on the web server:
 
 .. code:: console
 
@@ -48,7 +48,7 @@ Install *git*, *nodejs*, *npm* and *bower*:
 Download or clone SNMD
 ----------------------
 
-Download the latest `release archive <https://github.com/DE-IBH/snmd/releases>` or clone it using *git*:
+Download the latest `release archive <https://github.com/DE-IBH/snmd/releases>`_ or clone it using *git*:
 
 .. code:: console
 
