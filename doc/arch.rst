@@ -13,11 +13,11 @@ The following figure shows the software stack required to deploy a SNMD environm
 Data Aquision
 =============
 
-The *Data Aquision* layer collects data and publishes them to a MQTT message broker. The collected data can be in any binary format as long there is a approperiate widget library for SNMD to do the visualization.
+The *Data Aquision* layer collects data and publishes them to a MQTT message broker. The collected data can be in any (binary) format as long there is a approperiate widget library for SNMD to do the visualization.
 
 nag2mqtt
 --------
-The nagios plugin `nag2mqtt <https://github.com/DE-IBH/nag2mqtt/>`_ can be used to publish nagios state and performance data to a MQTT message broker using JSON. SNMD ships with a corresponding library (*snmd-widgets-nagios*).
+The nagios plugin `nag2mqtt <https://github.com/DE-IBH/nag2mqtt/>`_ can be used to publish nagios state and performance data to a MQTT message broker using JSON. SNMD ships with a corresponding widget library (*snmd-widgets-nagios*).
 
 
 MQTT Message Broker
