@@ -42,6 +42,7 @@ Frontends
 Any HTML5 enabled browser should work (read: IE is not a (HTML5) browser). For 3D animation it's recommended to use a WebKit based one, the Gecko engine seems to have poor performance on CSS transformations.
 
 Example of frontend devices:
+
 * *Chromium* on Desktop
 * *Firefox* on Desktop (3D not recommended)
 * *Raspberry Pi* using *barkery* (2D only)
