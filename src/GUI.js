@@ -35,7 +35,7 @@ License:
     define
 */
 
-define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "../blib/moment/min/moment.min.js", "require", "jquery", "css!../../snmd-core/css/gui.css"], function (Core, HTML, SVG, moment, require, $) {
+define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "moment", "require", "jquery", "css!../../snmd-core/css/gui.css"], function (Core, HTML, SVG, moment, require, $) {
     'use strict';
 
     var instance = null;
