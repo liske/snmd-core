@@ -52,6 +52,8 @@ define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "require", "jquery"
         this.viewStates = {};
         this.viewFinalStates = {};
         this.currentStep = 0;
+        this.views = {};
+        this.views2id = {};
     };
 
     GUI.getInstance = function () {
@@ -111,18 +113,49 @@ define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "require", "jquery"
             
         }
     };
-    
+
+    GUI.prototype.snmdInit3D = function (is_3d) {
+        if (typeof is_3d === "undefined") {
+            is_3d = $(document.body).hasClass('snmd-in-3d');
+        }
+
+        if (is_3d) {
+            $(document.body).addClass('snmd-in-3d').removeClass('snmd-in-2d');
+
+            var dps = 360 / Object.keys(this.views).length;
+            var r = (Object.keys(this.views).length > 1 ? (1906 / 2) / Math.tan(Math.PI / Object.keys(this.views).length) : 0);
+            var step = 0;
+
+            Object.keys(this.views).forEach(function (k) {
+                $('#' + this.views2id[k]).css(
+                    'transform',
+                    'rotateY(' + (dps * step) + 'deg) translateZ(' + r + 'px)'
+                );
+
+                step += 1;
+            }, this);
+        } else {
+            $(document.body).addClass('snmd-in-2d').removeClass('snmd-in-3d');
+
+            Object.keys(this.views).forEach(function (k) {
+                $('#' + this.views2id[k]).css(
+                    'transform',
+                    ''
+                );
+            }, this);
+        }
+    };
+
     GUI.prototype.srInit = function (views) {
+        this.views = views;
         var that = this;
         $('.srViews').each(function () {
-            var views2id = {};
-            
             var nav = $(this).children('.srViewsNav');
             Object.keys(views).forEach(function (k) {
-                views2id[k] = 'srView-' + (this.idCounter += 1).toString(16);
-                this.viewStates[views2id[k]] = {};
-                this.viewFinalStates[views2id[k]] = -1;
-                nav.append('<li><a id="switch-' + views2id[k] + '" href="#' + views2id[k] + '"><span>' + views[k].title + "</span></a></li>");
+                this.views2id[k] = 'srView-' + (this.idCounter += 1).toString(16);
+                this.viewStates[this.views2id[k]] = {};
+                this.viewFinalStates[this.views2id[k]] = -1;
+                nav.append('<li><a id="switch-' + this.views2id[k] + '" href="#' + this.views2id[k] + '"><span>' + this.views[k].title + "</span></a></li>");
             }, that);
 
             var div = $('#snmd-views');
@@ -131,41 +164,30 @@ define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "require", "jquery"
             var r = (Object.keys(views).length > 1 ? (1906 / 2) / Math.tan(Math.PI / Object.keys(views).length) : 0);
             
             Object.keys(views).forEach(function (k) {
-                div.append('<div class="svgview" id="' + views2id[k] + '"></div>');
-
-                if ($(document.body).hasClass('enable-3d')) {
-                    $('#' + views2id[k]).css(
-                        'transform',
-                        'rotateY(' + (dps * step) + 'deg) translateZ(' + r + 'px)'
-                    );
-                }
+                div.append('<div class="svgview" id="' + that.views2id[k] + '"></div>');
 
                 switch (views[k].render) {
                 case 'html':
-                    HTML.srLoadHTML(views2id[k], views[k].url, views[k].reload);
+                    HTML.srLoadHTML(that.views2id[k], that.views[k].url, that.views[k].reload);
                     break;
 
 //              case 'svg':
                 default:
-                    SVG.srLoadSVG(views2id[k], views[k].url);
+                    SVG.srLoadSVG(that.views2id[k], that.views[k].url);
                     break;
                 }
 
                 step += 1;
             });
-
-            $('#snmd-views').css(
-                'transform-origin',
-                '100% 50% 50%'
-            );
+            that.snmdInit3D();
 
             var alignView = (function () {
                 var f = 1; //Math.min(($('#snmd-views').width() - 10) / 1906, ($('#snmd-views').height()) / 1038);
 
-                if ($(document.body).hasClass('enable-3d')) {
+                if ($(document.body).hasClass('snmd-in-3d')) {
                     $('#snmd-views').css(
                         'transform',
-                        'scale(' + f + ') translateZ(-' + r  + 'px) rotateY(' + (-1 * dps * this.currenStep) + 'deg)'
+                        'scale(' + f + ') translateZ(-' + r  + 'px) rotateY(' + (-1 * dps * that.currenStep) + 'deg)'
                     );
                 }
             }).bind(this);

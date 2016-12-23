@@ -129,7 +129,7 @@ div.svgview {
     */
 }
 
-.enable-3d div.svgview {
+.snmd-in-3d div.svgview {
     opacity: 1;
 }
 
@@ -140,7 +140,7 @@ div.svgview.current {
     filter: none;
 }
 
-.enable-3d div.svgview.current {
+.snmd-in-3d div.svgview.current {
     opacity: 1;
     transition: opacity 1.5s ease-in 3.5s, background-color 1.5s ease-in 3.5s, filter 1.5s ease-out 3.5s;
 }
@@ -149,7 +149,7 @@ div.svgview.current {
     transition: opacity 1.5s ease-in, background-color 1.5s ease-in, filter 1.5s ease-out;
 }
 
-.enable-3d .on-screensaver div.svgview.current {
+.snmd-in-3d .on-screensaver div.svgview.current {
     transition: opacity 1.5s ease-in 13.5s, background-color 1.5s ease-in 13.5s, filter 1.5s ease-out 13.5s;
 }
 
@@ -182,7 +182,7 @@ div.svgview svg {
     position: relative;
 }
 
-.enable-3d #snmd-vinner {
+.snmd-in-3d #snmd-vinner {
     perspective: 1000px;
 }
 
@@ -193,9 +193,10 @@ div.svgview svg {
     transition: 5s;
 
     transform-style: flat;
+    transform-origin; 100% 50% 50%;
 }
 
-.enable-3d #snmd-views {
+.snmd-in-3d #snmd-views {
     transform-style: preserve-3d;
 }
 
@@ -235,7 +236,7 @@ body {
     margin: 0;
 }
 
-.notransition * {
+.snmd-in-2d * {
     transition: none !important;
 }
 
