@@ -35,7 +35,7 @@ License:
     define
 */
 
-define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "moment", "require", "jquery", "css!../../snmd-core/css/gui.css"], function (Core, HTML, SVG, moment, require, $) {
+define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "require", "jquery", "sprintf", "css!../../snmd-core/css/gui.css"], function (Core, HTML, SVG, require, $, sprintf) {
     'use strict';
 
     var instance = null;
@@ -199,9 +199,28 @@ define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "moment", "require"
         }, this);
 
         // Update time of day
-        window.setInterval(function () {
-            $('div#snmd_clock').text(moment().format("YYYY-MM-DDTHH:mm:ssZZ"));
-        }, 1000);
+        var el_clock = $('div#snmd_clock');
+        if (el_clock) {
+            window.setInterval(function () {
+                var now = new Date();
+                var zoff = -now.getTimezoneOffset();
+                var sign = (zoff >= 0 ? '+' : '-');
+                zoff = Math.abs(zoff);
+
+                var str = sprintf.sprintf("%d-%02d-%02dT%02d:%02d:%02d%s%02d%02d",
+                                  now.getFullYear(),
+                                  now.getMonth() + 1,
+                                  now.getDay(),
+                                  now.getHours(),
+                                  now.getMinutes(),
+                                  now.getSeconds(),
+                                  sign,
+                                  zoff / 60,
+                                  zoff % 60);
+
+                el_clock.text(str);
+            }, 1000);
+        }
 
         // Screensaver
         this.screenTimeOut = window.setTimeout(this.srScreenTimeOut, this.TO_SCREEN);

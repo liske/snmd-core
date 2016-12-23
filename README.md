@@ -19,6 +19,5 @@ The following resources are included via `bower`:
 * [Font Awesome](http://fontawesome.io/) 4.7.0
 * [Open Sans @font-face kit](https://github.com/FontFaceKit/open-sans) 1.4.2
 * [jQuery](https://jquery.com/) 2.2.4
-* [Moment.js](http://momentjs.com/) 2.15.2
 * [qTip²](http://qtip2.com/) 3.0.3
 * [sprintf.js](https://github.com/alexei/sprintf.js) 1.0.3
