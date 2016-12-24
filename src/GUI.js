@@ -54,6 +54,81 @@ define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "require", "jquery"
         this.currentStep = 0;
         this.views = {};
         this.views2id = {};
+        this.enabledScreenTO = true;
+        this.enableRotation = false;
+
+        this.ctrlButtons = {
+            '3d': {
+                title: "Toggle 3D view.",
+                state: 0,
+                states: [
+                    {
+                        facls: "low-vision",
+                        cb: function () {
+                            this.snmdInit3D(false);
+                        }
+                    },
+                    {
+                        facls: "eye",
+                        cb: function () {
+                            this.snmdInit3D(true);
+                        }
+                    }
+                ]
+            },
+/*            'volume': {
+                title: "Toggle alert sounds.",
+                state: 0,
+                states: [
+                    {
+                        facls: "volume-off"
+                    },
+                    {
+                        facls: "volume-up"
+                    }
+                ]
+            },*/
+            'rotate': {
+                title: "Toggle interval or continuous rotation.",
+                state: 0,
+                states: [
+                    {
+                        facls: "repeat",
+                        cb: function () {
+                            this.enabledScreenTO = true;
+                            this.enableRotation = false;
+                        }
+                    },
+                    {
+                        facls: "circle-o-notch",
+                        cb: function () {
+                            this.enabledScreenTO = false;
+                            this.enableRotation = false;
+                        }
+                    },
+                    {
+                        facls: "refresh",
+                        cb: function () {
+                            this.enabledScreenTO = false;
+                            this.enableRotation = true;
+                            this.srScreenTimeOut();
+                        }
+                    }
+                ]
+            }/*,
+            'follow': {
+                title: "Toggle current view follows state changes.",
+                state: 0,
+                states: [
+                    {
+                        facls: "crosshairs"
+                    },
+                    {
+                        facls: "stop-circle-o"
+                    }
+                ]
+            }*/
+        };
     };
 
     GUI.getInstance = function () {
@@ -64,13 +139,21 @@ define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "require", "jquery"
         return instance;
     };
 
-    GUI.prototype.srScreenTimeOut = (function () {
-        if (this.screenState === 0) {
-            this.screenState += 1;
+    GUI.prototype.srScreenTimeOut = function () {
+        var that = require('snmd-core/GUI');
+
+        console.info('ScreenTO');
+        /* Ignore timeout if screensaver is disabled */
+        if (!that.enabledScreenTO) {
+            that.screenTimeOut = window.setTimeout(that.srScreenTimeOut, that.TO_SWITCH);
+            return;
+        }
+
+        if (that.screenState === 0) {
+            that.screenState += 1;
             $(document.body).addClass('on-screensaver');
         }
 
-        var that = this;
         $('.srViews').each(function () {
             var a = $(this).children('.srViewsNav').find('a');
             var cur = 0;
@@ -89,8 +172,8 @@ define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "require", "jquery"
             a[cur].click();
         });
 
-        this.screenTimeOut = window.setTimeout(this.srScreenTimeOut, this.TO_SWITCH);
-    }).bind(this);
+        that.screenTimeOut = window.setTimeout(that.srScreenTimeOut, that.TO_SWITCH);
+    };
     
     GUI.prototype.srStateChanged = function (root, svg, state) {
         this.viewStates[root][svg] = state;
@@ -134,6 +217,8 @@ define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "require", "jquery"
 
                 step += 1;
             }, this);
+
+            this.snmdAlignView(r, -dps * this.currenStep);
         } else {
             $(document.body).addClass('snmd-in-2d').removeClass('snmd-in-3d');
 
@@ -143,6 +228,15 @@ define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "require", "jquery"
                     ''
                 );
             }, this);
+        }
+    };
+
+    GUI.prototype.snmdAlignView = function (r, a) {
+        if ($(document.body).hasClass('snmd-in-3d')) {
+            $('#snmd-views').css(
+                'transform',
+                'translateZ(-' + r  + 'px) rotateY(' + a + 'deg)'
+            );
         }
     };
 
@@ -181,17 +275,6 @@ define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "require", "jquery"
             });
             that.snmdInit3D();
 
-            var alignView = (function () {
-                var f = 1; //Math.min(($('#snmd-views').width() - 10) / 1906, ($('#snmd-views').height()) / 1038);
-
-                if ($(document.body).hasClass('snmd-in-3d')) {
-                    $('#snmd-views').css(
-                        'transform',
-                        'scale(' + f + ') translateZ(-' + r  + 'px) rotateY(' + (-1 * dps * that.currenStep) + 'deg)'
-                    );
-                }
-            }).bind(this);
-            
             nav.find('a').click(function () {
                 console.debug('Viewing '  + this.hash);
                 that.currentView = this.hash;
@@ -203,21 +286,69 @@ define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "require", "jquery"
                 nav.find('a').removeClass('selected').filter(this).addClass('selected');
 
                 that.currenStep = $(that.currentView).prevAll().length;
-                alignView();
+                that.snmdAlignView(r, -dps * that.currenStep);
                 
                 return false;
             }).filter(':first').click();
+
+            var transTO;
+            $('#snmd-views').on('transitionend', function () {
+                if (typeof transTO !== "undefined") {
+                    window.clearTimeout(transTO);
+                    transTO = undefined;
+                }
+
+                if (that.enableRotation) {
+                    transTO = window.setTimeout(function () {
+                        $('.srViews').each(function () {
+                            var a = $(this).children('.srViewsNav').find('a');
+                            var cur = 0;
+                            var i;
+                            for (i = 0; i < a.length; i++) {
+                                if (a[i].hash === that.currentView) {
+                                    cur = i;
+                                }
+                            }
+
+                            cur += 1;
+                            if (cur >= a.length) {
+                                cur = 0;
+                            }
+
+                            a[cur].click();
+                        });
+                    }, 5000);
+                }
+            });
 
             if (window.location.hash !== "undefined") {
                 var nth = parseInt(window.location.hash.replace(/^#srView-/, ""), 10) - 1;
                 nav.find('a:eq(' + nth + ')').click();
             }
 
-            $('#snmd-ctrl').find('a').click(function () {
-                console.debug('Control: '  + this.hash);
+            var ctrl = $('ul.snmd-ctrl').empty();
+            Object.keys(that.ctrlButtons).forEach(function (el) {
+                var c = that.ctrlButtons[el];
+                var icon = $('<i></i>').addClass("fa fa-" + c.states[c.state].facls);
+                ctrl.append(
+                    $('<li></li>').append(
+                        $('<a></a>').attr({
+                            title: c.title,
+                            href: "#" + el
+                        }).append(
+                            icon
+                        ).click(function () {
+                            icon.removeClass("fa-" + c.states[c.state].facls);
+                            c.state = (c.state + 1) % c.states.length;
+                            icon.addClass("fa-" + c.states[c.state].facls);
 
-                return false;
-            }).filter(':first').click();
+                            c.states[c.state].cb.call(that);
+
+                            return false;
+                        })
+                    )
+                );
+            });
         }, this);
 
         // Update time of day
@@ -249,6 +380,10 @@ define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "require", "jquery"
 
         // Handle mouse moves (reset screen saver timeout)
         $(document).mousemove((function () {
+            if (this.enableRotation) {
+                return;
+            }
+
             this.screenState = 0;
 
             if (typeof this.screenTimeOut !== "undefined") {
