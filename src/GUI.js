@@ -35,7 +35,7 @@ License:
     define
 */
 
-define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "require", "jquery", "sprintf", "css!../../snmd-core/css/gui.css"], function (Core, HTML, SVG, require, $, sprintf) {
+define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "require", "jquery", "sprintf", "js-cookie", "css!../../snmd-core/css/gui.css"], function (Core, HTML, SVG, require, $, sprintf, cookie) {
     'use strict';
 
     var instance = null;
@@ -330,22 +330,37 @@ define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "require", "jquery"
             Object.keys(that.ctrlButtons).forEach(function (el) {
                 var c = that.ctrlButtons[el];
                 var icon = $('<i></i>').addClass("fa fa-" + c.states[c.state].facls);
+                var button = $('<a></a>').attr({
+                    title: c.title,
+                    href: "#" + el
+                }).append(
+                    icon
+                ).click(function () {
+                    icon.removeClass("fa-" + c.states[c.state].facls);
+                    c.state = (c.state + 1) % c.states.length;
+                    icon.addClass("fa-" + c.states[c.state].facls);
+
+                    c.states[c.state].cb.call(that);
+
+                    // Save setting to cookie
+                    cookie.set('snmd-ctrl-' + el, c.state);
+
+                    return false;
+                });
+
+                /* Restore setting from cookie */
+                var co = cookie.get('snmd-ctrl-' + el);
+                if (typeof co !== "undefined") {
+                    icon.removeClass("fa-" + c.states[c.state].facls);
+                    c.state = parseInt(co, 10) % c.states.length;
+                    icon.addClass("fa-" + c.states[c.state].facls);
+
+                    c.states[c.state].cb.call(that);
+                }
+
                 ctrl.append(
                     $('<li></li>').append(
-                        $('<a></a>').attr({
-                            title: c.title,
-                            href: "#" + el
-                        }).append(
-                            icon
-                        ).click(function () {
-                            icon.removeClass("fa-" + c.states[c.state].facls);
-                            c.state = (c.state + 1) % c.states.length;
-                            icon.addClass("fa-" + c.states[c.state].facls);
-
-                            c.states[c.state].cb.call(that);
-
-                            return false;
-                        })
+                        button
                     )
                 );
             });
