@@ -35,7 +35,7 @@ License:
     define
 */
 
-define(["snmd-core/MQTT", "require"], function (MQTT, require) {
+define(["snmd-core/MQTT", "require", "js-logger"], function (MQTT, require, Logger) {
     'use strict';
 
     var instance = null;
@@ -90,7 +90,7 @@ define(["snmd-core/MQTT", "require"], function (MQTT, require) {
     
     SVGWidget.prototype.srCreateWidget = function (root, svg, desc) {
         if (typeof desc.type === "undefined") {
-            console.error("Widget " + svg.id + " has no type set!");
+            Logger.error("[SVGWidget] Widget " + svg.id + " has no type set!");
             return;
         }
 
@@ -105,12 +105,12 @@ define(["snmd-core/MQTT", "require"], function (MQTT, require) {
                         });
                     }
                 } catch (err) {
-                    console.error("Failed to create widget " + svg.id + " of type " + desc.type + ": " + err.message);
+                    Logger.error("[SVGWidget] Failed to create widget " + svg.id + " of type " + desc.type + ": " + err.message);
                     return;
                 }
             });
         } else {
-            console.error("Widget " + svg.id + " has a invalid syntax for 'type'!");
+            Logger.error("[SVGWidget] Widget " + svg.id + " has a invalid syntax for 'type'!");
         }
     };
 

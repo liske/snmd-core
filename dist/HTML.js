@@ -1,2 +1,2 @@
-define([],function(){"use strict";var n=function(){};return n.prototype.srLoadHTML=function(n,o,e){console.debug("Loading #"+n+": "+o);var t=$("<iframe>",{src:o,width:"95%",height:"95%",scrolling:"no"}).addClass("htmlview").appendTo($("#"+n));"undefined"!=typeof e&&window.setInterval(function(){t[0].contentWindow.location.reload(!1)},1e3*e)},n});
+define(["js-logger"],function(n){"use strict";var e=function(){};return e.prototype.srLoadHTML=function(e,o,t){n.debug("Loading #"+e+": "+o);var i=$("<iframe>",{src:o,width:"95%",height:"95%",scrolling:"no"}).addClass("htmlview").appendTo($("#"+e));"undefined"!=typeof t&&window.setInterval(function(){i[0].contentWindow.location.reload(!1)},1e3*t)},e});
 //# sourceMappingURL=dist/HTML.map

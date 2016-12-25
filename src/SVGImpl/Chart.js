@@ -35,7 +35,7 @@ License:
     define
 */
 
-define(["snmd-core/Core", "snmd-core/GUI"], function (Core, GUI) {
+define(["snmd-core/Core", "snmd-core/GUI", "js-logger"], function (Core, GUI, Logger) {
     'use strict';
 
     var Chart = function (root, svg, opts, lines, qtip) {
@@ -48,9 +48,10 @@ define(["snmd-core/Core", "snmd-core/GUI"], function (Core, GUI) {
             var l;
             for (l = 0; l < this.lines.length; l++) {
                 var classes = this.opts.lcls.slice(0);
-                this.opts.lcls.forEach(function (cl) {
+                var f = function (cl) {
                     classes.push(cl + "-" + this.lines[l].name);
-                }, this);
+                };
+                this.opts.lcls.forEach(f, this);
                 this.lines[l].style = { 'class': classes.join(' ') };
             }
         }
@@ -256,7 +257,7 @@ define(["snmd-core/Core", "snmd-core/GUI"], function (Core, GUI) {
                     this.data_svg[l] = this.root.polyline(points, this.lines[l].style);
                 }
             } catch (err) {
-                console.error("Failed to create poly for " + this.rect.id);
+                Logger.error("[Chart] Failed to create poly for " + this.rect.id);
             }
 
             if (typeof this.txt[l] !== "undefined") {

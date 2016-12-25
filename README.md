@@ -14,6 +14,7 @@ The following JavaScript libraries are included via `bower`:
 * [Font Awesome](http://fontawesome.io/) 4.7.0
 * [jQuery](https://jquery.com/) 2.2.4
 * [js-cookie](https://github.com/js-cookie/js-cookie) 2.1.3
+* [js-logger](https://github.com/jonnyreeves/js-logger) 1.3.0
 * [Open Sans @font-face kit](https://github.com/FontFaceKit/open-sans) 1.4.2
 * [qTip²](http://qtip2.com/) 3.0.3
 * [sprintf.js](https://github.com/alexei/sprintf.js) 1.0.3

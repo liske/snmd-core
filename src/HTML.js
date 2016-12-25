@@ -35,14 +35,14 @@ License:
     define
 */
 
-define([], function () {
+define(["js-logger"], function (Logger) {
     'use strict';
 
     var HTML = function () {
     };
 
     HTML.prototype.srLoadHTML = function (id, url, reload) {
-        console.debug('Loading #' + id + ': ' + url);
+        Logger.debug('Loading #' + id + ': ' + url);
 
         var iframe = $('<iframe>', {
             src: url,

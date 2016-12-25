@@ -35,7 +35,7 @@ License:
     define
 */
 
-define(["snmd-core/GUI", "snmd-core/MQTT", "sprintf", "jquery"], function (GUI, MQTT, sprintf, $) {
+define(["snmd-core/GUI", "snmd-core/MQTT", "sprintf", "jquery", "js-logger"], function (GUI, MQTT, sprintf, $, Logger) {
     'use strict';
 
     var instance = null;
@@ -45,7 +45,7 @@ define(["snmd-core/GUI", "snmd-core/MQTT", "sprintf", "jquery"], function (GUI, 
             throw new Error("Cannot instantiate more than one instance, use getInstance()!");
         }
 
-        this.version = '0.1';
+        this.version = '0.2';
         this.si_prefs = ['T', 'G', 'M', 'k', '']; //, 'm', 'µ'
         this.si_facts = [ Math.pow(10, 12), Math.pow(10, 9), Math.pow(10, 6), Math.pow(10, 3), 1]; //, Math.pow(10, -3), Math.pow(10, -6)
         this.genid = 0;
@@ -75,7 +75,7 @@ define(["snmd-core/GUI", "snmd-core/MQTT", "sprintf", "jquery"], function (GUI, 
     Core.prototype.srConfigLoaded = function (json) {
         this.config = json;
 
-        console.debug('Loading ' + this.config.default_view);
+        Logger.debug('[Core] Loading view list: ' + this.config.default_view);
 
         $.ajax({
             'global': false,
@@ -95,13 +95,13 @@ define(["snmd-core/GUI", "snmd-core/MQTT", "sprintf", "jquery"], function (GUI, 
                 MQTT.srInit(this.config.mqttws_host, this.config.mqttws_port);
             }).bind(this),
             'error': (function (jqXHR, textStatus, errorThrown) {
-                console.error('Failed to load view list: ' + textStatus + ' - ' + errorThrown);
+                Logger.error('[Core] Failed to load view list: ' + textStatus + ' - ' + errorThrown);
             }).bind(this)
         });
     };
     
     Core.prototype.srInitLoad = function (configURI, failfn) {
-        console.debug('Loading ' + configURI);
+        Logger.debug('[Core] Loading view config: ' + configURI);
 
         $.ajax({
             'global': false,
@@ -113,7 +113,7 @@ define(["snmd-core/GUI", "snmd-core/MQTT", "sprintf", "jquery"], function (GUI, 
     };
     
     Core.prototype.srInit = function () {
-        console.info('Initializing Scotty REVOLUTION ' + this.version);
+        Logger.info('[Core] SNMD v' + this.version + ' - Scotty Network Management Dashboard');
 
         var configName = this.srURLParam('config', 'default');
         if (configName !== 'default') {
@@ -124,7 +124,7 @@ define(["snmd-core/GUI", "snmd-core/MQTT", "sprintf", "jquery"], function (GUI, 
 
         this.srInitLoad('configs/' + configName + '.json', (function () {
             this.srInitLoad('configs/default.json', function (jqXHR, textStatus, errorThrown) {
-                console.error('Failed to load configuration: ' + textStatus + ' - ' + errorThrown);
+                Logger.error('[Core] Failed to load configuration: ' + textStatus + ' - ' + errorThrown);
             });
         }).bind(this));
     };

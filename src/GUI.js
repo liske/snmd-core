@@ -32,10 +32,11 @@ License:
 */
 
 /*global
+    DEBUG,
     define
 */
 
-define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "require", "jquery", "sprintf", "js-cookie", "css!../../snmd-core/css/gui.css"], function (Core, HTML, SVG, require, $, sprintf, cookie) {
+define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "require", "jquery", "sprintf", "js-cookie", "js-logger", "css!../../snmd-core/css/gui.css"], function (Core, HTML, SVG, require, $, sprintf, cookie, Logger) {
     'use strict';
 
     var instance = null;
@@ -275,7 +276,7 @@ define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "require", "jquery"
             that.snmdInit3D();
 
             nav.find('a').click(function () {
-                console.debug('Viewing '  + this.hash);
+                Logger.debug('[GUI] Viewing '  + this.hash);
                 that.currentView = this.hash;
 
                 div.children().removeClass('current').filter(this.hash).removeClass('next').removeClass('prev').addClass('current');

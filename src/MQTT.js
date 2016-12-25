@@ -36,7 +36,7 @@ License:
     Paho
 */
 
-define(["jquery", "paho"], function ($, Paho) {
+define(["jquery", "paho", "js-logger"], function ($, Paho, Logger) {
     'use strict';
 
     var instance = null;
@@ -61,7 +61,7 @@ define(["jquery", "paho"], function ($, Paho) {
     };
 
     MQTT.prototype.srReconnect = function () {
-        console.debug('Reconnecting...');
+        Logger.debug('[MQTT] Reconnecting...');
         this.srConnect();
     };
     
@@ -86,17 +86,17 @@ define(["jquery", "paho"], function ($, Paho) {
 
     MQTT.prototype.srConnect = function () {
         this.srStatus('yellow');
-        console.debug('Connecting to MQTT broker ' + this.broker_host + ':' + this.broker_port + '...');
+        Logger.debug('[MQTT] Connecting to broker at ' + this.broker_host + ':' + this.broker_port + '...');
         this.client = new Paho.MQTT.Client(this.broker_host, this.broker_port, '', this.clientId);
 
                
         this.client.disconnect = (function () {
-            console.error("Disconnected");
+            Logger.error("[MQTT] Disconnected");
             this.srStatus('#7f0000');
         }).bind(this);
         this.client.onConnectionLost = (function (res) {
             this.srStatus('#ff0000');
-            console.error("Connection Lost: " + res.errorMessage);
+            Logger.error("[MQTT] Connection lost: " + res.errorMessage);
 
             if (this.reconnTO) {
                 clearTimeout(this.reconnTO);
@@ -117,13 +117,13 @@ define(["jquery", "paho"], function ($, Paho) {
                     try {
                         watcher.handleUpdate.call(watcher, msg.destinationName, msg.payloadString);
                     } catch (err) {
-                        console.error("Failure handling update on '" + msg.destinationName + "' in class '" + watcher.constructor.name + ": " + err.message);
-                        console.warn(err.stack);
+                        Logger.error("[MQTT] Failure handling update on '" + msg.destinationName + "' in class '" + watcher.constructor.name + ": " + err.message);
+                        Logger.warn(err.stack);
                         return;
                     }
                 }
             } else {
-                console.warn("Received MQTT message for unknown topic " + msg.destinationName + "!");
+                Logger.warn("[MQTT] Received MQTT message for unexpected topic '" + msg.destinationName + "'!");
             }
             
             return 1;
@@ -131,7 +131,7 @@ define(["jquery", "paho"], function ($, Paho) {
 
         this.client.connect({
             onSuccess: (function () {
-                console.info('Connected to mqtt://' + this.broker_host + ':' + this.broker_port);
+                Logger.info('[MQTT] Connected to mqtt://' + this.broker_host + ':' + this.broker_port);
                 this.srStatus('#7f0000');
 
                 var topic;
@@ -154,8 +154,6 @@ define(["jquery", "paho"], function ($, Paho) {
         if (typeof clientId === "undefined") {
             clientId = 'RND' + Math.floor(Math.random() * 16777215).toString(16);
         }
-        console.debug('MQTT broker = ' + host + ':' + port);
-        console.debug('MQTT clientId = ' + clientId);
         this.broker_host = host;
         this.broker_port = Number(port);
         this.clientId = clientId;

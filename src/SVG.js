@@ -35,7 +35,7 @@ License:
     define
 */
 
-define(["snmd-core/SVGWidget", "jquery", "jquery.svg", "jquery.svggraph"], function (SVGWidget, $) {
+define(["snmd-core/SVGWidget", "js-logger", "jquery", "jquery.svg", "jquery.svggraph"], function (SVGWidget, Logger, $) {
     'use strict';
 
     var instance = null;
@@ -56,7 +56,7 @@ define(["snmd-core/SVGWidget", "jquery", "jquery.svg", "jquery.svggraph"], funct
 
     SVG.prototype.srParseSVG = function (svg, error) {
         if (error) {
-            console.error('Failed loading SVG: ' + error);
+            Logger.error('[SVG] Failed loading SVG: ' + error);
             svg.text(10, 20, error, {fill: 'red'});
             return;
         }
@@ -65,13 +65,12 @@ define(["snmd-core/SVGWidget", "jquery", "jquery.svg", "jquery.svggraph"], funct
         svg.root().setAttribute('width', '100%');
         svg.root().setAttribute('height', '100%');
 
-        $('[id^="sr_"]', svg.root()).each(function () {
+        $('[id^="snmd_"]', svg.root()).each(function () {
             var json;
             try {
                 json = JSON.parse($(this).find("desc").text());
             } catch (err) {
-                console.error('JSON error in description for graph #' + this.id + ': ' + err.message);
-                console.debug($(this).find("desc").text());
+                Logger.error('JSON error in widget instance #' + this.id + ': ' + err.message);
             }
             if (json) {
                 SVGWidget.srCreateWidget(svg, this, json);
@@ -80,7 +79,7 @@ define(["snmd-core/SVGWidget", "jquery", "jquery.svg", "jquery.svggraph"], funct
     };
     
     SVG.prototype.srLoadSVG = function (id, url) {
-        console.debug('Loading #' + id + ': ' + url);
+        Logger.debug('[SVG] Loading #' + id + ': ' + url);
         $('#' + id).svg({loadURL: url + '?nonce=' + Math.random(), 'max-width': '100%', 'max-height': '100%', onLoad: this.srParseSVG});
     };
     
@@ -93,18 +92,6 @@ define(["snmd-core/SVGWidget", "jquery", "jquery.svg", "jquery.svggraph"], funct
             x: (ctm.a * crect.left) + (ctm.c * crect.top) + ctm.e + rrect.left,
             y: (ctm.b * crect.left) + (ctm.d * crect.top) + ctm.f + rrect.top
         };
-    };
-    
-    SVG.prototype.srGetStrokeFill = function (svg) {
-        var opts = ['stroke', 'strokeLinecap', 'strokeLinejoin', 'strokeWidth', 'fill'];
-        var res = [];
-        var i;
-        for (i = 0; i < opts.length; i++) {
-            console.warn(opts[i] + " => " + svg.style[opts[i]]);
-            res[opts[i]] = svg.style[opts[i]];
-        }
-        
-        return res;
     };
 
     return SVG.getInstance();
