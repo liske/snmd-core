@@ -142,7 +142,6 @@ define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "require", "jquery"
     GUI.prototype.srScreenTimeOut = function () {
         var that = require('snmd-core/GUI');
 
-        console.info('ScreenTO');
         /* Ignore timeout if screensaver is disabled */
         if (!that.enabledScreenTO) {
             that.screenTimeOut = window.setTimeout(that.srScreenTimeOut, that.TO_SWITCH);
