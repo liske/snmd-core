@@ -21,6 +21,5 @@ The following JavaScript libraries are included via `bower`:
 
 The following JavaScript libraries are embedded:
 * [jQuery SVG](http://keith-wood.name/svg.html) 1.5.0
-* [Modernizr](https://modernizr.com/) 3.3.1
 * [Paho JavaScript Client](https://www.eclipse.org/paho/clients/js/) 1.0.2
 * [SVGPathData](https://github.com/nfroidure/SVGPathData) 1.0.3
