@@ -10,6 +10,8 @@ Contents:
 
 .. toctree::
    :maxdepth: 2
-   :glob:
 
-   *
+   about.rst
+   arch.rst
+   install.rst
+   config.rst
