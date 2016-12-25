@@ -15,3 +15,4 @@ Contents:
    arch.rst
    install.rst
    config.rst
+   usage.rst
