@@ -120,7 +120,7 @@ define(["snmd-core/GUI", "snmd-core/MQTT", "sprintf", "jquery", "js-logger", "JS
     };
     
     Core.prototype.snmdInit = function (snmd_conf) {
-        Logger.info('[Core] SNMD v' + this.version + ' - Scotty Network Management Dashboard');
+        Logger.info('[Core] snmd v' + this.version + ' - Scotty Network Management Dashboard');
 
         // Load widget packages from snmd config
         if (typeof snmd_conf.snmd_widgets === "object") {
