@@ -35,7 +35,7 @@ License:
     define
 */
 
-define(["snmd-core/GUI", "snmd-core/MQTT", "sprintf", "jquery", "js-logger"], function (GUI, MQTT, sprintf, $, Logger) {
+define(["snmd-core/GUI", "snmd-core/MQTT", "sprintf", "jquery", "js-logger", "JSON.minify"], function (GUI, MQTT, sprintf, $, Logger, JSON) {
     'use strict';
 
     var instance = null;
@@ -81,6 +81,9 @@ define(["snmd-core/GUI", "snmd-core/MQTT", "sprintf", "jquery", "js-logger"], fu
             'global': false,
             'url': this.config.default_view + '?nonce=' + Math.random(),
             'dataType': 'json',
+            'dataFilter': function (data, type) {
+                return JSON.minify(data);
+            },
             'success': (function (json) {
                 GUI.srInit(json);
 
@@ -107,6 +110,9 @@ define(["snmd-core/GUI", "snmd-core/MQTT", "sprintf", "jquery", "js-logger"], fu
             'global': false,
             'url': configURI + '?nonce=' + Math.random(),
             'dataType': 'json',
+            'dataFilter': function (data, type) {
+                return JSON.minify(data);
+            },
             'success': this.srConfigLoaded.bind(this),
             'error': failfn
         });
