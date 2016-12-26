@@ -2,16 +2,38 @@
 About
 *****
 
-SNMD uses HTML5 and JavaScript code to build a monitoring dashboard. Any data
+*snmd* uses HTML5 and JavaScript code to build a monitoring dashboard. Any data
 to be visualized needs to be published via MQTT.
 
+
+3rd party libraries
+===================
+
+The following JavaScript libraries are used by *snmd* via *bower*:
+* [Font Awesome](http://fontawesome.io/) 4.7.0
+* [jQuery](https://jquery.com/) 2.2.4
+* [js-cookie](https://github.com/js-cookie/js-cookie) 2.1.3
+* [js-logger](https://github.com/jonnyreeves/js-logger) 1.3.0
+* [Open Sans @font-face kit](https://github.com/FontFaceKit/open-sans) 1.4.2
+* [qTip²](http://qtip2.com/) 3.0.3
+* [sprintf.js](https://github.com/alexei/sprintf.js) 1.0.3
+
+The following legacy JavaScript libraries are embedded (and minified):
+* [jQuery SVG](http://keith-wood.name/svg.html) 1.5.0
+* [JSON.minify](https://github.com/getify/JSON.minify/tree/javascript)
+* [Paho JavaScript Client](https://www.eclipse.org/paho/clients/js/) 1.0.2
+* [SVGPathData](https://github.com/nfroidure/SVGPathData) 1.0.3
+
+
 .. include:: ../AUTHORS.rst
+
 
 Copyright
 =========
 
 * 2012 - 2013 (C) Thomas Liske [https://fiasko-nw.net/~thomas/]
 * 2014 - 2016 (C) IBH IT-Service GmbH [https://www.ibh.de/]
+
 
 License
 =======
