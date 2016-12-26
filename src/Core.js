@@ -32,7 +32,8 @@ License:
 */
 
 /*global
-    define
+    define,
+    require
 */
 
 define(["snmd-core/GUI", "snmd-core/MQTT", "sprintf", "jquery", "js-logger", "JSON.minify"], function (GUI, MQTT, sprintf, $, Logger, JSON) {
@@ -118,8 +119,32 @@ define(["snmd-core/GUI", "snmd-core/MQTT", "sprintf", "jquery", "js-logger", "JS
         });
     };
     
-    Core.prototype.srInit = function () {
+    Core.prototype.snmdInit = function (snmd_conf) {
         Logger.info('[Core] SNMD v' + this.version + ' - Scotty Network Management Dashboard');
+
+        // Load widget packages from snmd config
+        if (typeof snmd_conf.snmd_widgets === "object") {
+            // Call initialization function of loaded widget packages
+            var fn = function (Boot) {
+                Logger.info('[Core]  ' + this.prefix + " => " + this['package'] + ' v' + Boot.getVersion());
+                Boot.init(this.pref, this['package']);
+            };
+
+            var i;
+            for (i in snmd_conf.snmd_widgets) {
+                var lib = snmd_conf.snmd_widgets[i];
+
+                // Build include search path
+                var req_cfg = {
+                    paths: {}
+                };
+                req_cfg.paths[lib['package']] = lib['package'] + "/js";
+                require.config(req_cfg);
+
+                // Bootstrap widget library
+                require([lib['package'] + "/Boot"], fn.bind(lib));
+            }
+        }
 
         var configName = this.srURLParam('config', 'default');
         if (configName !== 'default') {
