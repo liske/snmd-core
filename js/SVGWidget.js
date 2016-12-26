@@ -45,6 +45,7 @@ define(["snmd-core/MQTT", "require", "js-logger"], function (MQTT, require, Logg
             throw new Error("Cannot instantiate more than one instance, use getInstance()!");
         }
 
+        this.widgetPrefixes = {};
         this.ReWidgetName = /^([\w\-]+):([\w\-]+)$/;
     };
 
@@ -87,7 +88,11 @@ define(["snmd-core/MQTT", "require", "js-logger"], function (MQTT, require, Logg
 
         return cls;
     };
-    
+
+    SVGWidget.prototype.snmdRegisterPrefix = function (prefix, pkg) {
+        this.widgetPrefixes[prefix] = pkg;
+    };
+
     SVGWidget.prototype.srCreateWidget = function (root, svg, desc) {
         if (typeof desc.type === "undefined") {
             Logger.error("[SVGWidget] Widget " + svg.id + " has no type set!");
@@ -96,7 +101,12 @@ define(["snmd-core/MQTT", "require", "js-logger"], function (MQTT, require, Logg
 
         var res = this.ReWidgetName.exec(desc.type);
         if (res) {
-            require(["snmd-widgets-nagios/" + res[2]], function (WClass) {
+            if (typeof this.widgetPrefixes[res[1]] === "undefined") {
+                Logger.error("[SVGWidget] Widget package prefix " + res[1] + "/ is unknown!");
+                return;
+            }
+
+            require([this.widgetPrefixes[res[1]] + "/" + res[2]], function (WClass) {
                 try {
                     var obj = new WClass(root, svg, desc);
                     if (typeof desc.topics !== "undefined") {

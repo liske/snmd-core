@@ -36,7 +36,7 @@ License:
     require
 */
 
-define(["snmd-core/GUI", "snmd-core/MQTT", "sprintf", "jquery", "js-logger", "JSON.minify"], function (GUI, MQTT, sprintf, $, Logger, JSON) {
+define(["snmd-core/GUI", "snmd-core/MQTT", "snmd-core/SVGWidget", "sprintf", "jquery", "js-logger", "JSON.minify"], function (GUI, MQTT, SVGWidget, sprintf, $, Logger, JSON) {
     'use strict';
 
     var instance = null;
@@ -127,7 +127,8 @@ define(["snmd-core/GUI", "snmd-core/MQTT", "sprintf", "jquery", "js-logger", "JS
             // Call initialization function of loaded widget packages
             var fn = function (Boot) {
                 Logger.info('[Core]  ' + this.prefix + " => " + this['package'] + ' v' + Boot.getVersion());
-                Boot.init(this.pref, this['package']);
+                Boot.init(this.prefix, this['package']);
+                SVGWidget.snmdRegisterPrefix(this.prefix, this['package']);
             };
 
             var i;
