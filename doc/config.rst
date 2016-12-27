@@ -4,12 +4,17 @@ Configuration
 
 Three different JSON files are used to configure *snmd*'s behavoir.
 
+.. hint::
+  C-like comments within the JSON config files are stripped using `JSON.minify <https://github.com/getify/JSON.minify/tree/javascript>`_
+  before the files are parsed. No other deviations from the JSON
+  specification is allowed and will result in a fatal parsing error.
 
-Global config
-=============
 
-The global configuration file `config.json` configures the included snmd widget
-libraries and other *JavaScript* related configurations.
+snmd config
+===========
+
+The *snmd* configuration file `config.json` configures the included snmd widget
+library packages and some global configurations.
 
 .. code:: javascript
 
