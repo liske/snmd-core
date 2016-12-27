@@ -43,14 +43,14 @@ require.config({
         }
     },
     paths: {
-        "moment": "snmd-core/blib/moment/min/moment.min",
-        "sprintf": "snmd-core/blib/sprintf/src/sprintf",
+        "moment": "blib/moment/min/moment.min",
+        "sprintf": "blib/sprintf/src/sprintf",
         "jquery.svg": "snmd-core/lib/svg-1.5.0/jquery.svg.min",
         "jquery.svggraph": "snmd-core/lib/svg-1.5.0/jquery.svggraph.min",
         "svgpathdata": "snmd-core/lib/svgpathdata-1.0.3/SVGPathData",
         "paho": "snmd-core/lib/paho.javascript-1.0.2/mqttws31-min",
-        "require-css": "snmd-core/blib/require-css/css",
-        "js-cookie": "snmd-core/blib/js-cookie/src/js.cookie"
+        "require-css": "blib/require-css/css",
+        "js-cookie": "blib/js-cookie/src/js.cookie"
     },
     shim: {
         "jquery.svg" : ["jquery"],
@@ -65,7 +65,7 @@ define([], function () {
     'use strict';
 
     var Main = function (snmd_conf) {
-        require(["snmd-core/Core"], function (Core) {
+        require(["Core"], function (Core) {
             Core.snmdInit(snmd_conf);
         });
 
