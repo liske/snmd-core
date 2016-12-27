@@ -139,7 +139,7 @@ define(["snmd-core/GUI", "snmd-core/MQTT", "snmd-core/SVGWidget", "sprintf", "jq
                 var req_cfg = {
                     paths: {}
                 };
-                req_cfg.paths[lib['package']] = lib['package'] + "/js";
+                req_cfg.paths[lib['package']] = lib['package'] + "/" + (snmd_conf.snmd_devel === true ? 'js' : 'dist');
                 require.config(req_cfg);
 
                 // Bootstrap widget library
