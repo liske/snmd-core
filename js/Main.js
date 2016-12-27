@@ -43,14 +43,14 @@ require.config({
         }
     },
     paths: {
-        "moment": "snmd-core/blib/moment/min/moment.min",
-        "sprintf": "snmd-core/blib/sprintf/src/sprintf",
+        "moment": "moment/min/moment.min",
+        "sprintf": "sprintf/src/sprintf",
         "jquery.svg": "snmd-core/lib/svg-1.5.0/jquery.svg.min",
         "jquery.svggraph": "snmd-core/lib/svg-1.5.0/jquery.svggraph.min",
         "svgpathdata": "snmd-core/lib/svgpathdata-1.0.3/SVGPathData",
         "paho": "snmd-core/lib/paho.javascript-1.0.2/mqttws31-min",
-        "require-css": "snmd-core/blib/require-css/css",
-        "js-cookie": "snmd-core/blib/js-cookie/src/js.cookie"
+        "require-css": "require-css/css",
+        "js-cookie": "js-cookie/src/js.cookie"
     },
     shim: {
         "jquery.svg" : ["jquery"],
