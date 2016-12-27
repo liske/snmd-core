@@ -35,7 +35,7 @@ License:
     define
 */
 
-define(["snmd-core/SVGWidget", "js-logger", "jquery", "jquery.svg", "jquery.svggraph", "css!snmd-core/../lib/svg-1.5.0/jquery.svg.css"], function (SVGWidget, Logger, $) {
+define(["snmd-core/SVGWidget", "js-logger", "jquery", "jquery.svg", "jquery.svggraph", "css!../../snmd-core/lib/svg-1.5.0/jquery.svg.css"], function (SVGWidget, Logger, $) {
     'use strict';
 
     var instance = null;
