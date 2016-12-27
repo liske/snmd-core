@@ -11,7 +11,7 @@ Global config
 The global configuration file `config.json` configures the included snmd widget
 libraries and other *JavaScript* related configurations.
 
-.. code:: json
+.. code:: javascript
 
    {
        /* Enable development mode.
