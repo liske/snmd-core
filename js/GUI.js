@@ -36,7 +36,7 @@ License:
     define
 */
 
-define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "require", "jquery", "sprintf", "js-cookie", "js-logger", "css!../../snmd-core/css/gui.css"], function (Core, HTML, SVG, require, $, sprintf, cookie, Logger) {
+define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "require", "jquery", "sprintf", "js-cookie", "js-logger", "css!../css/gui.css"], function (Core, HTML, SVG, require, $, sprintf, cookie, Logger) {
     'use strict';
 
     var instance = null;
