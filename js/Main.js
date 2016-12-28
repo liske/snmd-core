@@ -36,6 +36,29 @@ License:
     require
 */
 
+require(["jquery"], function ($) {
+    'use strict';
+
+    var div = $("#snmd-loader");
+    var i = $("#snmd-loader > i");
+    var queue = 0;
+
+    $(document).on({
+        ajaxStart: function () {
+            if (queue < 1) {
+                div.removeClass("off");
+            }
+            queue += 1;
+        },
+        ajaxStop: function () {
+            queue -= 1;
+            if (queue < 1) {
+                div.addClass("off");
+            }
+        }
+    });
+});
+
 require.config({
     map: {
         '*': {
