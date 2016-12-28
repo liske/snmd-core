@@ -33,10 +33,11 @@ License:
 
 /*global
     define,
-    Paho
+    Paho,
+    require
 */
 
-define(["jquery", "paho", "js-logger"], function ($, Paho, Logger) {
+define(["snmd-core/Core", "jquery", "paho", "js-logger"], function (Core, $, Paho, Logger) {
     'use strict';
 
     var instance = null;
@@ -139,6 +140,7 @@ define(["jquery", "paho", "js-logger"], function ($, Paho, Logger) {
                     this.client.subscribe(topic);
                 }
 
+                require("snmd-core/Core").snmdFinishLoading();
             }).bind(this),
             onFailure: (function () {
                 if (this.reconnTO) {
@@ -146,6 +148,8 @@ define(["jquery", "paho", "js-logger"], function ($, Paho, Logger) {
                 }
                 this.srStatus('orange');
                 this.reconnTO = setTimeout(this.srConnect.bind(this), 5000);
+
+                require("snmd-core/Core").snmdFinishLoading();
             }).bind(this)
         });
     };

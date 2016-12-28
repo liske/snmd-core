@@ -243,6 +243,7 @@ define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "require", "jquery"
     GUI.prototype.srInit = function (views) {
         this.views = views;
         var that = this;
+
         $('.srViews').each(function () {
             var nav = $(this).children('.srViewsNav');
             Object.keys(views).forEach(function (k) {
@@ -256,8 +257,8 @@ define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "require", "jquery"
             var dps = 360 / Object.keys(views).length;
             var step = 0;
             var r = (Object.keys(views).length > 1 ? (1906 / 2) / Math.tan(Math.PI / Object.keys(views).length) : 0);
-            
-            Object.keys(views).forEach(function (k) {
+
+            Object.keys(views).forEach(function (k, idx, ary) {
                 div.append('<div class="svgview" id="' + that.views2id[k] + '"></div>');
 
                 switch (views[k].render) {

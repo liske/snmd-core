@@ -50,6 +50,8 @@ define(["snmd-core/GUI", "snmd-core/MQTT", "snmd-core/SVGWidget", "sprintf", "jq
         this.si_prefs = ['T', 'G', 'M', 'k', '']; //, 'm', 'µ'
         this.si_facts = [ Math.pow(10, 12), Math.pow(10, 9), Math.pow(10, 6), Math.pow(10, 3), 1]; //, Math.pow(10, -3), Math.pow(10, -6)
         this.genid = 0;
+
+        this.loadDiv = $("#snmd-load-div");
     };
 
     Core.getInstance = function () {
@@ -161,6 +163,18 @@ define(["snmd-core/GUI", "snmd-core/MQTT", "snmd-core/SVGWidget", "sprintf", "jq
         }).bind(this));
     };
 
+    Core.prototype.snmdFinishLoading = function (subject) {
+        if (typeof this.loadDiv !== "undefined") {
+            var loadDiv = this.loadDiv;
+            this.loadDiv = undefined;
+
+            loadDiv.fadeOut(3000);
+            window.setTimeout(function () {
+                loadDiv.remove();
+            }, 3000);
+        }
+    };
+    
     Core.prototype.srSiFormatNum = function (value, unit, defstr, fracts) {
         if (typeof value === "undefined") { return defstr; }
         if (isNaN(value)) { return defstr; }
