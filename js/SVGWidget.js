@@ -65,7 +65,7 @@ define(["snmd-core/MQTT", "require", "js-logger"], function (MQTT, require, Logg
 
         /* add default base class by widget */
         if (typeof desc.type !== "undefined") {
-            cls.base.push('snmd-bcl-' + desc.type);
+            cls.base.push('snmd-bcl-' + desc.type.replace(':', '_'));
         }
 
         /* add CSS base classes */
