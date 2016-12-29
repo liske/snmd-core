@@ -130,7 +130,6 @@ define(["snmd-core/GUI", "snmd-core/MQTT", "snmd-core/SVGWidget", "sprintf", "jq
             var fn = function (Boot) {
                 Logger.info('[Core]  ' + this.prefix + " => " + this['package'] + ' v' + Boot.getVersion());
                 Boot.init(this.prefix, this['package']);
-                SVGWidget.snmdRegisterPrefix(this.prefix, this['package']);
             };
 
             var i;
@@ -146,6 +145,7 @@ define(["snmd-core/GUI", "snmd-core/MQTT", "snmd-core/SVGWidget", "sprintf", "jq
 
                 // Bootstrap widget library
                 require([lib['package'] + "/Boot"], fn.bind(lib));
+                SVGWidget.snmdRegisterPrefix(lib.prefix, lib['package']);
             }
         }
 
