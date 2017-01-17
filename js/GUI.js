@@ -244,6 +244,13 @@ define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "require", "jquery"
         this.views = views;
         var that = this;
 
+        if (typeof HTML === "undefined") {
+            HTML = require('snmd-core/HTML');
+        }
+        if (typeof SVG === "undefined") {
+            SVG = require('snmd-core/SVG');
+        }
+
         $('.srViews').each(function () {
             var nav = $(this).children('.srViewsNav');
             Object.keys(views).forEach(function (k) {
