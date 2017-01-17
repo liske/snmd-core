@@ -38,7 +38,20 @@ License:
 define(["js-logger"], function (Logger) {
     'use strict';
 
+    var instance = null;
+
     var HTML = function () {
+        if (instance !== null) {
+            throw new Error("Cannot instantiate more than one instance, use getInstance()!");
+        }
+    };
+
+    HTML.getInstance = function () {
+        if (instance === null) {
+            instance = new HTML();
+        }
+
+        return instance;
     };
 
     HTML.prototype.srLoadHTML = function (id, url, reload) {
@@ -58,5 +71,5 @@ define(["js-logger"], function (Logger) {
         }
     };
 
-    return HTML;
+    return HTML.getInstance();
 });
