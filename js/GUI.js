@@ -60,6 +60,7 @@ define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "require", "jquery"
 
         this.ctrlButtons = {
             '3d': {
+                shortcut: "d".charCodeAt(),
                 title: "Toggle 3D view.",
                 state: 0,
                 states: [
@@ -78,6 +79,7 @@ define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "require", "jquery"
                 ]
             },
 /*            'volume': {
+                shortcut: "v".charCodeAt(),
                 title: "Toggle alert sounds.",
                 state: 0,
                 states: [
@@ -90,6 +92,7 @@ define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "require", "jquery"
                 ]
             },*/
             'rotate': {
+                shortcut: "r".charCodeAt(),
                 title: "Toggle interval or continuous rotation.",
                 state: 0,
                 states: [
@@ -118,6 +121,7 @@ define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "require", "jquery"
                 ]
             }/*,
             'follow': {
+                shortcut: "f".charCodeAt(),
                 title: "Toggle current view follows state changes.",
                 state: 0,
                 states: [
@@ -174,7 +178,7 @@ define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "require", "jquery"
 
         that.screenTimeOut = window.setTimeout(that.srScreenTimeOut, that.TO_SWITCH);
     };
-    
+
     GUI.prototype.srStateChanged = function (root, svg, state) {
         this.viewStates[root][svg] = state;
 
@@ -193,7 +197,7 @@ define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "require", "jquery"
                 this.viewFinalStates[root] = fs;
                 $('#switch-' + root).css('color', require("snmd-core/Core").srNagStateColor(this.viewFinalStates[root]));
             }
-            
+
         }
     };
 
@@ -288,7 +292,7 @@ define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "require", "jquery"
 
                 that.currenStep = $(that.currentView).prevAll().length;
                 that.snmdAlignView(r, -dps * that.currenStep);
-                
+
                 return false;
             }).filter(':first').click();
 
@@ -348,6 +352,7 @@ define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "require", "jquery"
 
                     return false;
                 });
+                that.ctrlButtons[el].button = button;
 
                 /* Restore setting from cookie */
                 var co = cookie.get('snmd-ctrl-' + el);
@@ -423,7 +428,20 @@ define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "require", "jquery"
                 var key = (ev.which === 48 ? '10' : String.fromCharCode(ev.which));
 
                 $('a[href="#srView-' + key + '"]').click();
+
+                ev.preventDefault();
+                return;
             }
+
+            Object.keys(that.ctrlButtons).forEach(function (el) {
+                var btn = that.ctrlButtons[el];
+                if (btn.shortcut === ev.which) {
+                    that.ctrlButtons[el].button.click();
+
+                    ev.preventDefault();
+                    return;
+                }
+            });
         }).bind(this));
     };
 
