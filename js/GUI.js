@@ -165,6 +165,7 @@ define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "require", "jquery"
             for (i = 0; i < a.length; i++) {
                 if (a[i].hash === that.currentView) {
                     cur = i;
+                    break;
                 }
             }
 
@@ -415,7 +416,7 @@ define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "require", "jquery"
         }).bind(this));
 
         // Handle key press (reset screen saver time, handle shortcuts)
-        $(document).keypress((function (ev) {
+        $(document).keydown((function (ev) {
             this.screenState = 0;
 
             if (typeof this.screenTimeOut !== "undefined") {
@@ -423,6 +424,29 @@ define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "require", "jquery"
                 this.screenTimeOut = window.setTimeout(this.srScreenTimeOut, this.TO_SCREEN);
             }
 
+            if (ev.keyCode === 37 || ev.keyCode === 39) {
+                var a = $('.srViews').children('.srViewsNav').find('a');
+                var cur = 0;
+                var i;
+                for (i = 0; i < a.length; i++) {
+                    if (a[i].hash === this.currentView) {
+                        cur = i;
+                        break;
+                    }
+                }
+
+                cur += (ev.keyCode === 37 ? -1 : +1);
+                if (cur < 0) {
+                    cur += a.length;
+                }
+                cur = cur % a.length;
+
+                a[cur].click();
+            }
+        }).bind(this));
+
+        // Handle key press (reset screen saver time, handle shortcuts)
+        $(document).keypress((function (ev) {
             // Select view by numpad
             if (ev.which > 47 && ev.which < 58) {
                 var key = (ev.which === 48 ? '10' : String.fromCharCode(ev.which));
