@@ -57,6 +57,7 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/SVG", "require",
         this.views2id = {};
         this.enabledScreenTO = true;
         this.enableRotation = false;
+        this.enableFollow = true;
 
         this.ctrlButtons = {
             '3d': {
@@ -119,20 +120,26 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/SVG", "require",
                         }
                     }
                 ]
-            }/*,
+            },
             'follow': {
                 shortcut: "f".charCodeAt(),
                 title: "Toggle current view follows state changes.",
                 state: 0,
                 states: [
                     {
-                        facls: "crosshairs"
+                        facls: "crosshairs",
+                        cb: function () {
+                            this.enableFollow = true;
+                        }
                     },
                     {
-                        facls: "stop-circle-o"
+                        facls: "stop-circle-o",
+                        cb: function () {
+                            this.enableFollow = false;
+                        }
                     }
                 ]
-            }*/
+            }
         };
     };
 
@@ -180,13 +187,17 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/SVG", "require",
         that.screenTimeOut = window.setTimeout(that.srScreenTimeOut, that.TO_SWITCH);
     };
 
-    GUI.prototype.snmdStateUpdate = function(root, svg, lastState, finalState) {
-        if(lastState !== finalState) {
+    GUI.prototype.snmdStateUpdate = function (root, svg, lastState, finalState) {
+        if (lastState !== finalState) {
             $('#switch-' + root).css('color', require("snmd-core/js/Core").srNagStateColor(finalState));
-            $('#' + root).addClass('snmd-scl-' + finalState).removeClass('state-' + lastState)
-    //        inset 0px 0px 4px 0px rgba(0,255,0,1)
+            $('#' + root).addClass('snmd-scl-' + finalState).removeClass('state-' + lastState);
+
+            if (finalState > 0 && this.enableFollow) {
+                $('#switch-' + root).click();
+            }
         }
-    }
+    };
+
     GUI.prototype.srStateChanged = function (root, svg, state) {
         this.viewStates[root][svg] = state;
 
