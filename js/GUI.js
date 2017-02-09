@@ -180,12 +180,20 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/SVG", "require",
         that.screenTimeOut = window.setTimeout(that.srScreenTimeOut, that.TO_SWITCH);
     };
 
+    GUI.prototype.snmdStateUpdate = function(root, svg, lastState, finalState) {
+        if(lastState !== finalState) {
+            $('#switch-' + root).css('color', require("snmd-core/js/Core").srNagStateColor(finalState));
+            $('#' + root).addClass('snmd-scl-' + finalState).removeClass('state-' + lastState)
+    //        inset 0px 0px 4px 0px rgba(0,255,0,1)
+        }
+    }
     GUI.prototype.srStateChanged = function (root, svg, state) {
         this.viewStates[root][svg] = state;
 
+        var lastState = this.viewFinalStates[root];
         if (this.viewFinalStates[root] < state) {
             this.viewFinalStates[root] = state;
-            $('#switch-' + root).css('color', require("snmd-core/js/Core").srNagStateColor(this.viewFinalStates[root]));
+            this.snmdStateUpdate(root, svg, lastState, this.viewFinalStates[root]);
         } else {
             if (this.viewFinalStates[root] > state) {
                 var fs = state;
@@ -196,7 +204,7 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/SVG", "require",
                     }
                 });
                 this.viewFinalStates[root] = fs;
-                $('#switch-' + root).css('color', require("snmd-core/js/Core").srNagStateColor(this.viewFinalStates[root]));
+                this.snmdStateUpdate(root, svg, lastState, this.viewFinalStates[root]);
             }
 
         }
