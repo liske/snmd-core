@@ -1,2 +1,2 @@
 define([],function(){"use strict";var t=function(t,s,i,e){this.root=t,this.opts=i,this.el=s,this.opts.cls.base.forEach(function(t){this.el.classList.add(t)},this),"undefined"!=typeof e&&this.el.qtip(e)};return t.prototype.update=function(t){t!==this.last_state&&(this.opts.cls.state.forEach(function(t){this.el.classList.remove(t+this.last_state)},this),this.opts.cls.state.forEach(function(s){this.el.classList.add(s+t)},this),this.last_state=t)},t});
-//# sourceMappingURL=dist/SVGImpl/Class.map
+//# sourceMappingURL=dist/js/SVGImpl/Class.map

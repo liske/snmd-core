@@ -36,7 +36,7 @@ License:
     define
 */
 
-define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "require", "jquery", "sprintf", "js-cookie", "js-logger"], function (Core, HTML, SVG, require, $, sprintf, cookie, Logger) {
+define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/SVG", "require", "jquery", "sprintf", "js-cookie", "js-logger"], function (Core, HTML, SVG, require, $, sprintf, cookie, Logger) {
     'use strict';
 
     var instance = null;
@@ -145,7 +145,7 @@ define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "require", "jquery"
     };
 
     GUI.prototype.srScreenTimeOut = function () {
-        var that = require('snmd-core/GUI');
+        var that = require('snmd-core/js/GUI');
 
         /* Ignore timeout if screensaver is disabled */
         if (!that.enabledScreenTO) {
@@ -185,7 +185,7 @@ define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "require", "jquery"
 
         if (this.viewFinalStates[root] < state) {
             this.viewFinalStates[root] = state;
-            $('#switch-' + root).css('color', require("snmd-core/Core").srNagStateColor(this.viewFinalStates[root]));
+            $('#switch-' + root).css('color', require("snmd-core/js/Core").srNagStateColor(this.viewFinalStates[root]));
         } else {
             if (this.viewFinalStates[root] > state) {
                 var fs = state;
@@ -196,7 +196,7 @@ define(["snmd-core/Core", "snmd-core/HTML", "snmd-core/SVG", "require", "jquery"
                     }
                 });
                 this.viewFinalStates[root] = fs;
-                $('#switch-' + root).css('color', require("snmd-core/Core").srNagStateColor(this.viewFinalStates[root]));
+                $('#switch-' + root).css('color', require("snmd-core/js/Core").srNagStateColor(this.viewFinalStates[root]));
             }
 
         }

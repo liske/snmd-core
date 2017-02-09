@@ -35,7 +35,7 @@ License:
     define
 */
 
-define(["snmd-core/Core", "snmd-core/GUI", "js-logger"], function (Core, GUI, Logger) {
+define(["snmd-core/js/Core", "snmd-core/js/GUI", "js-logger"], function (Core, GUI, Logger) {
     'use strict';
 
     var Chart = function (root, svg, opts, lines, qtip) {

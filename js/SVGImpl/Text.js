@@ -35,7 +35,7 @@ License:
     define
 */
 
-define(["snmd-core/Core", "snmd-core/GUI"], function (Core, GUI) {
+define(["snmd-core/js/Core", "snmd-core/js/GUI"], function (Core, GUI) {
     'use strict';
 
     var Text = function (root, svg, opts, qtip) {

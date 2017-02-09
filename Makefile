@@ -1,24 +1,23 @@
 
 DISTS:= \
-	dist/Core.js \
-	dist/GUI.js \
-	dist/HTML.js \
-	dist/Main.js \
-	dist/MQTT.js \
-	dist/SVG.js \
-	dist/SVGWidget.js \
-	dist/SVGImpl/Chart.js \
-	dist/SVGImpl/Class.js \
-	dist/SVGImpl/Gauge.js \
-	dist/SVGImpl/Gradient.js \
-	dist/SVGImpl/StrokeWidth.js \
-	dist/SVGImpl/Text.js \
-	dist/SVGImpl/Transform.js
+	dist/js/Core.js \
+	dist/js/GUI.js \
+	dist/js/HTML.js \
+	dist/js/Main.js \
+	dist/js/MQTT.js \
+	dist/js/SVG.js \
+	dist/js/SVGWidget.js \
+	dist/js/SVGImpl/Chart.js \
+	dist/js/SVGImpl/Class.js \
+	dist/js/SVGImpl/Gauge.js \
+	dist/js/SVGImpl/Gradient.js \
+	dist/js/SVGImpl/StrokeWidth.js \
+	dist/js/SVGImpl/Text.js \
+	dist/js/SVGImpl/Transform.js
 
+all: $(DISTS) dist/lib/svg-1.5.0/jquery.svg.css
 
-all: $(DISTS)
-
-dist/%.js: js/%.js
+dist/js/%.js: js/%.js
 	uglifyjs \
 	    --output $@ \
 	    --source-map $(subst .js,.map,$@) \
@@ -28,5 +27,8 @@ dist/%.js: js/%.js
 	    --stats \
 	    -- $+
 
+dist/lib/svg-1.5.0/jquery.svg.css: lib/svg-1.5.0/jquery.svg.css
+	uglifycss $+ > $@
+
 clean:
-	rm -f dist/*.js dist/*.map dist/SVGImpl/*.js dist/SVGImpl/*.map
+	rm -f dist/js/*.js dist/js/*.map dist/js/SVGImpl/*.js dist/js/SVGImpl/*.map dist/lib/svg-1.5.0/jquery.svg.css

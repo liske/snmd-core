@@ -36,7 +36,7 @@ License:
     require
 */
 
-define(["snmd-core/GUI", "snmd-core/MQTT", "snmd-core/SVGWidget", "sprintf", "jquery", "js-logger", "JSON.minify"], function (GUI, MQTT, SVGWidget, sprintf, $, Logger, JSON) {
+define(["snmd-core/js/GUI", "snmd-core/js/MQTT", "snmd-core/js/SVGWidget", "sprintf", "jquery", "js-logger", "JSON.minify"], function (GUI, MQTT, SVGWidget, sprintf, $, Logger, JSON) {
     'use strict';
 
     var instance = null;
@@ -140,11 +140,11 @@ define(["snmd-core/GUI", "snmd-core/MQTT", "snmd-core/SVGWidget", "sprintf", "jq
                 var req_cfg = {
                     paths: {}
                 };
-                req_cfg.paths[lib['package']] = lib['package'] + "/" + (snmd_conf.snmd_devel === true ? 'js' : 'dist');
+                req_cfg.paths[lib['package']] = lib['package'] + (snmd_conf.snmd_devel === true ? '' : '/dist');
                 require.config(req_cfg);
 
                 // Bootstrap widget library
-                require([lib['package'] + "/Boot"], fn.bind(lib));
+                require([lib['package'] + "/js/Boot"], fn.bind(lib));
                 SVGWidget.snmdRegisterPrefix(lib.prefix, lib['package']);
             }
         }

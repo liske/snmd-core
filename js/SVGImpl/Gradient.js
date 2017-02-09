@@ -35,7 +35,7 @@ License:
     define
 */
 
-define(["snmd-core/Core"], function (Core) {
+define(["snmd-core/js/Core"], function (Core) {
     'use strict';
 
     var Gradient = function (root, svg, opts, qtip) {

@@ -35,7 +35,7 @@ License:
     define
 */
 
-define(["snmd-core/GUI", "svgpathdata"], function (GUI, SVGPathData) {
+define(["snmd-core/js/GUI", "svgpathdata"], function (GUI, SVGPathData) {
     'use strict';
 
     var Gauge = function (root, svg, opts, lines, qtip) {

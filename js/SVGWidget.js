@@ -35,7 +35,7 @@ License:
     define
 */
 
-define(["snmd-core/MQTT", "require", "js-logger"], function (MQTT, require, Logger) {
+define(["snmd-core/js/MQTT", "require", "js-logger"], function (MQTT, require, Logger) {
     'use strict';
 
     var instance = null;
@@ -106,7 +106,7 @@ define(["snmd-core/MQTT", "require", "js-logger"], function (MQTT, require, Logg
                 return;
             }
 
-            require([this.widgetPrefixes[res[1]] + "/" + res[2]], function (WClass) {
+            require([this.widgetPrefixes[res[1]] + "/js/" + res[2]], function (WClass) {
                 try {
                     var obj = new WClass(root, svg, desc);
                     if (typeof desc.topics !== "undefined") {

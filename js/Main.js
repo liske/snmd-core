@@ -65,7 +65,7 @@ define([], function () {
     'use strict';
 
     var Main = function (snmd_conf) {
-        require(["snmd-core/Core"], function (Core) {
+        require(["snmd-core/js/Core"], function (Core) {
             Core.snmdInit(snmd_conf);
         });
 
