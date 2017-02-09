@@ -34,8 +34,9 @@ Widget libraries can be added by installing them (i.e. using bower) and configur
        ]
    }
 
-This example will load the bootstrap code of the package *snmd-widgets-nagios* and make any widgets of the library available under the namespace `Nagios`.
+This example will load the bootstrap code of the package *snmd-widgets-nagios* and make any widgets of the library available under the namespace ``Nagios``:
 
-
-Development
-============
+* ``Nagios:Chart-IfBw``
+* ``Nagios:Chart-DiskTp``
+* ``Nagios:Text-PerfData``
+* ...
