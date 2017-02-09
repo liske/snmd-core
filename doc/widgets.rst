@@ -13,7 +13,7 @@ The following libraries are public available:
 Usage
 =====
 
-Widget libraries can be added by installing them (i.e. using bower) and configure *SNMD* to load them using a namespace of your choice. The libraries need to be added to the *snmd_widgets* option within the global config.json file:
+Widget libraries can be added by installing them (i.e. using *bower*) and configure *SNMD* to load them using a namespace of your choice. The libraries need to be added to the *snmd_widgets* option within the global *config.json* file:
 
 
 .. code:: json
