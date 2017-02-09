@@ -46,7 +46,7 @@ define(["snmd-core/js/GUI", "snmd-core/js/MQTT", "snmd-core/js/SVGWidget", "spri
             throw new Error("Cannot instantiate more than one instance, use getInstance()!");
         }
 
-        this.version = '0.2';
+        this.version = '0.3';
         this.si_prefs = ['T', 'G', 'M', 'k', '']; //, 'm', 'µ'
         this.si_facts = [ Math.pow(10, 12), Math.pow(10, 9), Math.pow(10, 6), Math.pow(10, 3), 1]; //, Math.pow(10, -3), Math.pow(10, -6)
         this.genid = 0;
