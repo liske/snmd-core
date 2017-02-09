@@ -2,4 +2,4 @@
 
 project = 'snmd'
 master_doc = 'index'
-copyright = u'2016, Thomas Liske'
+copyright = u'2016 - 2017, Thomas Liske'

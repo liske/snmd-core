@@ -10,6 +10,7 @@ to be visualized needs to be published via MQTT.
 ===================
 
 The following JavaScript libraries are used by *snmd* via *bower*:
+
 * [Font Awesome](http://fontawesome.io/) 4.7.0
 * [jQuery](https://jquery.com/) 2.2.4
 * [js-cookie](https://github.com/js-cookie/js-cookie) 2.1.3
@@ -19,6 +20,7 @@ The following JavaScript libraries are used by *snmd* via *bower*:
 * [sprintf.js](https://github.com/alexei/sprintf.js) 1.0.3
 
 The following legacy JavaScript libraries are embedded (and minified):
+
 * [jQuery SVG](http://keith-wood.name/svg.html) 1.5.0
 * [JSON.minify](https://github.com/getify/JSON.minify/tree/javascript)
 * [Paho JavaScript Client](https://www.eclipse.org/paho/clients/js/) 1.0.2
@@ -32,7 +34,7 @@ Copyright
 =========
 
 * 2012 - 2013 (C) Thomas Liske [https://fiasko-nw.net/~thomas/]
-* 2014 - 2016 (C) IBH IT-Service GmbH [https://www.ibh.de/]
+* 2014 - 2017 (C) IBH IT-Service GmbH [https://www.ibh.de/]
 
 
 License
