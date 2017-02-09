@@ -11,20 +11,34 @@ to be visualized needs to be published via MQTT.
 
 The following JavaScript libraries are used by *snmd* via *bower*:
 
-* [Font Awesome](http://fontawesome.io/) 4.7.0
-* [jQuery](https://jquery.com/) 2.2.4
-* [js-cookie](https://github.com/js-cookie/js-cookie) 2.1.3
-* [js-logger](https://github.com/jonnyreeves/js-logger) 1.3.0
-* [Open Sans @font-face kit](https://github.com/FontFaceKit/open-sans) 1.4.2
-* [qTip²](http://qtip2.com/) 3.0.3
-* [sprintf.js](https://github.com/alexei/sprintf.js) 1.0.3
+* `Font Awesome`_ 4.7.0
+* `jQuery`_ 2.2.4
+* `js-cookie`_ 2.1.3
+* `js-logger`_ 1.3.0
+* `Open Sans @font-face kit`_ 1.4.2
+* `qTip²`_ 3.0.3
+* `sprintf.js`_ 1.0.3
+
+.. _Font Awesome: http://fontawesome.io/
+.. _jQuery: https://jquery.com/
+.. _js-cookie: https://github.com/js-cookie/js-cookie
+.. _js-logger: https://github.com/jonnyreeves/js-logger
+.. _Open Sans @font-face kit: https://github.com/FontFaceKit/open-sans
+.. _qTip²: http://qtip2.com/
+.. _sprintf.js: https://github.com/alexei/sprintf.js
+
 
 The following legacy JavaScript libraries are embedded (and minified):
 
-* [jQuery SVG](http://keith-wood.name/svg.html) 1.5.0
-* [JSON.minify](https://github.com/getify/JSON.minify/tree/javascript)
-* [Paho JavaScript Client](https://www.eclipse.org/paho/clients/js/) 1.0.2
-* [SVGPathData](https://github.com/nfroidure/SVGPathData) 1.0.3
+* `jQuery SVG`_ 1.5.0
+* `JSON.minify`_
+* `Paho JavaScript Client`_ 1.0.2
+* `SVGPathData`_ 1.0.3
+
+.. _jQuery SVG: http://keith-wood.name/svg.html
+.. _JSON.minify: https://github.com/getify/JSON.minify/tree/javascript
+.. _Paho JavaScript Client: https://www.eclipse.org/paho/clients/js/
+.. _SVGPathData: https://github.com/nfroidure/SVGPathData
 
 
 .. include:: ../AUTHORS.rst
