@@ -158,7 +158,7 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/SVG", "require",
             $(document.body).addClass('on-screensaver');
         }
 
-        $('.srViews').each(function () {
+        $('#snmd-nav').each(function () {
             var a = $(this).children('.srViewsNav').find('a');
             var cur = 0;
             var i;
@@ -249,7 +249,7 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/SVG", "require",
         this.views = views;
         var that = this;
 
-        $('.srViews').each(function () {
+        $('#snmd-nav').each(function () {
             var nav = $(this).children('.srViewsNav');
             Object.keys(views).forEach(function (k) {
                 this.views2id[k] = 'srView-' + (this.idCounter += 1).toString(16);
@@ -306,7 +306,7 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/SVG", "require",
 
                 if (that.enableRotation) {
                     transTO = window.setTimeout(function () {
-                        $('.srViews').each(function () {
+                        $('#snmd-nav').each(function () {
                             var a = $(this).children('.srViewsNav').find('a');
                             var cur = 0;
                             var i;
@@ -425,7 +425,7 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/SVG", "require",
             }
 
             if (ev.keyCode === 37 || ev.keyCode === 39) {
-                var a = $('.srViews').children('.srViewsNav').find('a');
+                var a = $('#snmd-nav').children('.srViewsNav').find('a');
                 var cur = 0;
                 var i;
                 for (i = 0; i < a.length; i++) {
