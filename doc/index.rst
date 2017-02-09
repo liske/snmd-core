@@ -16,3 +16,4 @@ Contents:
    install.rst
    config.rst
    usage.rst
+   widgets.rst

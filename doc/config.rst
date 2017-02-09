@@ -16,7 +16,7 @@ snmd config
 The *snmd* configuration file `config.json` configures the included snmd widget
 library packages and some global configurations.
 
-.. code:: javascript
+.. code:: json
 
    {
        /* Enable development mode.
