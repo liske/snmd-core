@@ -49,7 +49,7 @@ require.config({
         "jquery.svggraph": "snmd-core/lib/svg-1.5.0/jquery.svggraph.min",
         "svgpathdata": "snmd-core/lib/svgpathdata-1.0.3/SVGPathData",
         "paho": "snmd-core/lib/paho.javascript-1.0.2/mqttws31-min",
-        "require-css": "require-css/css",
+        "require-css": "require-css/css.min",
         "js-cookie": "js-cookie/src/js.cookie"
     },
     shim: {
