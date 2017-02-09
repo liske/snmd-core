@@ -52,13 +52,13 @@ Download the latest `release archive <https://github.com/DE-IBH/snmd/releases>`_
 
 .. code:: console
 
-  $ git clone --branch $VERSION https://github.com/DE-IBH/snmd.git
+  $~/ git clone --branch $VERSION https://github.com/DE-IBH/snmd.git
 
 Pull all *bower* dependencies by running the following command in the new
 created directory:
 
 .. code:: console
 
-  $ bower update
+  $~/snmd/ bower update
 
 This will download the *snmd-core* and *snmd-widgets-nagios* components including any 3rd party library required by them.
