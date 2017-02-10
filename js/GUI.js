@@ -36,7 +36,7 @@ License:
     define
 */
 
-define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/SVG", "require", "jquery", "sprintf", "js-cookie", "js-logger"], function (Core, HTML, SVG, require, $, sprintf, cookie, Logger) {
+define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/SVG", "require", "jquery", "sprintf", "js-cookie", "js-logger", "qtip2", "css!qtip2"], function (Core, HTML, SVG, require, $, sprintf, cookie, Logger, qtip2) {
     'use strict';
 
     var instance = null;
@@ -67,12 +67,14 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/SVG", "require",
                 states: [
                     {
                         facls: "low-vision",
+                        descr: "Disable 3D view (increases performance).",
                         cb: function () {
                             this.snmdInit3D(false);
                         }
                     },
                     {
                         facls: "eye",
+                        descr: "Enable 3D view (decreased performance).",
                         cb: function () {
                             this.snmdInit3D(true);
                         }
@@ -94,11 +96,12 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/SVG", "require",
             },*/
             'rotate': {
                 shortcut: "r".charCodeAt(),
-                title: "Toggle interval or continuous rotation.",
+                title: "Toggle interval or continuous view rotation.",
                 state: 0,
                 states: [
                     {
                         facls: "repeat",
+                        descr: "Rotate view after activity timeout.",
                         cb: function () {
                             this.enabledScreenTO = true;
                             this.enableRotation = false;
@@ -106,6 +109,7 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/SVG", "require",
                     },
                     {
                         facls: "circle-o-notch",
+                        descr: "Keep current view.",
                         cb: function () {
                             this.enabledScreenTO = false;
                             this.enableRotation = false;
@@ -113,6 +117,7 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/SVG", "require",
                     },
                     {
                         facls: "refresh",
+                        descr: "Continuous view rotation.",
                         cb: function () {
                             this.enabledScreenTO = false;
                             this.enableRotation = true;
@@ -128,12 +133,14 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/SVG", "require",
                 states: [
                     {
                         facls: "crosshairs",
+                        descr: "Switch to views if there state changes at least warning.",
                         cb: function () {
                             this.enableFollow = true;
                         }
                     },
                     {
                         facls: "stop-circle-o",
+                        descr: "Do not switch to views due to state changes.",
                         cb: function () {
                             this.enableFollow = false;
                         }
@@ -274,7 +281,11 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/SVG", "require",
                 this.views2id[k] = 'srView-' + (this.idCounter += 1).toString(16);
                 this.viewStates[this.views2id[k]] = {};
                 this.viewFinalStates[this.views2id[k]] = -1;
-                nav.append('<li><a id="switch-' + this.views2id[k] + '" href="#' + this.views2id[k] + '"><span>' + this.views[k].title + "</span></a></li>");
+                $('<li><a id="switch-' + this.views2id[k] + '" href="#' + this.views2id[k] + '"><span>' + this.views[k].title + "</span></a></li>").qtip({
+                    content: {
+                        text: $('<div></div>').append($('<div class="snmd-nav-key"></div>').text(parseInt(k, 10) + 1)).append($('<span></span>').text('Switch to view "' + this.views[k].title + '".'))
+                    }
+                }).appendTo(nav);
             }, that);
 
             var div = $('#snmd-views');
@@ -355,8 +366,19 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/SVG", "require",
             Object.keys(that.ctrlButtons).forEach(function (el) {
                 var c = that.ctrlButtons[el];
                 var icon = $('<i></i>').addClass("fa fa-" + c.states[c.state].facls);
+
+                var qtip = $("<span></span>").append($('<div class="snmd-nav-key"></div>').text(String.fromCharCode(c.shortcut))).append($('<span></span>').text(c.title));
+                var ul = $("<ul class='snmd-nav-icolist'></ul>");
+                c.states.forEach(function (el) {
+                    var ico = $("<i></i>").addClass("fa fa-" + el.facls);
+                    var descr = $("<span></span>").text(" " + el.descr);
+
+                    ul.append(
+                        $("<li></li>").append(ico).append(descr)
+                    );
+                });
+
                 var button = $('<a></a>').attr({
-                    title: c.title,
                     href: "#" + el
                 }).append(
                     icon
@@ -371,6 +393,11 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/SVG", "require",
                     cookie.set('snmd-ctrl-' + el, c.state);
 
                     return false;
+                }).qtip({
+                    content: {
+                        title: qtip,
+                        text: ul
+                    }
                 });
                 that.ctrlButtons[el].button = button;
 

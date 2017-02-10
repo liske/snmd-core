@@ -50,7 +50,8 @@ require.config({
         "svgpathdata": "snmd-core/lib/svgpathdata-1.0.3/SVGPathData",
         "paho": "snmd-core/lib/paho.javascript-1.0.2/mqttws31-min",
         "require-css": "require-css/css.min",
-        "js-cookie": "js-cookie/src/js.cookie"
+        "js-cookie": "js-cookie/src/js.cookie",
+        "qtip2": "qtip2/dist/jquery.qtip.min"
     },
     shim: {
         "jquery.svg" : ["jquery"],

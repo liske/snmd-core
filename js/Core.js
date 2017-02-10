@@ -150,10 +150,11 @@ define(["snmd-core/js/GUI", "snmd-core/js/MQTT", "snmd-core/js/SVGWidget", "spri
         }
 
         var configName = this.srURLParam('config', 'default');
+        var label = $('#snmd-title-label');
         if (configName !== 'default') {
-            $('#snmd-title-label').text(configName);
+            label.text(configName);
         } else {
-            $('#snmd-title-label').text(window.location.host);
+            label.text(window.location.host);
         }
 
         this.srInitLoad('configs/' + configName + '.json', (function () {
