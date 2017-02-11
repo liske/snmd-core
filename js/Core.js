@@ -95,12 +95,16 @@ define(["snmd-core/js/GUI", "snmd-core/js/MQTT", "snmd-core/js/SVGWidget", "spri
         MQTT.srInit(this.config.mqttws_host, this.config.mqttws_port);
 
         if ($.isArray(this.config.vlinks)) {
+            var maxlen = 0;
             var vlinks = $("#snmd-title div.snmd-dd-list");
             this.config.vlinks.forEach(function (el) {
-                $("<a></a>").attr({href: '?config=' + el.name}).text((el.title || el.name)).appendTo(vlinks);
+                var label = (el.title || el.name);
+                maxlen = (maxlen > label.length ? maxlen : label.length);
+                $("<a></a>").attr({href: '?config=' + el.name}).text(label).appendTo(vlinks);
             });
+            vlinks.css("min-width", maxlen + "em");
         }
-        
+
         Logger.debug('[Core] Loading view "' + this.config.view.json + '"');
         $.ajax({
             'global': false,
