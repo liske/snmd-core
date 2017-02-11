@@ -40,6 +40,7 @@ define(["snmd-core/js/GUI", "snmd-core/js/MQTT", "snmd-core/js/SVGWidget", "spri
     'use strict';
 
     var instance = null;
+    var titleLabel = $('#snmd-title-label');
 
     var Core = function () {
         if (instance !== null) {
@@ -78,27 +79,38 @@ define(["snmd-core/js/GUI", "snmd-core/js/MQTT", "snmd-core/js/SVGWidget", "spri
     Core.prototype.srConfigLoaded = function (json) {
         this.config = json;
 
-        Logger.debug('[Core] Loading view list: ' + this.config.default_view);
+        if (this.config.view.title) {
+            titleLabel.text(this.config.view.title);
+        } else {
+            titleLabel.text(window.location.host);
+        }
+        
+        /* Establish MQTT connection */
+        if (typeof this.config.mqttws_host === "undefined") {
+            this.config.mqttws_host = window.location.hostname;
+        }
+        if (typeof this.config.mqttws_port === "undefined") {
+            this.config.mqttws_port = 9001;
+        }
+        MQTT.srInit(this.config.mqttws_host, this.config.mqttws_port);
 
+        if ($.isArray(this.config.vlinks)) {
+            var vlinks = $("#snmd-title div.snmd-dd-list");
+            this.config.vlinks.forEach(function (el) {
+                $("<a></a>").attr({href: '?config=' + el.name}).text((el.title || el.name)).appendTo(vlinks);
+            });
+        }
+        
+        Logger.debug('[Core] Loading view "' + this.config.view.json + '"');
         $.ajax({
             'global': false,
-            'url': this.config.default_view + '?nonce=' + Math.random(),
+            'url': this.config.view.json + '?nonce=' + Math.random(),
             'dataType': 'json',
             'dataFilter': function (data, type) {
                 return JSON.minify(data);
             },
             'success': (function (json) {
                 GUI.srInit(json);
-
-                /* MQTT defaults */
-                if (typeof this.config.mqttws_host === "undefined") {
-                    this.config.mqttws_host = window.location.hostname;
-                }
-                if (typeof this.config.mqttws_port === "undefined") {
-                    this.config.mqttws_port = 9001;
-                }
-
-                MQTT.srInit(this.config.mqttws_host, this.config.mqttws_port);
             }).bind(this),
             'error': (function (jqXHR, textStatus, errorThrown) {
                 Logger.error('[Core] Failed to load view list: ' + textStatus + ' - ' + errorThrown);
@@ -149,15 +161,7 @@ define(["snmd-core/js/GUI", "snmd-core/js/MQTT", "snmd-core/js/SVGWidget", "spri
             }
         }
 
-        var configName = this.srURLParam('config', 'default');
-        var label = $('#snmd-title-label');
-        if (configName !== 'default') {
-            label.text(configName);
-        } else {
-            label.text(window.location.host);
-        }
-
-        this.srInitLoad('configs/' + configName + '.json', (function () {
+        this.srInitLoad('configs/' + this.srURLParam('config', 'default') + '.json', (function () {
             this.srInitLoad('configs/default.json', function (jqXHR, textStatus, errorThrown) {
                 Logger.error('[Core] Failed to load configuration: ' + textStatus + ' - ' + errorThrown);
             });
