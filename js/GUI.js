@@ -281,9 +281,11 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/SVG", "require",
                 this.views2id[k] = 'srView-' + (this.idCounter += 1).toString(16);
                 this.viewStates[this.views2id[k]] = {};
                 this.viewFinalStates[this.views2id[k]] = -1;
+
+                var qtitle = $('<span></span>').text('Switch to view "' + this.views[k].title + '".');
                 $('<li><a id="switch-' + this.views2id[k] + '" href="#' + this.views2id[k] + '"><span>' + this.views[k].title + "</span></a></li>").qtip({
                     content: {
-                        text: $('<div></div>').append($('<div class="snmd-nav-key"></div>').text(parseInt(k, 10) + 1)).append($('<span></span>').text('Switch to view "' + this.views[k].title + '".'))
+                        text: (parseInt(k, 10) > 9 ? qtitle : $('<div></div>').append($('<div class="snmd-nav-key"></div>').text((parseInt(k, 10) + 1) % 10)).append(qtitle))
                     }
                 }).appendTo(nav);
             }, that);
@@ -488,14 +490,18 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/SVG", "require",
                 cur = cur % a.length;
 
                 a[cur].click();
+            } else if (ev.keyCode === 38 || ev.keyCode === 40) {
+                var links = $('#snmd-nav').children('.srViewsNav').find('a');
+                links[(ev.keyCode === 40 ? 0 : links.length - 1)].click();
             }
+
         }).bind(this));
 
         // Handle key press (reset screen saver time, handle shortcuts)
         $(document).keypress((function (ev) {
             // Select view by numpad
             if (ev.which > 47 && ev.which < 58) {
-                var key = (ev.which === 48 ? '10' : String.fromCharCode(ev.which));
+                var key = (ev.which === 48 ? 'a' : String.fromCharCode(ev.which));
 
                 $('a[href="#srView-' + key + '"]').click();
 
