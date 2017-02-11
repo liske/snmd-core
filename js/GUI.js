@@ -197,7 +197,7 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/SVG", "require",
     GUI.prototype.snmdStateUpdate = function (root, svg, lastState, finalState) {
         if (lastState !== finalState) {
             $('#switch-' + root).css('color', require("snmd-core/js/Core").srNagStateColor(finalState));
-            $('#' + root).addClass('snmd-scl-' + finalState).removeClass('state-' + lastState);
+            $('#' + root).addClass('snmd-scl-' + finalState).removeClass('snmd-scl-' + lastState);
 
             if (finalState > 0 && this.enableFollow) {
                 $('#switch-' + root).click();
