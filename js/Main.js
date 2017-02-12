@@ -51,7 +51,8 @@ require.config({
         "paho": "snmd-core/lib/paho.javascript-1.0.2/mqttws31-min",
         "require-css": "require-css/css.min",
         "js-cookie": "js-cookie/src/js.cookie",
-        "qtip2": "qtip2/dist/jquery.qtip.min"
+        "qtip2": "qtip2/dist/jquery.qtip.min",
+        "howler": "howler.js/dist/howler.core.min"
     },
     shim: {
         "jquery.svg" : ["jquery"],

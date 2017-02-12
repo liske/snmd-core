@@ -36,7 +36,7 @@ License:
     define
 */
 
-define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/SVG", "require", "jquery", "sprintf", "js-cookie", "js-logger", "qtip2", "css!qtip2"], function (Core, HTML, SVG, require, $, sprintf, cookie, Logger, qtip2) {
+define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-core/js/SVG", "require", "jquery", "sprintf", "js-cookie", "js-logger", "qtip2", "css!qtip2"], function (Core, HTML, Sound, SVG, require, $, sprintf, cookie, Logger, qtip2) {
     'use strict';
 
     var instance = null;
@@ -81,19 +81,27 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/SVG", "require",
                     }
                 ]
             },
-/*            'volume': {
+            'volume': {
                 shortcut: "v".charCodeAt(),
                 title: "Toggle alert sounds.",
                 state: 0,
                 states: [
                     {
-                        facls: "volume-off"
+                        facls: "volume-up",
+                        descr: "Enable notification sounds.",
+                        cb: function () {
+                            Sound.snmdUnmute();
+                        }
                     },
                     {
-                        facls: "volume-up"
+                        facls: "volume-off",
+                        descr: "Disable notification sounds.",
+                        cb: function () {
+                            Sound.snmdMute();
+                        }
                     }
                 ]
-            },*/
+            },
             'rotate': {
                 shortcut: "r".charCodeAt(),
                 title: "Toggle interval or continuous view rotation.",
@@ -201,6 +209,11 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/SVG", "require",
 
             if (finalState > 0 && this.enableFollow) {
                 $('#switch-' + root).click();
+            }
+
+            /* Don't play OK sound if the previous state was unset (due to SNMD init) */
+            if (lastState !== -1 || finalState > 0) {
+                Sound.snmdPlay('default', 'state-' + finalState);
             }
         }
     };
@@ -373,7 +386,7 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/SVG", "require",
                 var ul = $("<ul class='snmd-nav-icolist'></ul>");
                 c.states.forEach(function (el) {
                     var ico = $("<i></i>").addClass("fa fa-" + el.facls);
-                    var descr = $("<span></span>").text(" " + el.descr);
+                    var descr = $("<span></span>").text(el.descr);
 
                     ul.append(
                         $("<li></li>").append(ico).append(descr)

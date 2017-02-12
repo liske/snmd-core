@@ -36,7 +36,7 @@ License:
     require
 */
 
-define(["snmd-core/js/GUI", "snmd-core/js/MQTT", "snmd-core/js/SVGWidget", "sprintf", "jquery", "js-logger", "JSON.minify"], function (GUI, MQTT, SVGWidget, sprintf, $, Logger, JSON) {
+define(["snmd-core/js/GUI", "snmd-core/js/MQTT", "snmd-core/js/SVGWidget", "snmd-core/js/Sound", "sprintf", "jquery", "js-logger", "JSON.minify"], function (GUI, MQTT, SVGWidget, Sound, sprintf, $, Logger, JSON) {
     'use strict';
 
     var instance = null;
@@ -167,6 +167,9 @@ define(["snmd-core/js/GUI", "snmd-core/js/MQTT", "snmd-core/js/SVGWidget", "spri
                 SVGWidget.snmdRegisterPrefix(lib.prefix, lib['package']);
             }
         }
+
+        /* Load default sound set */
+        Sound.snmdLoadSet('default');
 
         this.srInitLoad('configs/' + this.srURLParam('config', 'default') + '.json', (function () {
             this.srInitLoad('configs/default.json', function (jqXHR, textStatus, errorThrown) {
