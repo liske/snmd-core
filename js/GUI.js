@@ -208,6 +208,15 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
             $('#' + root).addClass('snmd-scl-' + finalState).removeClass('snmd-scl-' + lastState);
 
             if (finalState > 0 && this.enableFollow) {
+                /* Disable screen saver. */
+                this.screenState = 0;
+
+                if (typeof this.screenTimeOut !== "undefined") {
+                    window.clearTimeout(this.screenTimeOut);
+                    this.screenTimeOut = window.setTimeout(this.srScreenTimeOut, this.TO_SCREEN);
+                }
+
+                /* Switch to changed view. */
                 $('#switch-' + root).click();
             }
 
