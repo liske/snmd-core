@@ -212,7 +212,7 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
             }
 
             /* Don't play OK sound if the previous state was unset (due to SNMD init) */
-            if (lastState !== -1 || finalState > 0) {
+            if ($.inArray(lastState, [-1, 3]) === -1 || finalState > 0) {
                 Sound.snmdPlay('default', 'state-' + finalState);
             }
         }
