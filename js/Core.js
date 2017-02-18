@@ -211,7 +211,7 @@ define(["snmd-core/js/GUI", "snmd-core/js/MQTT", "snmd-core/js/SVGWidget", "snmd
 
         value = value / this.si_facts[j];
         if (typeof fracts === "undefined" || isNaN(fracts)) {
-            if (value < 20) {
+            if (value < 10) {
                 fracts = 1;
             } else {
                 fracts = 0;
