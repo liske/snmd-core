@@ -52,6 +52,7 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
         this.screenState = 0;
         this.viewStates = {};
         this.viewFinalStates = {};
+        this.navbarState = 0;
         this.currentStep = 0;
         this.views = {};
         this.views2id = {};
@@ -204,7 +205,7 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
 
     GUI.prototype.snmdStateUpdate = function (root, svg, lastState, finalState) {
         if (lastState !== finalState) {
-            $('#switch-' + root).css('color', require("snmd-core/js/Core").srNagStateColor(finalState));
+            $('#switch-' + root).addClass('snmd-scl-' + finalState).removeClass('snmd-scl-' + lastState);
             $('#' + root).addClass('snmd-scl-' + finalState).removeClass('snmd-scl-' + lastState);
 
             if (finalState > 0 && this.enableFollow) {
@@ -223,6 +224,22 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
             /* Don't play OK sound if the previous state was unset (due to SNMD init) */
             if ($.inArray(lastState, [-1, 3]) === -1 || finalState > 0) {
                 Sound.snmdPlay('default', 'state-' + finalState);
+            }
+
+            if (this.navbarState !== finalState) {
+                var lastNavbarState = this.navbarState;
+                var fs = finalState;
+                var that = this;
+                Object.keys(this.viewFinalStates).forEach(function (k) {
+                    if (that.viewFinalStates[k] > fs) {
+                        fs = that.viewFinalStates[k];
+                    }
+                });
+
+                if (fs !== lastNavbarState) {
+                    $('#snmd-nav').addClass('snmd-scl-' + fs).removeClass('snmd-scl-' + lastNavbarState);
+                    this.navbarState = fs;
+                }
             }
         }
     };
@@ -305,7 +322,7 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
                 this.viewFinalStates[this.views2id[k]] = -1;
 
                 var qtitle = $('<span></span>').text('Switch to view "' + this.views[k].title + '".');
-                $('<li><a id="switch-' + this.views2id[k] + '" href="#' + this.views2id[k] + '"><span>' + this.views[k].title + "</span></a></li>").qtip({
+                $('<li><a id="switch-' + this.views2id[k] + '" href="#' + this.views2id[k] + '" class="snmd-nav-switch"><span>' + this.views[k].title + "</span></a></li>").qtip({
                     content: {
                         text: (parseInt(k, 10) > 9 ? qtitle : $('<div></div>').append($('<div class="snmd-nav-key"></div>').text((parseInt(k, 10) + 1) % 10)).append(qtitle))
                     }
