@@ -82,6 +82,27 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
                     }
                 ]
             },
+            'solarized': {
+                shortcut: "s".charCodeAt(),
+                title: "Switch solarized theme.",
+                state: 0,
+                states: [
+                    {
+                        facls: "square-o",
+                        descr: "Switch theme to solarized light.",
+                        cb: function () {
+                            this.snmdSolarizedLight();
+                        }
+                    },
+                    {
+                        facls: "square",
+                        descr: "Switch theme to solarized dark.",
+                        cb: function () {
+                            this.snmdSolarizedDark();
+                        }
+                    }
+                ]
+            },
             'volume': {
                 shortcut: "v".charCodeAt(),
                 title: "Toggle alert sounds.",
@@ -299,6 +320,14 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
                 );
             }, this);
         }
+    };
+
+    GUI.prototype.snmdSolarizedDark = function () {
+        $(document.body).addClass('solarized-dark').removeClass('solarized-light');
+    };
+
+    GUI.prototype.snmdSolarizedLight = function () {
+        $(document.body).addClass('solarized-light').removeClass('solarized-dark');
     };
 
     GUI.prototype.snmdAlignView = function (r, a) {
