@@ -88,17 +88,17 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
                 state: 0,
                 states: [
                     {
-                        facls: "square-o",
-                        descr: "Switch theme to solarized light.",
-                        cb: function () {
-                            this.snmdSolarizedLight();
-                        }
-                    },
-                    {
-                        facls: "square",
+                        facls: "moon-o",
                         descr: "Switch theme to solarized dark.",
                         cb: function () {
                             this.snmdSolarizedDark();
+                        }
+                    },
+                    {
+                        facls: "sun-o",
+                        descr: "Switch theme to solarized light.",
+                        cb: function () {
+                            this.snmdSolarizedLight();
                         }
                     }
                 ]
