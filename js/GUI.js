@@ -501,14 +501,14 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
                 var str = sprintf.sprintf("%d-%02d-%02dT%02d:%02d:%02d%s%02d%02d",
                                   now.getFullYear(),
                                   now.getMonth() + 1,
-                                  now.getDay(),
+                                  now.getDate(),
                                   now.getHours(),
                                   now.getMinutes(),
                                   now.getSeconds(),
                                   sign,
                                   zoff / 60,
                                   zoff % 60);
-
+                
                 el_clock.text(str);
             }, 1000);
         }
