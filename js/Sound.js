@@ -86,9 +86,9 @@ define(["snmd-core/js/Core", "howler", "jquery", "js-logger"], function (Core, H
             'dataFilter': function (data, type) {
                 return JSON.minify(data);
             },
-            'success': (function (json) {
+            'success': function (json) {
                 this.snmdLoadSetJSON(setName, json);
-            }).bind(this),
+            }.bind(this),
             'error': function (jqXHR, textStatus, errorThrown) {
                 Logger.error('[Sound] Failed to load set config: %s - %s', textStatus, errorThrown);
             }
