@@ -91,11 +91,12 @@ define(["snmd-core/js/Core", "jquery", "paho", "js-logger"], function (Core, $, 
         this.client = new Paho.MQTT.Client(this.broker_host, this.broker_port, '', this.clientId);
 
                
-        this.client.disconnect = (function () {
+        this.client.disconnect = function () {
             Logger.error("[MQTT] Disconnected");
             this.srStatus('#7f0000');
-        }).bind(this);
-        this.client.onConnectionLost = (function (res) {
+        }.bind(this);
+
+        this.client.onConnectionLost = function (res) {
             this.srStatus('#ff0000');
             Logger.error("[MQTT] Connection lost: " + res.errorMessage);
 
@@ -104,8 +105,9 @@ define(["snmd-core/js/Core", "jquery", "paho", "js-logger"], function (Core, $, 
             }
             this.srStatus('orange');
             this.reconnTO = setTimeout(this.srConnect.bind(this), 5000);
-        }).bind(this);
-        this.client.onMessageArrived = (function (msg) {
+        }.bind(this);
+
+        this.client.onMessageArrived = function (msg) {
             this.srStatus('#00ff00');
             setTimeout(function () {
                 this.srStatus('#007f00');
@@ -128,21 +130,20 @@ define(["snmd-core/js/Core", "jquery", "paho", "js-logger"], function (Core, $, 
             }
             
             return 1;
-        }).bind(this);
+        }.bind(this);
 
         this.client.connect({
-            onSuccess: (function () {
+            onSuccess: function () {
                 Logger.info('[MQTT] Connected to mqtt://' + this.broker_host + ':' + this.broker_port);
                 this.srStatus('#7f0000');
 
-                var topic;
-                for (topic in this.topics) {
+                Object.keys(this.topics).forEach(function (topic) {
                     this.client.subscribe(topic);
-                }
+                }, this);
 
                 require("snmd-core/js/Core").snmdFinishLoading();
-            }).bind(this),
-            onFailure: (function () {
+            }.bind(this),
+            onFailure: function () {
                 if (this.reconnTO) {
                     clearTimeout(this.reconnTO);
                 }
@@ -150,7 +151,7 @@ define(["snmd-core/js/Core", "jquery", "paho", "js-logger"], function (Core, $, 
                 this.reconnTO = setTimeout(this.srConnect.bind(this), 5000);
 
                 require("snmd-core/js/Core").snmdFinishLoading();
-            }).bind(this)
+            }.bind(this)
         });
     };
     
