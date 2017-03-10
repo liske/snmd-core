@@ -57,19 +57,16 @@ define(["snmd-core/js/Core"], function (Core) {
         }
 
         var s = [];
-        var stop;
-        for (stop in this.opts.stops) {
+        Object.keys(this.opts.stops).forEach(function (stop) {
             s.push([this.opts.stops[stop], 'rgba(64, 64, 64, 0)']);
-        }
+        }, this);
 
         this.grad = root.linearGradient(null, Core.srGenID('lgrd'), s, this.opts.coords[0], this.opts.coords[1], this.opts.coords[2], this.opts.coords[3]);
 
         this.stops = {};
-        var i = 0;
-        for (stop in this.opts.stops) {
+        Object.keys(this.opts.stops).forEach(function (stop, i) {
             this.stops[this.opts.stops[stop]] = this.grad.childNodes[i];
-            i++;
-        }
+        }, this);
 
         svg.style.fill = 'url(#' + this.grad.id + ')';
         opts.cls.base.forEach(function (cl) {
@@ -83,14 +80,13 @@ define(["snmd-core/js/Core"], function (Core) {
             return;
         }
 
-        var stop;
-        for (stop in stops) {
+        Object.keys(stops).forEach(function (stop) {
             if (typeof stops[stop] !== "undefined") {
                 this.stops[stop].setAttribute('stop-color', 'hsl(' + stops[stop] + ',100%,50%)');
             } else {
                 this.stops[stop].setAttribute('stop-color', 'rgba(64, 64, 64, 0)');
             }
-        }
+        }, this);
     };
 
     return Gradient;
