@@ -36,7 +36,7 @@ License:
     require
 */
 
-define(["snmd-core/js/GUI", "snmd-core/js/MQTT", "snmd-core/js/SVGWidget", "snmd-core/js/Sound", "sprintf", "jquery", "js-logger", "JSON.minify", "css-var-polyfill"], function (GUI, MQTT, SVGWidget, Sound, sprintf, $, Logger, JSON, cssVarPoly) {
+define(["snmd-core/js/GUI", "snmd-core/js/MQTT", "snmd-core/js/SVGWidget", "snmd-core/js/Sound", "sprintf", "jquery", "js-logger", "JSON.minify"], function (GUI, MQTT, SVGWidget, Sound, sprintf, $, Logger, JSON) {
     'use strict';
 
     var instance = null;
@@ -185,10 +185,6 @@ define(["snmd-core/js/GUI", "snmd-core/js/MQTT", "snmd-core/js/SVGWidget", "snmd
 
             loadDiv.fadeOut(3000);
             window.setTimeout(function () {
-                
-                cssVarPoly.init();
-                
-                
                 loadDiv.remove();
             }, 3000);
         }
