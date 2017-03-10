@@ -59,7 +59,7 @@ define(["snmd-core/js/Core"], function (Core) {
         var s = [];
         var stop;
         for (stop in this.opts.stops) {
-            s.push([this.opts.stops[stop], '#404040']);
+            s.push([this.opts.stops[stop], 'rgba(64, 64, 64, 0)']);
         }
 
         this.grad = root.linearGradient(null, Core.srGenID('lgrd'), s, this.opts.coords[0], this.opts.coords[1], this.opts.coords[2], this.opts.coords[3]);
@@ -88,7 +88,7 @@ define(["snmd-core/js/Core"], function (Core) {
             if (typeof stops[stop] !== "undefined") {
                 this.stops[stop].setAttribute('stop-color', 'hsl(' + stops[stop] + ',100%,50%)');
             } else {
-                this.stops[stop].setAttribute('stop-color', '#404040');
+                this.stops[stop].setAttribute('stop-color', 'rgba(64, 64, 64, 0)');
             }
         }
     };
