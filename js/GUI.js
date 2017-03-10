@@ -36,7 +36,7 @@ License:
     define
 */
 
-define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-core/js/SVG", "require", "jquery", "sprintf", "js-cookie", "js-logger", "qtip2", "css!qtip2"], function (Core, HTML, Sound, SVG, require, $, sprintf, cookie, Logger, qtip2) {
+define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-core/js/SVG", "snmd-core/js/Polyfills", "require", "jquery", "sprintf", "js-cookie", "js-logger", "qtip2", "css!qtip2"], function (Core, HTML, Sound, SVG, Polyfills, require, $, sprintf, cookie, Logger, qtip2) {
     'use strict';
 
     var instance = null;
@@ -178,6 +178,10 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
                 ]
             }
         };
+
+        if (Polyfills.snmdUsePolyfill('cssVars')) {
+            delete this.ctrlButtons.solarized;
+        }
     };
 
     GUI.getInstance = function () {

@@ -5,6 +5,7 @@ DISTS:= \
 	dist/js/HTML.js \
 	dist/js/Main.js \
 	dist/js/MQTT.js \
+	dist/js/Polyfills.js \
 	dist/js/Sound.js \
 	dist/js/SVG.js \
 	dist/js/SVGWidget.js \

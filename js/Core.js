@@ -36,7 +36,7 @@ License:
     require
 */
 
-define(["snmd-core/js/GUI", "snmd-core/js/MQTT", "snmd-core/js/SVGWidget", "snmd-core/js/Sound", "sprintf", "jquery", "js-logger", "JSON.minify"], function (GUI, MQTT, SVGWidget, Sound, sprintf, $, Logger, JSON) {
+define(["snmd-core/js/Polyfills", "snmd-core/js/GUI", "snmd-core/js/MQTT", "snmd-core/js/SVGWidget", "snmd-core/js/Sound", "sprintf", "jquery", "js-logger", "JSON.minify"], function (Polyfills, GUI, MQTT, SVGWidget, Sound, sprintf, $, Logger, JSON) {
     'use strict';
 
     var instance = null;
