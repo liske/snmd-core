@@ -44,8 +44,8 @@ define(["snmd-core/js/Core", "snmd-core/js/GUI", "js-logger"], function (Core, G
         this.lines = lines;
 
         /* Prepare line classes */
+        var l;
         if (typeof this.opts.lcls !== "undefined") {
-            var l;
             for (l = 0; l < this.lines.length; l++) {
                 var classes = this.opts.lcls.slice(0);
                 var f = function (cl) {
@@ -100,7 +100,6 @@ define(["snmd-core/js/Core", "snmd-core/js/GUI", "js-logger"], function (Core, G
         if (lines.length > 1) {
             this.txt[1] = root.text(opts.dim.x + opts.dim.width, opts.dim.y, '');
         }
-        var l;
         for (l = 0; l < this.txt.length; l++) {
             if (typeof this.opts.tcls !== "undefined") {
                 this.opts.tcls.forEach(function (cl) {
