@@ -52,13 +52,17 @@ require.config({
         "require-css": "require-css/css.min",
         "js-cookie": "js-cookie/src/js.cookie",
         "qtip2": "qtip2/dist/jquery.qtip.min",
-        "howler": "howler.js/dist/howler.core.min"
+        "howler": "howler.js/dist/howler.core.min",
+        "css-var-polyfill": "snmd-core/lib/css-var-polyfill/css-var-polyfill"
     },
     shim: {
         "jquery.svg" : ["jquery"],
         "jquery.svggraph" : ["jquery.svg", "jquery"],
         "paho": {
             exports: "Paho"
+        },
+        "css-var-polyfill": {
+            exports: "cssVarPoly"
         }
     }
 });
