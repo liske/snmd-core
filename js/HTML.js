@@ -35,7 +35,7 @@ License:
     define
 */
 
-define(["js-logger"], function (Logger) {
+define(["jquery", "js-logger"], function ($, Logger) {
     'use strict';
 
     var instance = null;
