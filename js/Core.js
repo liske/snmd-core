@@ -116,12 +116,12 @@ define(["snmd-core/js/Polyfills", "snmd-core/js/GUI", "snmd-core/js/MQTT", "snmd
             'dataFilter': function (data, type) {
                 return JSON.minify(data);
             },
-            'success': (function (json) {
+            'success': function (json) {
                 GUI.srInit(json);
-            }).bind(this),
-            'error': (function (jqXHR, textStatus, errorThrown) {
+            }.bind(this),
+            'error': function (jqXHR, textStatus, errorThrown) {
                 Logger.error('[Core] Failed to load view list: ' + textStatus + ' - ' + errorThrown);
-            }).bind(this)
+            }.bind(this)
         });
     };
     
@@ -151,31 +151,28 @@ define(["snmd-core/js/Polyfills", "snmd-core/js/GUI", "snmd-core/js/MQTT", "snmd
                 Boot.init(this.prefix, this['package']);
             };
 
-            var i;
-            for (i in snmd_conf.snmd_widgets) {
-                var lib = snmd_conf.snmd_widgets[i];
-
-                // Build include search path
+            snmd_conf.snmd_widgets.forEach(function (lib) {
+                /* Build include search path */
                 var req_cfg = {
                     paths: {}
                 };
                 req_cfg.paths[lib['package']] = lib['package'] + (snmd_conf.snmd_devel === true ? '' : '/dist');
                 require.config(req_cfg);
 
-                // Bootstrap widget library
+                /* Bootstrap widget library */
                 require([lib['package'] + "/js/Boot"], fn.bind(lib));
                 SVGWidget.snmdRegisterPrefix(lib.prefix, lib['package']);
-            }
+            }, this);
         }
 
         /* Load default sound set */
         Sound.snmdLoadSet('default');
 
-        this.srInitLoad('configs/' + this.srURLParam('config', 'default') + '.json', (function () {
+        this.srInitLoad('configs/' + this.srURLParam('config', 'default') + '.json', function () {
             this.srInitLoad('configs/default.json', function (jqXHR, textStatus, errorThrown) {
                 Logger.error('[Core] Failed to load configuration: ' + textStatus + ' - ' + errorThrown);
             });
-        }).bind(this));
+        }.bind(this));
     };
 
     Core.prototype.snmdFinishLoading = function (subject) {
