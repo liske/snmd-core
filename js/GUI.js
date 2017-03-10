@@ -521,7 +521,7 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
         this.screenTimeOut = window.setTimeout(this.srScreenTimeOut, this.TO_SCREEN);
 
         // Handle mouse moves (reset screen saver timeout)
-        $(document).mousemove((function () {
+        $(document).mousemove(function () {
             if (this.enableRotation) {
                 return;
             }
@@ -533,10 +533,10 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
                 this.screenTimeOut = window.setTimeout(this.srScreenTimeOut, this.TO_SCREEN);
                 $(document.body).removeClass('on-screensaver');
             }
-        }).bind(this));
+        }.bind(this));
 
         // Handle key press (reset screen saver time, handle shortcuts)
-        $(document).keydown((function (ev) {
+        $(document).keydown(function (ev) {
             this.screenState = 0;
 
             if (typeof this.screenTimeOut !== "undefined") {
@@ -567,10 +567,10 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
                 links[(ev.keyCode === 40 ? 0 : links.length - 1)].click();
             }
 
-        }).bind(this));
+        }.bind(this));
 
         // Handle key press (reset screen saver time, handle shortcuts)
-        $(document).keypress((function (ev) {
+        $(document).keypress(function (ev) {
             // Select view by numpad
             if (ev.which > 47 && ev.which < 58) {
                 var key = (ev.which === 48 ? 'a' : String.fromCharCode(ev.which));
@@ -590,7 +590,7 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
                     return;
                 }
             });
-        }).bind(this));
+        }.bind(this));
     };
 
     return GUI.getInstance();
