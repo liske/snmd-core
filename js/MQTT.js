@@ -87,8 +87,8 @@ define(["snmd-core/js/Core", "jquery", "paho", "js-logger"], function (Core, $, 
 
     MQTT.prototype.srConnect = function () {
         this.srStatus('yellow');
-        Logger.debug('[MQTT] Connecting to broker at ' + this.broker_host + ':' + this.broker_port + '...');
-        this.client = new Paho.MQTT.Client(this.broker_host, this.broker_port, '', this.clientId);
+        Logger.debug('[MQTT] Connecting to broker at ' + this.broker_uri + '...');
+        this.client = new Paho.MQTT.Client(this.broker_uri, this.clientId);
 
                
         this.client.disconnect = function () {
@@ -134,7 +134,7 @@ define(["snmd-core/js/Core", "jquery", "paho", "js-logger"], function (Core, $, 
 
         this.client.connect({
             onSuccess: function () {
-                Logger.info('[MQTT] Connected to mqtt://' + this.broker_host + ':' + this.broker_port);
+                Logger.info('[MQTT] Connected to ' + this.broker_uri);
                 this.srStatus('#7f0000');
 
                 Object.keys(this.topics).forEach(function (topic) {
@@ -155,12 +155,11 @@ define(["snmd-core/js/Core", "jquery", "paho", "js-logger"], function (Core, $, 
         });
     };
     
-    MQTT.prototype.srInit = function (host, port, clientId) {
+    MQTT.prototype.srInit = function (broker_uri, clientId) {
         if (typeof clientId === "undefined") {
             clientId = 'RND' + Math.floor(Math.random() * 16777215).toString(16);
         }
-        this.broker_host = host;
-        this.broker_port = Number(port);
+        this.broker_uri = broker_uri;
         this.clientId = clientId;
          
         this.srConnect();

@@ -86,13 +86,10 @@ define(["snmd-core/js/Polyfills", "snmd-core/js/GUI", "snmd-core/js/MQTT", "snmd
         }
         
         /* Establish MQTT connection */
-        if (typeof this.config.mqttws_host === "undefined") {
-            this.config.mqttws_host = window.location.hostname;
+        if (typeof this.config.mqttws_uri === "undefined") {
+            this.config.mqttws_uri = "ws://" + window.location.hostname + ":9001/";
         }
-        if (typeof this.config.mqttws_port === "undefined") {
-            this.config.mqttws_port = 9001;
-        }
-        MQTT.srInit(this.config.mqttws_host, this.config.mqttws_port);
+        MQTT.srInit(this.config.mqttws_uri);
 
         var vlinks = $("#snmd-title div.snmd-dd-list");
         if ($.isArray(this.config.vlinks) && this.config.vlinks.length > 0) {
