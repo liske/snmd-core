@@ -323,6 +323,7 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
                     ''
                 );
             }, this);
+            $('#snmd-views').css('transform', '');
         }
     };
 
