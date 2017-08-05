@@ -13,6 +13,7 @@ DISTS:= \
 	dist/js/SVGImpl/Class.js \
 	dist/js/SVGImpl/Gauge.js \
 	dist/js/SVGImpl/Gradient.js \
+	dist/js/SVGImpl/RadialGradient.js \
 	dist/js/SVGImpl/StrokeWidth.js \
 	dist/js/SVGImpl/Text.js \
 	dist/js/SVGImpl/Transform.js
