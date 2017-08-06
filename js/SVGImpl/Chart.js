@@ -130,7 +130,12 @@ define(["snmd-core/js/Core", "snmd-core/js/GUI", "js-logger"], function (Core, G
         var maxy = (typeof this.opts.axis[0].max === "undefined" ? 0 : this.opts.axis[0].max);
         var i;
         for (i = 0; i < this.data_lines.length; i++) {
-            this.data_lines[i].push(data[i]);
+            v = data[i];
+            if (typeof v !== "number" || isNaN(v)) {
+                v = 0;
+            }
+
+            this.data_lines[i].push(v);
             maxy = Math.max(maxy, Math.max.apply(null, this.data_lines[i]));
         }
         
@@ -217,12 +222,6 @@ define(["snmd-core/js/Core", "snmd-core/js/GUI", "js-logger"], function (Core, G
                 }
 
                 var v = this.data_lines[l][t];
-                if (typeof v === "undefined") {
-                    v = 0;
-                }
-                if (isNaN(v)) {
-                    v = 0;
-                }
 
                 /* Prepare for log scale */
                 if (this.opts.axis[0].scale === "log") {
