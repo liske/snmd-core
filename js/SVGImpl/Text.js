@@ -35,7 +35,7 @@ License:
     define
 */
 
-define(["snmd-core/js/Core", "snmd-core/js/GUI"], function (Core, GUI) {
+define(["snmd-core/js/Core", "snmd-core/js/GUI", "jquery"], function (Core, GUI, $) {
     'use strict';
 
     var Text = function (root, svg, opts, qtip) {
@@ -56,7 +56,9 @@ define(["snmd-core/js/Core", "snmd-core/js/GUI"], function (Core, GUI) {
 
         /* Set qtip if available */
         if (typeof qtip !== "undefined") {
-            this.txt.qtip(qtip);
+            var e = $(this.txt);
+            e.addClass('snmd-bcl-Widget');
+            e.qtip(qtip);
         }
     };
     

@@ -35,7 +35,7 @@ License:
     define
 */
 
-define([], function () {
+define(["jquery"], function ($) {
     'use strict';
 
     var Class = function (root, svg, opts, qtip) {
@@ -50,9 +50,12 @@ define([], function () {
         this.opts.cls.base.forEach(function (cl) {
             this.el.classList.add(cl);
         }, this);
+
         /* Set qtip if available */
         if (typeof qtip !== "undefined") {
-            this.el.qtip(qtip);
+            var e = $(svg);
+            e.addClass('snmd-bcl-Widget');
+            e.qtip(qtip);
         }
     };
     

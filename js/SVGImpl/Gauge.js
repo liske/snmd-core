@@ -35,7 +35,7 @@ License:
     define
 */
 
-define(["snmd-core/js/GUI", "svgpathdata"], function (GUI, SVGPathData) {
+define(["snmd-core/js/GUI", "svgpathdata", "jquery"], function (GUI, SVGPathData, $) {
     'use strict';
 
     var Gauge = function (root, svg, opts, lines, qtip) {
@@ -59,11 +59,6 @@ define(["snmd-core/js/GUI", "svgpathdata"], function (GUI, SVGPathData) {
         /* Create SVG background */
         root.remove(svg);
         this.pathdata = new SVGPathData("m " + opts.dim.x + "," + opts.dim.y + " a " + (opts.dim.width / 2) + "," + (opts.dim.height) + " 0 0 1 " + opts.dim.width + ",0");
-
-        /* Set qtip if available */
-        if (typeof qtip !== "undefined") {
-            this.rect.qtip(qtip);
-        }
 
         this.last_stroke = '';
         this.last_val = -1;

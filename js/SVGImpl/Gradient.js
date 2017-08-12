@@ -35,7 +35,7 @@ License:
     define
 */
 
-define(["snmd-core/js/Core"], function (Core) {
+define(["snmd-core/js/Core", "jquery"], function (Core, $) {
     'use strict';
 
     var Gradient = function (root, svg, opts, qtip) {
@@ -53,7 +53,9 @@ define(["snmd-core/js/Core"], function (Core) {
 
         /* Set qtip if available */
         if (typeof qtip !== "undefined") {
-            this.svg.qtip(qtip);
+            var e = $(this.svg);
+            e.addClass('snmd-bcl-Widget');
+            e.qtip(qtip);
         }
 
         var s = [];

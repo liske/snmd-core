@@ -35,7 +35,7 @@ License:
     define
 */
 
-define([], function () {
+define(["jquery"], function ($) {
     'use strict';
 
     var Transform = function (root, svg, opts, qtip) {
@@ -53,7 +53,9 @@ define([], function () {
 
         /* Set qtip if available */
         if (typeof qtip !== "undefined") {
-            this.el.qtip(qtip);
+            var e = $(this.el);
+            e.addClass('snmd-bcl-Widget');
+            e.qtip(qtip);
         }
     };
     
