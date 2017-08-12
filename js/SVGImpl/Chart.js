@@ -35,7 +35,7 @@ License:
     define
 */
 
-define(["snmd-core/js/Core", "snmd-core/js/GUI", "js-logger"], function (Core, GUI, Logger) {
+define(["snmd-core/js/Core", "snmd-core/js/GUI", "js-logger", "jquery"], function (Core, GUI, Logger, $) {
     'use strict';
 
     var Chart = function (root, svg, opts, lines, qtip) {
@@ -90,7 +90,9 @@ define(["snmd-core/js/Core", "snmd-core/js/GUI", "js-logger"], function (Core, G
 
         /* Set qtip if available */
         if (typeof qtip !== "undefined") {
-            this.rect.qtip(qtip);
+            var r = $(this.rect);
+            r.addClass('snmd-bcl-Widget');
+            r.qtip(qtip);
         }
 
         /* SVG text elements showing current values */
