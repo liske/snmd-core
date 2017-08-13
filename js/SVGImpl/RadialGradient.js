@@ -7,7 +7,7 @@ Authors:
 
 Copyright Holder:
   2012 - 2013 (C) Thomas Liske [https://fiasko-nw.net/~thomas/]
-  2014 - 2016 (C) IBH IT-Service GmbH [https://www.ibh.de/]
+  2014 - 2017 (C) IBH IT-Service GmbH [https://www.ibh.de/]
 
 License:
   This program is free software; you can redistribute it and/or modify
@@ -63,7 +63,7 @@ define(["snmd-core/js/Core", "jquery"], function (Core, $) {
             s.push([this.opts.stops[stop], 'rgba(64, 64, 64, 0)']);
         }, this);
 
-        this.grad = root.linearGradient(null, Core.srGenID('lgrd'), s, this.opts.coords[0], this.opts.coords[1], this.opts.coords[2], this.opts.coords[3]);
+        this.grad = root.radialGradient(null, Core.srGenID('rgrd'), s);
 
         this.stops = {};
         Object.keys(this.opts.stops).forEach(function (stop, i) {
@@ -78,17 +78,27 @@ define(["snmd-core/js/Core", "jquery"], function (Core, $) {
     };
 
     Gradient.prototype.update = function (stops, state) {
-        if (typeof stops === 'undefined') {
-            return;
+        if (state !== this.last_state) {
+            this.opts.cls.state.forEach(function (cl) {
+                this.svg.classList.remove(cl + this.last_state);
+            }, this);
+
+            this.opts.cls.state.forEach(function (cl) {
+                this.svg.classList.add(cl + state);
+            }, this);
+
+            this.last_state = state;
         }
 
-        Object.keys(stops).forEach(function (stop) {
-            if (typeof stops[stop] !== "undefined") {
-                this.stops[stop].setAttribute('stop-color', 'hsl(' + stops[stop] + ',100%,50%)');
-            } else {
-                this.stops[stop].setAttribute('stop-color', 'rgba(64, 64, 64, 0)');
-            }
-        }, this);
+        if (typeof stops === 'object') {
+            Object.keys(stops).forEach(function (stop) {
+                if (typeof stops[stop] !== "undefined") {
+                    this.stops[stop].setAttribute('stop-color', 'hsl(' + stops[stop] + ',100%,50%)');
+                } else {
+                    this.stops[stop].setAttribute('stop-color', 'rgba(64, 64, 64, 0)');
+                }
+            }, this);
+        }
     };
 
     return Gradient;

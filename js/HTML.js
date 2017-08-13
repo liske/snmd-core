@@ -1,5 +1,5 @@
 /*
-SNMD - Scotty Network Management Dashboard
+SNMD - Simple Network Monitoring Dashboard
   https://github.com/DE-IBH/snmd/
 
 Authors:
@@ -35,7 +35,7 @@ License:
     define
 */
 
-define(["js-logger"], function (Logger) {
+define(["jquery", "js-logger"], function ($, Logger) {
     'use strict';
 
     var instance = null;

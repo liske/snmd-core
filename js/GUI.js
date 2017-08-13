@@ -1,5 +1,5 @@
 /*
-SNMD - Scotty Network Management Dashboard
+SNMD - Simple Network Monitoring Dashboard
   https://github.com/DE-IBH/snmd/
 
 Authors:
@@ -323,6 +323,7 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
                     ''
                 );
             }, this);
+            $('#snmd-views').css('transform', '');
         }
     };
 
@@ -343,6 +344,24 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
         }
     };
 
+    GUI.prototype.snmdNavRel = function (offset) {
+        var a = $('#snmd-nav').children('.srViewsNav').find('a');
+        var cur = 0;
+        var i;
+        for (i = 0; i < a.length; i++) {
+            if (a[i].hash === this.currentView) {
+                cur = i;
+                break;
+            }
+        }
+
+        cur += offset;
+        while(cur < 0) {
+            cur += a.length;
+        }
+        a[ cur % a.length ].click();
+    };
+    
     GUI.prototype.srInit = function (views) {
         this.views = views;
         var that = this;
@@ -521,7 +540,7 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
         this.screenTimeOut = window.setTimeout(this.srScreenTimeOut, this.TO_SCREEN);
 
         // Handle mouse moves (reset screen saver timeout)
-        $(document).mousemove((function () {
+        $(document).mousemove(function () {
             if (this.enableRotation) {
                 return;
             }
@@ -533,10 +552,10 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
                 this.screenTimeOut = window.setTimeout(this.srScreenTimeOut, this.TO_SCREEN);
                 $(document.body).removeClass('on-screensaver');
             }
-        }).bind(this));
+        }.bind(this));
 
         // Handle key press (reset screen saver time, handle shortcuts)
-        $(document).keydown((function (ev) {
+        $(document).keydown(function (ev) {
             this.screenState = 0;
 
             if (typeof this.screenTimeOut !== "undefined") {
@@ -545,32 +564,16 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
             }
 
             if (ev.keyCode === 37 || ev.keyCode === 39) {
-                var a = $('#snmd-nav').children('.srViewsNav').find('a');
-                var cur = 0;
-                var i;
-                for (i = 0; i < a.length; i++) {
-                    if (a[i].hash === this.currentView) {
-                        cur = i;
-                        break;
-                    }
-                }
-
-                cur += (ev.keyCode === 37 ? -1 : +1);
-                if (cur < 0) {
-                    cur += a.length;
-                }
-                cur = cur % a.length;
-
-                a[cur].click();
+                this.snmdNavRel(ev.keyCode === 37 ? -1 : +1);
             } else if (ev.keyCode === 38 || ev.keyCode === 40) {
                 var links = $('#snmd-nav').children('.srViewsNav').find('a');
                 links[(ev.keyCode === 40 ? 0 : links.length - 1)].click();
             }
 
-        }).bind(this));
+        }.bind(this));
 
         // Handle key press (reset screen saver time, handle shortcuts)
-        $(document).keypress((function (ev) {
+        $(document).keypress(function (ev) {
             // Select view by numpad
             if (ev.which > 47 && ev.which < 58) {
                 var key = (ev.which === 48 ? 'a' : String.fromCharCode(ev.which));
@@ -590,7 +593,15 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
                     return;
                 }
             });
-        }).bind(this));
+        }.bind(this));
+
+        $(document).on('swipeleft', function() {
+            this.snmdNavRel(1);
+        }.bind(this));
+
+        $(document).on('swiperight', function() {
+            this.snmdNavRel(-1);
+        }.bind(this));
     };
 
     return GUI.getInstance();

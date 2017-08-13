@@ -1,5 +1,5 @@
 /*
-SNMD - Scotty Network Management Dashboard
+SNMD - Simple Network Monitoring Dashboard
   https://github.com/DE-IBH/snmd/
 
 Authors:
@@ -86,13 +86,10 @@ define(["snmd-core/js/Polyfills", "snmd-core/js/GUI", "snmd-core/js/MQTT", "snmd
         }
         
         /* Establish MQTT connection */
-        if (typeof this.config.mqttws_host === "undefined") {
-            this.config.mqttws_host = window.location.hostname;
+        if (typeof this.config.mqttws_uri === "undefined") {
+            this.config.mqttws_uri = "ws://" + window.location.hostname + ":9001/";
         }
-        if (typeof this.config.mqttws_port === "undefined") {
-            this.config.mqttws_port = 9001;
-        }
-        MQTT.srInit(this.config.mqttws_host, this.config.mqttws_port);
+        MQTT.srInit(this.config.mqttws_uri);
 
         var vlinks = $("#snmd-title div.snmd-dd-list");
         if ($.isArray(this.config.vlinks) && this.config.vlinks.length > 0) {
@@ -116,12 +113,12 @@ define(["snmd-core/js/Polyfills", "snmd-core/js/GUI", "snmd-core/js/MQTT", "snmd
             'dataFilter': function (data, type) {
                 return JSON.minify(data);
             },
-            'success': (function (json) {
+            'success': function (json) {
                 GUI.srInit(json);
-            }).bind(this),
-            'error': (function (jqXHR, textStatus, errorThrown) {
+            }.bind(this),
+            'error': function (jqXHR, textStatus, errorThrown) {
                 Logger.error('[Core] Failed to load view list: ' + textStatus + ' - ' + errorThrown);
-            }).bind(this)
+            }.bind(this)
         });
     };
     
@@ -141,7 +138,7 @@ define(["snmd-core/js/Polyfills", "snmd-core/js/GUI", "snmd-core/js/MQTT", "snmd
     };
     
     Core.prototype.snmdInit = function (snmd_conf) {
-        Logger.info('[Core] snmd v' + this.version + ' - Scotty Network Management Dashboard');
+        Logger.info('[Core] snmd v' + this.version + ' - Simple Network Management Dashboard');
 
         // Load widget packages from snmd config
         if (typeof snmd_conf.snmd_widgets === "object") {
@@ -151,31 +148,28 @@ define(["snmd-core/js/Polyfills", "snmd-core/js/GUI", "snmd-core/js/MQTT", "snmd
                 Boot.init(this.prefix, this['package']);
             };
 
-            var i;
-            for (i in snmd_conf.snmd_widgets) {
-                var lib = snmd_conf.snmd_widgets[i];
-
-                // Build include search path
+            snmd_conf.snmd_widgets.forEach(function (lib) {
+                /* Build include search path */
                 var req_cfg = {
                     paths: {}
                 };
                 req_cfg.paths[lib['package']] = lib['package'] + (snmd_conf.snmd_devel === true ? '' : '/dist');
                 require.config(req_cfg);
 
-                // Bootstrap widget library
+                /* Bootstrap widget library */
                 require([lib['package'] + "/js/Boot"], fn.bind(lib));
                 SVGWidget.snmdRegisterPrefix(lib.prefix, lib['package']);
-            }
+            }, this);
         }
 
         /* Load default sound set */
         Sound.snmdLoadSet('default');
 
-        this.srInitLoad('configs/' + this.srURLParam('config', 'default') + '.json', (function () {
+        this.srInitLoad('configs/' + this.srURLParam('config', 'default') + '.json', function () {
             this.srInitLoad('configs/default.json', function (jqXHR, textStatus, errorThrown) {
                 Logger.error('[Core] Failed to load configuration: ' + textStatus + ' - ' + errorThrown);
             });
-        }).bind(this));
+        }.bind(this));
     };
 
     Core.prototype.snmdFinishLoading = function (subject) {
@@ -211,7 +205,7 @@ define(["snmd-core/js/Polyfills", "snmd-core/js/GUI", "snmd-core/js/MQTT", "snmd
 
         value = value / this.si_facts[j];
         if (typeof fracts === "undefined" || isNaN(fracts)) {
-            if (value < 10) {
+            if (value < 10 && this.si_facts[j] > 1) {
                 fracts = 1;
             } else {
                 fracts = 0;

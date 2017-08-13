@@ -1,5 +1,5 @@
 /*
-SNMD - Scotty Network Management Dashboard
+SNMD - Simple Network Monitoring Dashboard
   https://github.com/DE-IBH/snmd/
 
 Authors:
@@ -35,7 +35,7 @@ License:
     define
 */
 
-define(["snmd-core/js/Core", "snmd-core/js/GUI", "js-logger"], function (Core, GUI, Logger) {
+define(["snmd-core/js/Core", "snmd-core/js/GUI", "js-logger", "jquery"], function (Core, GUI, Logger, $) {
     'use strict';
 
     var Chart = function (root, svg, opts, lines, qtip) {
@@ -44,8 +44,8 @@ define(["snmd-core/js/Core", "snmd-core/js/GUI", "js-logger"], function (Core, G
         this.lines = lines;
 
         /* Prepare line classes */
+        var l;
         if (typeof this.opts.lcls !== "undefined") {
-            var l;
             for (l = 0; l < this.lines.length; l++) {
                 var classes = this.opts.lcls.slice(0);
                 var f = function (cl) {
@@ -90,7 +90,9 @@ define(["snmd-core/js/Core", "snmd-core/js/GUI", "js-logger"], function (Core, G
 
         /* Set qtip if available */
         if (typeof qtip !== "undefined") {
-            this.rect.qtip(qtip);
+            var r = $(this.rect);
+            r.addClass('snmd-bcl-Widget');
+            r.qtip(qtip);
         }
 
         /* SVG text elements showing current values */
@@ -100,7 +102,6 @@ define(["snmd-core/js/Core", "snmd-core/js/GUI", "js-logger"], function (Core, G
         if (lines.length > 1) {
             this.txt[1] = root.text(opts.dim.x + opts.dim.width, opts.dim.y, '');
         }
-        var l;
         for (l = 0; l < this.txt.length; l++) {
             if (typeof this.opts.tcls !== "undefined") {
                 this.opts.tcls.forEach(function (cl) {
@@ -131,7 +132,12 @@ define(["snmd-core/js/Core", "snmd-core/js/GUI", "js-logger"], function (Core, G
         var maxy = (typeof this.opts.axis[0].max === "undefined" ? 0 : this.opts.axis[0].max);
         var i;
         for (i = 0; i < this.data_lines.length; i++) {
-            this.data_lines[i].push(data[i]);
+            v = data[i];
+            if (typeof v !== "number" || isNaN(v)) {
+                v = 0;
+            }
+
+            this.data_lines[i].push(v);
             maxy = Math.max(maxy, Math.max.apply(null, this.data_lines[i]));
         }
         
@@ -218,12 +224,6 @@ define(["snmd-core/js/Core", "snmd-core/js/GUI", "js-logger"], function (Core, G
                 }
 
                 var v = this.data_lines[l][t];
-                if (typeof v === "undefined") {
-                    v = 0;
-                }
-                if (isNaN(v)) {
-                    v = 0;
-                }
 
                 /* Prepare for log scale */
                 if (this.opts.axis[0].scale === "log") {

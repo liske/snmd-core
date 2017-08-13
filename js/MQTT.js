@@ -1,5 +1,5 @@
 /*
-SNMD - Scotty Network Management Dashboard
+SNMD - Simple Network Monitoring Dashboard
   https://github.com/DE-IBH/snmd/
 
 Authors:
@@ -87,15 +87,16 @@ define(["snmd-core/js/Core", "jquery", "paho", "js-logger"], function (Core, $, 
 
     MQTT.prototype.srConnect = function () {
         this.srStatus('yellow');
-        Logger.debug('[MQTT] Connecting to broker at ' + this.broker_host + ':' + this.broker_port + '...');
-        this.client = new Paho.MQTT.Client(this.broker_host, this.broker_port, '', this.clientId);
+        Logger.debug('[MQTT] Connecting to broker at ' + this.broker_uri + '...');
+        this.client = new Paho.MQTT.Client(this.broker_uri, this.clientId);
 
                
-        this.client.disconnect = (function () {
+        this.client.disconnect = function () {
             Logger.error("[MQTT] Disconnected");
             this.srStatus('#7f0000');
-        }).bind(this);
-        this.client.onConnectionLost = (function (res) {
+        }.bind(this);
+
+        this.client.onConnectionLost = function (res) {
             this.srStatus('#ff0000');
             Logger.error("[MQTT] Connection lost: " + res.errorMessage);
 
@@ -104,8 +105,9 @@ define(["snmd-core/js/Core", "jquery", "paho", "js-logger"], function (Core, $, 
             }
             this.srStatus('orange');
             this.reconnTO = setTimeout(this.srConnect.bind(this), 5000);
-        }).bind(this);
-        this.client.onMessageArrived = (function (msg) {
+        }.bind(this);
+
+        this.client.onMessageArrived = function (msg) {
             this.srStatus('#00ff00');
             setTimeout(function () {
                 this.srStatus('#007f00');
@@ -128,21 +130,20 @@ define(["snmd-core/js/Core", "jquery", "paho", "js-logger"], function (Core, $, 
             }
             
             return 1;
-        }).bind(this);
+        }.bind(this);
 
         this.client.connect({
-            onSuccess: (function () {
-                Logger.info('[MQTT] Connected to mqtt://' + this.broker_host + ':' + this.broker_port);
+            onSuccess: function () {
+                Logger.info('[MQTT] Connected to ' + this.broker_uri);
                 this.srStatus('#7f0000');
 
-                var topic;
-                for (topic in this.topics) {
+                Object.keys(this.topics).forEach(function (topic) {
                     this.client.subscribe(topic);
-                }
+                }, this);
 
                 require("snmd-core/js/Core").snmdFinishLoading();
-            }).bind(this),
-            onFailure: (function () {
+            }.bind(this),
+            onFailure: function () {
                 if (this.reconnTO) {
                     clearTimeout(this.reconnTO);
                 }
@@ -150,16 +151,15 @@ define(["snmd-core/js/Core", "jquery", "paho", "js-logger"], function (Core, $, 
                 this.reconnTO = setTimeout(this.srConnect.bind(this), 5000);
 
                 require("snmd-core/js/Core").snmdFinishLoading();
-            }).bind(this)
+            }.bind(this)
         });
     };
     
-    MQTT.prototype.srInit = function (host, port, clientId) {
+    MQTT.prototype.srInit = function (broker_uri, clientId) {
         if (typeof clientId === "undefined") {
             clientId = 'RND' + Math.floor(Math.random() * 16777215).toString(16);
         }
-        this.broker_host = host;
-        this.broker_port = Number(port);
+        this.broker_uri = broker_uri;
         this.clientId = clientId;
          
         this.srConnect();

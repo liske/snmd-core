@@ -1,5 +1,5 @@
 /*
-SNMD - Scotty Network Management Dashboard
+SNMD - Simple Network Monitoring Dashboard
   https://github.com/DE-IBH/snmd/
 
 Authors:
@@ -106,7 +106,7 @@ define(["snmd-core/js/MQTT", "require", "js-logger"], function (MQTT, require, L
                 return;
             }
 
-            require([this.widgetPrefixes[res[1]] + "/js/" + res[2]], function (WClass) {
+            require([this.widgetPrefixes[res[1]] + "/js/Widgets/" + res[2]], function (WClass) {
                 try {
                     var obj = new WClass(root, svg, desc);
                     if (typeof desc.topics !== "undefined") {
