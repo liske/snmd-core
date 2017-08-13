@@ -38,10 +38,9 @@ License:
 define(["snmd-core/js/GUI", "svgpathdata", "jquery"], function (GUI, SVGPathData, $) {
     'use strict';
 
-    var Gauge = function (root, svg, opts, lines, qtip) {
+    var Gauge = function (root, svg, opts, qtip) {
         /* Meta data */
         this.opts = opts;
-        this.lines = lines;
         this.cls = opts.cls.base;
 
         /* SVG container */
@@ -66,14 +65,18 @@ define(["snmd-core/js/GUI", "svgpathdata", "jquery"], function (GUI, SVGPathData
         var alpha = Math.PI;
         this.pathdata.commands[1].x = (1 - Math.cos(alpha / 2)) * 2 * this.pathdata.commands[1].rX;
         this.pathdata.commands[1].y = -1 * Math.sin(alpha) * this.pathdata.commands[1].rY;
-        this.root.path(this.pathdata.encode(), {
+        var el = this.root.path(this.pathdata.encode(), {
             'class': this.cls.map(function (cl) {
                 return cl + '-BG';
             }).join(' ')
         });
         
-        
-        //this.update(1, 1, '#404040');
+        /* Set qtip if available */
+        if (typeof qtip !== "undefined") {
+            el = $(el);
+            el.addClass('snmd-bcl-Widget');
+            el.qtip(qtip);
+        }
     };
     
     Gauge.prototype.update = function (val, max, state) {
