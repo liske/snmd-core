@@ -453,9 +453,15 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
                 }
             });
 
-            if (window.location.hash !== "undefined") {
+            if (window.location.hash !== "") {
                 var nth = parseInt(window.location.hash.replace(/^#/, ""), 10) - 1;
-                nav.find('a:eq(' + (nth % views.length) + ')').click();
+                var a = nav.find('a:eq(' + (nth % views.length) + ')');
+                if(a.length === 0) {
+                    nav.find('a').filter(':first').click();
+                }
+                else {
+                    a.click();
+                }
             }
             else {
                 nav.find('a').filter(':first').click();
