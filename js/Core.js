@@ -205,7 +205,7 @@ define(["snmd-core/js/Polyfills", "snmd-core/js/GUI", "snmd-core/js/MQTT", "snmd
 
         value = value / this.si_facts[j];
         if (typeof fracts === "undefined" || isNaN(fracts)) {
-            if (value < 10) {
+            if (value < 10 && j > 0) {
                 fracts = 1;
             } else {
                 fracts = 0;
