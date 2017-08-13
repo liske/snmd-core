@@ -1,5 +1,5 @@
 /*
-SNMD - Scotty Network Management Dashboard
+SNMD - Simple Network Monitoring Dashboard
   https://github.com/DE-IBH/snmd/
 
 Authors:
@@ -7,7 +7,7 @@ Authors:
 
 Copyright Holder:
   2012 - 2013 (C) Thomas Liske [https://fiasko-nw.net/~thomas/]
-  2014 - 2016 (C) IBH IT-Service GmbH [https://www.ibh.de/]
+  2014 - 2017 (C) IBH IT-Service GmbH [https://www.ibh.de/]
 
 License:
   This program is free software; you can redistribute it and/or modify

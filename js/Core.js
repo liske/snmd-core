@@ -1,5 +1,5 @@
 /*
-SNMD - Scotty Network Management Dashboard
+SNMD - Simple Network Monitoring Dashboard
   https://github.com/DE-IBH/snmd/
 
 Authors:
@@ -138,7 +138,7 @@ define(["snmd-core/js/Polyfills", "snmd-core/js/GUI", "snmd-core/js/MQTT", "snmd
     };
     
     Core.prototype.snmdInit = function (snmd_conf) {
-        Logger.info('[Core] snmd v' + this.version + ' - Scotty Network Management Dashboard');
+        Logger.info('[Core] snmd v' + this.version + ' - Simple Network Management Dashboard');
 
         // Load widget packages from snmd config
         if (typeof snmd_conf.snmd_widgets === "object") {
