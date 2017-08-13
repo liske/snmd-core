@@ -32,11 +32,12 @@ License:
 */
 
 /*global
-    DEBUG,
-    define
+    define,
+    document,
+    window
 */
 
-define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-core/js/SVG", "snmd-core/js/Polyfills", "require", "jquery", "sprintf", "js-cookie", "js-logger", "qtip2", "css!qtip2"], function (Core, HTML, Sound, SVG, Polyfills, require, $, sprintf, cookie, Logger, qtip2) {
+define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-core/js/SVG", "snmd-core/js/Polyfills", "require", "jquery", "sprintf", "js-cookie", "js-logger", "qtip2", "css!qtip2"], function (Core, HTML, Sound, SVG, Polyfills, require, $, sprintf, cookie, Logger) {
     'use strict';
 
     var instance = null;
@@ -386,7 +387,7 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
             var step = 0;
             var r = (Object.keys(views).length > 1 ? (1906 / 2) / Math.tan(Math.PI / Object.keys(views).length) : 0);
 
-            Object.keys(views).forEach(function (k, idx, ary) {
+            Object.keys(views).forEach(function (k) {
                 div.append('<div class="svgview" id="' + that.views2id[k] + '"></div>');
 
                 switch (views[k].render) {
@@ -416,6 +417,8 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
 
                 that.currenStep = $(that.currentView).prevAll().length;
                 that.snmdAlignView(r, -dps * that.currenStep);
+                window.location.hash = '#' + (that.currenStep + 1);
+
 
                 return false;
             }).filter(':first').click();
@@ -451,7 +454,7 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
             });
 
             if (window.location.hash !== "undefined") {
-                var nth = parseInt(window.location.hash.replace(/^#srView-/, ""), 10) - 1;
+                var nth = parseInt(window.location.hash.replace(/^#/, ""), 10) - 1;
                 nav.find('a:eq(' + nth + ')').click();
             }
 
