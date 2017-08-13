@@ -421,7 +421,7 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
 
 
                 return false;
-            }).filter(':first').click();
+            });
 
             var transTO;
             $('#snmd-views').on('transitionend', function () {
@@ -455,7 +455,10 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
 
             if (window.location.hash !== "undefined") {
                 var nth = parseInt(window.location.hash.replace(/^#/, ""), 10) - 1;
-                nav.find('a:eq(' + nth + ')').click();
+                nav.find('a:eq(' + (nth % views.length) + ')').click();
+            }
+            else {
+                nav.find('a').filter(':first').click();
             }
 
             var ctrl = $('ul.snmd-ctrl').empty();
