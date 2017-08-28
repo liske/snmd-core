@@ -2,8 +2,8 @@
 About
 *****
 
-*snmd* uses HTML5 and JavaScript code to build a monitoring dashboard. Any data
-to be visualized needs to be published via MQTT.
+*snmd* uses HTML5 and JavaScript code to build dashboards visualizing monitoring and process states. Any data
+to be visualized needs to be available by a MQTT subscription.
 
 
 3rd party libraries
@@ -11,8 +11,8 @@ to be visualized needs to be published via MQTT.
 
 The following JavaScript libraries are used by *snmd* via *bower*:
 
-* `alameda`_1.1.0
-* `favico.js`_0.3.10
+* `alameda`_ 1.1.0
+* `favico.js`_ 0.3.10
 * `Font Awesome`_ 4.7.0
 * `howler.js`_ 2.0.2
 * `jQuery`_ 2.2.4
@@ -38,7 +38,7 @@ The following JavaScript libraries are used by *snmd* via *bower*:
 .. _sprintf.js: https://github.com/alexei/sprintf.js
 
 
-The following legacy JavaScript libraries are embedded (and minified):
+The following JavaScript libraries are minified and embedded since missing *bower* support:
 
 * `jQuery SVG`_ 1.5.0
 * `JSON.minify`_
