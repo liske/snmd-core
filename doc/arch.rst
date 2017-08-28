@@ -23,7 +23,7 @@ The nagios plugin `nag2mqtt <https://github.com/DE-IBH/nag2mqtt/>`_ can be used 
 MQTT Message Broker
 ===================
 
-A message broker is required to make the data of the DAQ layer available to the SNMD frontends. The broker needs to provide a web socket port since the frontend is a native HTML5 app. The usage of `Mosquitto <https://mosquitto.org/>`_ is recommended.
+A message broker is required to make the data of the DAQ layer available to the SNMD frontends. The broker needs to provide a web socket port since the frontend is a native HTML5 app. The usage of `Mosquitto <https://mosquitto.org/>`_ as MQTT broker is recommended.
 
 
 Web Server
