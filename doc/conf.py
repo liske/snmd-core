@@ -4,6 +4,10 @@ project = 'snmd'
 master_doc = 'index'
 copyright = u'2016 - 2017, Thomas Liske'
 
+extensions = [
+    'sphinx.ext.autosectionlabel',
+]
+
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
 html_logo='_static/snmd-logo.svg'

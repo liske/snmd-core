@@ -17,3 +17,6 @@ Contents:
    config.rst
    usage.rst
    widgets.rst
+   appx_mosquitto.rst
+   appx_nag2mqtt.rst
+   appx_nginx.rst
