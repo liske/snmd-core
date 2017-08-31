@@ -1,8 +1,8 @@
 .. _appx-mosquitto:
 
-************
-Appendix: Mosquitto Configuration
-************
+*************************
+Appendix: Mosquitto Setup
+*************************
 
 Installation
 ============

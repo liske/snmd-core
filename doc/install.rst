@@ -45,10 +45,10 @@ Preparation
 
 Install *git*, *nodejs*, *npm* and *bower* on the web server. On *Debian GNU/Linux* use:
 
-.. code:: console
+.. code-block:: console
 
-  apt-get install git nodejs nodejs-legacy npm
-  npm install --global bower
+  # apt-get install git nodejs nodejs-legacy npm
+  # npm install --global bower
 
 .. hint::
   The package *nodejs-legacy* is required as the *bower* command uses
@@ -60,13 +60,13 @@ Download or clone SNMD
 
 Download the latest `release archive <https://github.com/DE-IBH/snmd/releases>`_ or clone the development repository using *git*:
 
-.. code:: console
+.. code-block:: console
 
   $~/ git clone https://github.com/liske/snmd.git
 
 You need to pull the *bower* dependencies in your local SNMD directory:
 
-.. code:: console
+.. code-block:: console
 
   $~/snmd/ bower update
 
