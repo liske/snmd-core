@@ -72,9 +72,9 @@ For non-Debian systems you need to build nag2mqtt from the sources.
 Configuration
 =============
 
-You need to configure the ``nag2mqtt.conf`` to fit your needs:
+You need to configure the ``nag2mqtt.conf`` to fit your needs (Perl syntax):
 
-.. code-block:: console
+.. code-block:: perl
     :caption: /etc/nag2mqtt/nag2mqtt.conf
 
     # Directory used by NEB plugin (neb2mqtt.so)
