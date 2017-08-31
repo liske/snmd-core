@@ -22,17 +22,11 @@ You need a running `Nagios Core <https://www.nagios.org/projects/nagios-core/>`_
 `Check_MK <https://mathias-kettner.de/check_mk.html>`_.
 
 
-Installation
-============
-
-To install nag2mqtt on *Debian GNU/Linux* it is recommended to use the prebuild packages. For non-Debian
-systems you need to build nag2mqtt from the sources.
-
-
 Perl
 ----
 
-Debian has no package for the Perl module ``AnyEvent::MQTT`` available. You can build them by using *dh-make-perl*:
+nag2sms has several dependencies on Perl modules available in `CPAN <https://www.cpan.org/>`_. Although most modules are
+already packaged, Debian lacks a package for the ``AnyEvent::MQTT`` module. You can build it by using *dh-make-perl*:
 
 - install packages *libanyevent-perl* and *dh-make-perl* to build the missing Debian packages from CPAN modules
 .. code-block:: console
@@ -60,12 +54,50 @@ Debian has no package for the Perl module ``AnyEvent::MQTT`` available. You can 
     # dpkg -i libanyevent-mqtt-perl_1.172121-1_all.deb
 
 
-nag2mqtt
---------
+Installation
+============
 
-Download the lae
+To install nag2mqtt on *Debian GNU/Linux* it is recommended to use the `prebuild package <https://github.com/DE-IBH/nag2mqtt/releases>`_:
+
+.. code-block:: console
+
+    # dpkg -i nag2mqtt_0.4_amd64.deb
+    # apt-get install -f
+
+
+For non-Debian systems you need to build nag2mqtt from the sources.
 
 
 
 Configuration
 =============
+
+You need to configure the ``nag2mqtt.conf`` to fit your needs:
+
+.. code-block:: console
+    :caption: /etc/nag2mqtt/nag2mqtt.conf
+
+    # Directory used by NEB plugin (neb2mqtt.so)
+    #$conf{base_dir} = q(/run/nag2mqtt/publish);
+
+    # MQTT topic used by nag2mqttd
+    #$conf{base_topic} = q(nagios);
+
+    # MQTT broker host
+    #$mqtt_conf{host} = q(localhost);
+
+    # MQTT last will topic
+    #$mqtt_conf{will_topic} = q(nagios/hosts/).hostname;
+
+    # MQTT client ID
+    #$mqtt_conf{client_id} = q(nag2mqtt);
+
+    # MQTT user name
+    #$mqtt_conf{user_name} = 'foo';
+
+    # MQTT password
+    #$mqtt_conf{password} = 'secret';
+
+
+    # DO NOT REMOVE
+    1;
