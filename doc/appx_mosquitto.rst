@@ -34,12 +34,12 @@ You need to explicitly enable web socket access in *Mosqitto* and allowing anony
     protocol websockets
 
 .. hint::
-    If SNMD is exposed you should setup a reverse proxy which enforces authentication (see also :ref:`appx-nginx`)
-    and prevent direct MQTT access.
+    If SNMD is exposed to the internet you should setup a reverse proxy which enforces authentication
+    (see also :ref:`appx-nginx`) and prevent direct MQTT access.
 
 
-The ACL file ``/etc/mosquitto/users.acl`` controls read and write access to MQTT topics. The following example
-allows anonymous read access to all topics and write access to topics below ``nagios/`` for the ``nag2mqtt`` user.
+The ACL file ``/etc/mosquitto/users.acl`` defines subscribe and publishing access on MQTT topics. The following example
+allows anonymous subscribe access to all topics and publishing access for the ``nag2mqtt`` user to all topics below ``nagios/``.
 
 .. code-block:: none
     :caption: /etc/mosquitto/users.acl
@@ -47,10 +47,6 @@ allows anonymous read access to all topics and write access to topics below ``na
     topic read #
     user nag2mqtt
     topic readwrite nagios/#
-
-.. hint::
-    If SNMD is exposed you should setup a reverse proxy which enforces authentication (see also :ref:`appx-nginx`)
-    and prevent direct MQTT access.
 
 The users password file can be created using ``mosquitto_passwd`` command:
 
