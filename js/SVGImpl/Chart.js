@@ -130,7 +130,7 @@ define(["snmd-core/js/Core", "snmd-core/js/GUI", "js-logger", "jquery"], functio
         /* Record current data points */
         this.data_ts.push(ts);
         var maxy = (typeof this.opts.axis[0].max === "undefined" ? 0 : this.opts.axis[0].max);
-        var i;
+        var i, v;
         for (i = 0; i < this.data_lines.length; i++) {
             v = data[i];
             if (typeof v !== "number" || isNaN(v)) {
@@ -223,7 +223,7 @@ define(["snmd-core/js/Core", "snmd-core/js/GUI", "js-logger", "jquery"], functio
                     points.push([x, oy]);
                 }
 
-                var v = this.data_lines[l][t];
+                v = this.data_lines[l][t];
 
                 /* Prepare for log scale */
                 if (this.opts.axis[0].scale === "log") {
