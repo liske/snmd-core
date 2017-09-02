@@ -357,10 +357,10 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
         }
 
         cur += offset;
-        while(cur < 0) {
+        while (cur < 0) {
             cur += a.length;
         }
-        a[ cur % a.length ].click();
+        a[cur % a.length].click();
     };
     
     GUI.prototype.srInit = function (views) {
@@ -456,14 +456,12 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
             if (window.location.hash !== "") {
                 var nth = parseInt(window.location.hash.replace(/^#/, ""), 10) - 1;
                 var a = nav.find('a:eq(' + (nth % views.length) + ')');
-                if(a.length === 0) {
+                if (a.length === 0) {
                     nav.find('a').filter(':first').click();
-                }
-                else {
+                } else {
                     a.click();
                 }
-            }
-            else {
+            } else {
                 nav.find('a').filter(':first').click();
             }
 
@@ -607,11 +605,11 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
             });
         }.bind(this));
 
-        $(document).on('swipeleft', function() {
+        $(document).on('swipeleft', function () {
             this.snmdNavRel(1);
         }.bind(this));
 
-        $(document).on('swiperight', function() {
+        $(document).on('swiperight', function () {
             this.snmdNavRel(-1);
         }.bind(this));
     };
