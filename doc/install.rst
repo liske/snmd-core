@@ -19,7 +19,7 @@ MQTT publishing
 
 Data needs to be published on MQTT so it can be visualized by SNMD. Look at `nag2mqtt <https://github.com/DE-IBH/nag2mqtt/>`_ to publish Nagios performance data to MQTT.
 
-More details on deploying *nag2mqtt* can be found in :ref:`appx-nag2mqtt`.
+More details on deploying *nag2mqtt* can be found in the `nag2mqtt docs <http://snmd.readthedocs.io/projects/nag2mqtt/en/latest/>`_.
 
 
 Web server for SNMD
