@@ -23,7 +23,7 @@ all: $(DISTS) dist/lib/svg-1.5.0/jquery.svg.css
 dist/js/%.js: js/%.js
 	uglifyjs \
 	    --output $@ \
-	    --source-map $(subst .js,.map,$@) \
+	    --source-map \
 	    --compress \
 	    --mangle \
 	    --lint \
