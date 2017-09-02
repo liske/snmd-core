@@ -55,6 +55,13 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
         this.viewFinalStates = {};
         this.navbarState = 0;
         this.currentStep = 0;
+        this.resizeTO = undefined;
+        this.viewConf = {
+            views: NaN,
+            dps: NaN,
+            r: NaN,
+            is_3d: false
+        };
         this.views = {};
         this.views2id = {};
         this.enabledScreenTO = true;
@@ -299,23 +306,12 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
         }
 
         if (is_3d) {
+            this.viewConf.is_3d = true;
             $(document.body).addClass('snmd-in-3d').removeClass('snmd-in-2d');
 
-            var dps = 360 / Object.keys(this.views).length;
-            var r = (Object.keys(this.views).length > 1 ? (1906 / 2) / Math.tan(Math.PI / Object.keys(this.views).length) : 0);
-            var step = 0;
-
-            Object.keys(this.views).forEach(function (k) {
-                $('#' + this.views2id[k]).css(
-                    'transform',
-                    'rotateY(' + (dps * step) + 'deg) translateZ(' + r + 'px)'
-                );
-
-                step += 1;
-            }, this);
-
-            this.snmdAlignView(r, -dps * this.currenStep);
+            this.resizeHandler();
         } else {
+            this.viewConf.is_3d = false;
             $(document.body).addClass('snmd-in-2d').removeClass('snmd-in-3d');
 
             Object.keys(this.views).forEach(function (k) {
@@ -336,11 +332,11 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
         $(document.body).addClass('solarized-light').removeClass('solarized-dark');
     };
 
-    GUI.prototype.snmdAlignView = function (r, a) {
-        if ($(document.body).hasClass('snmd-in-3d')) {
+    GUI.prototype.snmdAlignView = function () {
+        if (this.viewConf.is_3d) {
             $('#snmd-views').css(
                 'transform',
-                'translateZ(-' + r  + 'px) rotateY(' + a + 'deg)'
+                'translateZ(-' + this.viewConf.r + 'px) rotateY(' + (this.currentStep * -this.viewConf.dps) + 'deg)'
             );
         }
     };
@@ -362,11 +358,50 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
         }
         a[cur % a.length].click();
     };
+
+    /*
+     * In 3D mode we need to recalculate the distance of the views from the origin.
+     */
+    GUI.prototype.resizeHandler = function () {
+        if (this.viewConf.is_3d) {
+            this.viewConf.vw = $("#snmd-vouter").width();
+            this.viewConf.r = (this.numViews > 1 ? (this.viewConf.vw / 2) / Math.tan(Math.PI / this.numViews) : 0);
+
+            var step = 0;
+            Object.keys(this.views).forEach(function (k) {
+                $('#' + this.views2id[k]).css(
+                    'transform',
+                    'rotateY(' + (this.viewConf.dps * step) + 'deg) translateZ(' + this.viewConf.r + 'px)'
+                );
+
+                step += 1;
+            }, this);
+
+            this.snmdAlignView();
+        }
+    };
+
+    /*
+     * Run resizeHandler() after 200ms of no ongoing resize to reduze CPU load while resizing (Chrome).
+     */
+    GUI.prototype.resizeHandlerThrottle = function () {
+        if (this.viewConf.is_3d) {
+            if (this.resizeTO) {
+                clearTimeout(this.resizeTO);
+            }
+            this.resizeTO = setTimeout(this.resizeHandler.bind(this), 200);
+        }
+    };
     
     GUI.prototype.srInit = function (views) {
         this.views = views;
-        var that = this;
+        this.numViews = views.length;
 
+        this.viewConf.dps = 360 / this.numViews;
+        $(window).on('resize', this.resizeHandlerThrottle.bind(this));
+        this.resizeHandler();
+
+        var that = this;
         $('#snmd-nav').each(function () {
             var nav = $(this).children('.srViewsNav');
             Object.keys(views).forEach(function (k) {
@@ -383,10 +418,7 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
             }, that);
 
             var div = $('#snmd-views');
-            var dps = 360 / Object.keys(views).length;
             var step = 0;
-            var r = (Object.keys(views).length > 1 ? (1906 / 2) / Math.tan(Math.PI / Object.keys(views).length) : 0);
-
             Object.keys(views).forEach(function (k) {
                 div.append('<div class="svgview" id="' + that.views2id[k] + '"></div>');
 
@@ -415,9 +447,9 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
 
                 nav.find('a').removeClass('selected').filter(this).addClass('selected');
 
-                that.currenStep = $(that.currentView).prevAll().length;
-                that.snmdAlignView(r, -dps * that.currenStep);
-                window.location.hash = '#' + (that.currenStep + 1);
+                that.currentStep = $(that.currentView).prevAll().length;
+                that.snmdAlignView();
+                window.location.hash = '#' + (that.currentStep + 1);
 
 
                 return false;
