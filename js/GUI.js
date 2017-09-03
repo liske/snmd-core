@@ -37,7 +37,7 @@ License:
     window
 */
 
-define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-core/js/SVG", "snmd-core/js/Polyfills", "require", "jquery", "sprintf", "js-cookie", "js-logger", "qtip2", "css!qtip2"], function (Core, HTML, Sound, SVG, Polyfills, require, $, sprintf, cookie, Logger) {
+define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Notify", "snmd-core/js/Sound", "snmd-core/js/SVG", "snmd-core/js/Polyfills", "require", "jquery", "sprintf", "js-cookie", "js-logger", "qtip2", "css!qtip2"], function (Core, HTML, Notify, Sound, SVG, Polyfills, require, $, sprintf, cookie, Logger) {
     'use strict';
 
     var instance = null;
@@ -128,6 +128,27 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
                         descr: "Disable notification sounds.",
                         cb: function () {
                             Sound.snmdMute();
+                        }
+                    }
+                ]
+            },
+            'notify': {
+                shortcut: "n".charCodeAt(),
+                title: "Toggle browser notifications.",
+                state: 0,
+                states: [
+                    {
+                        facls: "comment",
+                        descr: "Enable browser notifications.",
+                        cb: function () {
+                            Notify.enable();
+                        }
+                    },
+                    {
+                        facls: "comment-o",
+                        descr: "Disable browser notifications.",
+                        cb: function () {
+                            Notify.disable();
                         }
                     }
                 ]
@@ -280,6 +301,8 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
     GUI.prototype.srStateChanged = function (root, svg, state) {
         this.viewStates[root][svg] = state;
 
+        Notify.notify(svg + " is now " + state);
+
         var lastState = this.viewFinalStates[root];
         if (this.viewFinalStates[root] < state) {
             this.viewFinalStates[root] = state;
@@ -392,7 +415,19 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
             this.resizeTO = setTimeout(this.resizeHandler.bind(this), 200);
         }
     };
-    
+
+    /*
+     * Set control button state to a explicit value.
+     */
+    GUI.prototype.setCtrlState = function (name, state) {
+        var c = this.ctrlButtons[name];
+
+        c.icon.removeClass("fa-" + c.states[c.state].facls);
+        c.state = parseInt(state, 10) % c.states.length;
+        c.icon.addClass("fa-" + c.states[c.state].facls);
+        c.states[c.state].cb.call(this);
+    };
+
     GUI.prototype.srInit = function (views) {
         this.views = views;
         this.numViews = views.length;
@@ -534,16 +569,13 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
                         text: ul
                     }
                 });
+                that.ctrlButtons[el].icon = icon;
                 that.ctrlButtons[el].button = button;
 
                 /* Restore setting from cookie */
                 var co = cookie.get('snmd-ctrl-' + el);
                 if (typeof co !== "undefined") {
-                    icon.removeClass("fa-" + c.states[c.state].facls);
-                    c.state = parseInt(co, 10) % c.states.length;
-                    icon.addClass("fa-" + c.states[c.state].facls);
-
-                    c.states[c.state].cb.call(that);
+                    that.setCtrlState(el, co);
                 }
 
                 ctrl.append(
@@ -646,5 +678,6 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
         }.bind(this));
     };
 
+    
     return GUI.getInstance();
 });

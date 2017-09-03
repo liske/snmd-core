@@ -237,7 +237,7 @@ define(["snmd-core/js/Polyfills", "snmd-core/js/GUI", "snmd-core/js/MQTT", "snmd
 
         return "Orange";
     };
-    
+
     Core.prototype.srGenID = function (prefix) {
         this.genid += 1;
         return 'snmd-genid-' + prefix + '-' + this.genid;
