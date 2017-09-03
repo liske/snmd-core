@@ -68,6 +68,11 @@ define(["snmd-core/js/States", "push", "jquery", "js-logger"], function (States,
         }
 
         if (typeof this.notifications[prefix][topic] === "undefined") {
+            if (state === 0) {
+                this.notifications[prefix][topic] = state;
+                return;
+            }
+
             this.notifications[prefix][topic] = undefined;
         }
 
