@@ -181,7 +181,7 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Notify", "snmd-c
                         cb: function () {
                             this.enabledScreenTO = false;
                             this.enableRotation = true;
-                            this.srScreenTimeOut();
+                            this.snmdNavRel(1);
                         }
                     }
                 ]
