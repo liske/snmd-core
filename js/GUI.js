@@ -138,7 +138,7 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Notify", "snmd-c
                 state: 0,
                 states: [
                     {
-                        facls: "comment",
+                        facls: "commenting",
                         descr: "Enable browser notifications.",
                         cb: function () {
                             Notify.enable();
@@ -585,6 +585,13 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Notify", "snmd-c
                 );
             });
         }, this);
+
+        /* Check if Desktop Notifications are available. */
+        Notify.checkPerm(null, function () {
+            that.setCtrlState('notify', 1);
+            that.ctrlButtons.notify.states.shift();
+            that.ctrlButtons.notify.state = 0;
+        });
 
         // Update time of day
         var el_clock = $('div#snmd_clock');

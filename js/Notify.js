@@ -58,6 +58,10 @@ define(["snmd-core/js/States", "push", "jquery", "js-logger"], function (States,
         return instance;
     };
 
+    Notify.prototype.checkPerm = function (onGranted, onDenied) {
+        Push.Permission.request(onGranted, onDenied);
+    };
+
     Notify.prototype.notify = function (prefix, topic, state, title, msg) {
         if (typeof this.notifications[prefix] === "undefined") {
             this.notifications[prefix] = {};
