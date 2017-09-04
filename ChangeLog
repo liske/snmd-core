@@ -1,0 +1,29 @@
+nag2mqtt (0.4.1) unstable; urgency=low
+
+  * Changes:
+    - Notification: requeuest permissions on init
+    - rewrite 3D rotation handling to simulate endless rotations 
+
+  * Bugfixes:
+    - fix non-working endless rotation in 2D mode
+
+ -- Thomas Liske <thomas@fiasko-nw.net>  
+
+nag2mqtt (0.4.0) unstable; urgency=low
+
+  * Features:
+    - support desktop notifications (push.js)
+    - support widget hints (qTip²)
+    - support swipe navigation (jquery-mobile)
+    - new widget base class: RadialGradient
+
+  * Changes:
+    - Makefile: replace uglifyjs (depreciated) by ulgify-js
+    - synchronize view step number with windows.location.hash
+
+  * Bugfixes:
+    - lintian issues
+    - 3D (re)sizing respects real window size
+    - fractional part (auto)formating
+
+ -- Thomas Liske <thomas@fiasko-nw.net>  Sun, 03 Sep 2017 22:53:09 +0200
