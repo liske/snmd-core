@@ -2,7 +2,11 @@
 Configuration
 *************
 
-Three different JSON files are used to configure *snmd*'s behavoir.
+.. hint::
+    It is strongly recommended to *not* touch or add any files in the source directory of SNMD. Instead you should configure your web server to
+    redirect files access to another directory (see also :ref:`appx-nginx`) where you keep your local stuff.
+
+Three different JSON files are used to configure SNMD's behavior.
 
 .. hint::
   C-like comments within the JSON config files are stripped using `JSON.minify <https://github.com/getify/JSON.minify/tree/javascript>`_
@@ -10,10 +14,10 @@ Three different JSON files are used to configure *snmd*'s behavoir.
   specification is allowed and will result in a fatal parsing error.
 
 
-snmd config
-===========
+Global config
+=============
 
-The *snmd* configuration file `config.json` configures the included snmd widget
+The SNMD configuration file ``config.json`` configures the included snmd widget
 library packages and some global configurations.
 
 .. code:: json
@@ -47,11 +51,11 @@ library packages and some global configurations.
    }
 
 
-View lists
-==========
+Views configuration
+===================
 
-You need a list of views to be loaded by *snmd*. These view lists are located
-in the `views/` directory. Example content of a view list file:
+You need at least one views configuration. The views configuration is a JSON structure defining the views
+visible at SNMD. These views configs are located in the ``views/`` directory. Example content of a view list file:
 
 .. code:: json
 
@@ -66,7 +70,7 @@ The JSON structure is an array of objects with the following keys:
 
 * **title** (required) - The label of the view used for the navigation bar.
 * **render** (optional) - The rendering type of the view. Defaults to 'svg'. The 'html' renderer will load
-  a html site in an *iframe* to embed arbitrary websites into the *snmd* GUI. Could be used to embed
+  a html site in an *iframe* to embed arbitrary websites into the SNMD GUI. Could be used to embed
   a state or event dashboard of your network monitoring system.
 * **url** (required) - URL to load the content of the renderer (i.e. path to the SVG file).
 * **reload** (html; optional) - Reload the *iframe* content periodically (value in seconds).
@@ -80,3 +84,6 @@ The JSON structure is an array of objects with the following keys:
 Terminal config
 ===============
 
+The views config is not loaded directly. While loading SNMD a terminal name can be passed using the ``terminal`` URL parameter.
+SNMD will try to load the terminal's configuration at ``terminals/${TERMINAL}.json``. SNMD will fallback to ``default.json`` if
+it is unable to load the terminal file or no parameter has been passed.

@@ -7,7 +7,7 @@ Authors:
 
 Copyright Holder:
   2012 - 2013 (C) Thomas Liske [https://fiasko-nw.net/~thomas/]
-  2014 - 2016 (C) IBH IT-Service GmbH [https://www.ibh.de/]
+  2014 - 2017 (C) IBH IT-Service GmbH [https://www.ibh.de/]
 
 License:
   This program is free software; you can redistribute it and/or modify
@@ -47,7 +47,7 @@ define(["snmd-core/js/Polyfills", "snmd-core/js/GUI", "snmd-core/js/MQTT", "snmd
             throw new Error("Cannot instantiate more than one instance, use getInstance()!");
         }
 
-        this.version = '0.3';
+        this.version = '0.4.1';
         this.si_prefs = ['T', 'G', 'M', 'k', '']; //, 'm', 'µ'
         this.si_facts = [ Math.pow(10, 12), Math.pow(10, 9), Math.pow(10, 6), Math.pow(10, 3), 1]; //, Math.pow(10, -3), Math.pow(10, -6)
         this.genid = 0;
@@ -237,7 +237,7 @@ define(["snmd-core/js/Polyfills", "snmd-core/js/GUI", "snmd-core/js/MQTT", "snmd
 
         return "Orange";
     };
-    
+
     Core.prototype.srGenID = function (prefix) {
         this.genid += 1;
         return 'snmd-genid-' + prefix + '-' + this.genid;

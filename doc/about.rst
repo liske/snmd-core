@@ -2,8 +2,8 @@
 About
 *****
 
-*snmd* uses HTML5 and JavaScript code to build a monitoring dashboard. Any data
-to be visualized needs to be published via MQTT.
+*snmd* uses HTML5 and JavaScript code to build dashboards visualizing monitoring and process states. Any data
+to be visualized needs to be available by a MQTT subscription.
 
 
 3rd party libraries
@@ -11,24 +11,34 @@ to be visualized needs to be published via MQTT.
 
 The following JavaScript libraries are used by *snmd* via *bower*:
 
+* `alameda`_ 1.1.0
+* `favico.js`_ 0.3.10
 * `Font Awesome`_ 4.7.0
+* `howler.js`_ 2.0.2
 * `jQuery`_ 2.2.4
 * `js-cookie`_ 2.1.3
 * `js-logger`_ 1.3.0
 * `Open Sans @font-face kit`_ 1.4.2
+* `Push`_ 0.0.12
 * `qTip²`_ 3.0.3
+* `require-css`_ 0.1.8
 * `sprintf.js`_ 1.0.3
 
+.. _alameda: https://github.com/requirejs/alameda
+.. _favico.js: http://lab.ejci.net/favico.js/
 .. _Font Awesome: http://fontawesome.io/
+.. _howler.js: https://howlerjs.com/
 .. _jQuery: https://jquery.com/
 .. _js-cookie: https://github.com/js-cookie/js-cookie
 .. _js-logger: https://github.com/jonnyreeves/js-logger
 .. _Open Sans @font-face kit: https://github.com/FontFaceKit/open-sans
+.. _Push: https://pushjs.org/
 .. _qTip²: http://qtip2.com/
+.. _require-css: https://github.com/guybedford/require-css
 .. _sprintf.js: https://github.com/alexei/sprintf.js
 
 
-The following legacy JavaScript libraries are embedded (and minified):
+The following JavaScript libraries are minified and embedded since missing *bower* support:
 
 * `jQuery SVG`_ 1.5.0
 * `JSON.minify`_

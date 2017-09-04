@@ -7,7 +7,7 @@ Authors:
 
 Copyright Holder:
   2012 - 2013 (C) Thomas Liske [https://fiasko-nw.net/~thomas/]
-  2014 - 2016 (C) IBH IT-Service GmbH [https://www.ibh.de/]
+  2014 - 2017 (C) IBH IT-Service GmbH [https://www.ibh.de/]
 
 License:
   This program is free software; you can redistribute it and/or modify
@@ -49,6 +49,7 @@ require.config({
         "jquery.svggraph": "snmd-core/lib/svg-1.5.0/jquery.svggraph.min",
         "svgpathdata": "snmd-core/lib/svgpathdata-1.0.3/SVGPathData",
         "paho": "snmd-core/lib/paho.javascript-1.0.2/mqttws31-min",
+        "push": "push.js/push.min",
         "require-css": "require-css/css.min",
         "js-cookie": "js-cookie/src/js.cookie",
         "qtip2": "qtip2/dist/jquery.qtip.min",

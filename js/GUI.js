@@ -7,7 +7,7 @@ Authors:
 
 Copyright Holder:
   2012 - 2013 (C) Thomas Liske [https://fiasko-nw.net/~thomas/]
-  2014 - 2016 (C) IBH IT-Service GmbH [https://www.ibh.de/]
+  2014 - 2017 (C) IBH IT-Service GmbH [https://www.ibh.de/]
 
 License:
   This program is free software; you can redistribute it and/or modify
@@ -32,11 +32,12 @@ License:
 */
 
 /*global
-    DEBUG,
-    define
+    define,
+    document,
+    window
 */
 
-define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-core/js/SVG", "snmd-core/js/Polyfills", "require", "jquery", "sprintf", "js-cookie", "js-logger", "qtip2", "css!qtip2"], function (Core, HTML, Sound, SVG, Polyfills, require, $, sprintf, cookie, Logger, qtip2) {
+define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Notify", "snmd-core/js/Sound", "snmd-core/js/SVG", "snmd-core/js/Polyfills", "require", "jquery", "sprintf", "js-cookie", "js-logger", "qtip2", "css!qtip2"], function (Core, HTML, Notify, Sound, SVG, Polyfills, require, $, sprintf, cookie, Logger) {
     'use strict';
 
     var instance = null;
@@ -54,6 +55,14 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
         this.viewFinalStates = {};
         this.navbarState = 0;
         this.currentStep = 0;
+        this.currentRotations = 0;
+        this.resizeTO = undefined;
+        this.viewConf = {
+            views: NaN,
+            dps: NaN,
+            r: NaN,
+            is_3d: false
+        };
         this.views = {};
         this.views2id = {};
         this.enabledScreenTO = true;
@@ -124,6 +133,27 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
                     }
                 ]
             },
+            'notify': {
+                shortcut: "n".charCodeAt(),
+                title: "Toggle browser notifications.",
+                state: 0,
+                states: [
+                    {
+                        facls: "commenting",
+                        descr: "Enable desktop notifications.",
+                        cb: function () {
+                            Notify.enable();
+                        }
+                    },
+                    {
+                        facls: "comment-o",
+                        descr: "Disable desktop notifications.",
+                        cb: function () {
+                            Notify.disable();
+                        }
+                    }
+                ]
+            },
             'rotate': {
                 shortcut: "r".charCodeAt(),
                 title: "Toggle interval or continuous view rotation.",
@@ -151,7 +181,7 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
                         cb: function () {
                             this.enabledScreenTO = false;
                             this.enableRotation = true;
-                            this.srScreenTimeOut();
+                            this.snmdNavRel(1);
                         }
                     }
                 ]
@@ -208,21 +238,10 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
 
         $('#snmd-nav').each(function () {
             var a = $(this).children('.srViewsNav').find('a');
-            var cur = 0;
-            var i;
-            for (i = 0; i < a.length; i++) {
-                if (a[i].hash === that.currentView) {
-                    cur = i;
-                    break;
-                }
-            }
 
-            cur += 1;
-            if (cur >= a.length) {
-                cur = 0;
-            }
-
-            a[cur].click();
+            that.currentStep += 1;
+            that.currentRotations += 1;
+            a[that.currentStep % a.length].click();
         });
 
         that.screenTimeOut = window.setTimeout(that.srScreenTimeOut, that.TO_SWITCH);
@@ -272,6 +291,8 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
     GUI.prototype.srStateChanged = function (root, svg, state) {
         this.viewStates[root][svg] = state;
 
+        Notify.notify(svg + " is now " + state);
+
         var lastState = this.viewFinalStates[root];
         if (this.viewFinalStates[root] < state) {
             this.viewFinalStates[root] = state;
@@ -298,23 +319,12 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
         }
 
         if (is_3d) {
+            this.viewConf.is_3d = true;
             $(document.body).addClass('snmd-in-3d').removeClass('snmd-in-2d');
 
-            var dps = 360 / Object.keys(this.views).length;
-            var r = (Object.keys(this.views).length > 1 ? (1906 / 2) / Math.tan(Math.PI / Object.keys(this.views).length) : 0);
-            var step = 0;
-
-            Object.keys(this.views).forEach(function (k) {
-                $('#' + this.views2id[k]).css(
-                    'transform',
-                    'rotateY(' + (dps * step) + 'deg) translateZ(' + r + 'px)'
-                );
-
-                step += 1;
-            }, this);
-
-            this.snmdAlignView(r, -dps * this.currenStep);
+            this.resizeHandler();
         } else {
+            this.viewConf.is_3d = false;
             $(document.body).addClass('snmd-in-2d').removeClass('snmd-in-3d');
 
             Object.keys(this.views).forEach(function (k) {
@@ -335,182 +345,251 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
         $(document.body).addClass('solarized-light').removeClass('solarized-dark');
     };
 
-    GUI.prototype.snmdAlignView = function (r, a) {
-        if ($(document.body).hasClass('snmd-in-3d')) {
+    GUI.prototype.snmdAlignView = function () {
+        if (this.viewConf.is_3d) {
             $('#snmd-views').css(
                 'transform',
-                'translateZ(-' + r  + 'px) rotateY(' + a + 'deg)'
+                'translateZ(-' + this.viewConf.r + 'px) rotateY(' + (this.currentRotations * -this.viewConf.dps) + 'deg)'
             );
         }
     };
 
     GUI.prototype.snmdNavRel = function (offset) {
         var a = $('#snmd-nav').children('.srViewsNav').find('a');
-        var cur = 0;
-        var i;
-        for (i = 0; i < a.length; i++) {
-            if (a[i].hash === this.currentView) {
-                cur = i;
-                break;
-            }
-        }
 
-        cur += offset;
-        while(cur < 0) {
-            cur += a.length;
+        this.currentRotations = (this.currentRotations + offset) % 2147483648;
+        this.currentStep += offset;
+        while (this.currentStep < 0) {
+            this.currentStep += a.length;
         }
-        a[ cur % a.length ].click();
+        this.currentStep = this.currentStep % a.length;
+        this.changeView(this.currentStep);
     };
-    
-    GUI.prototype.srInit = function (views) {
-        this.views = views;
-        var that = this;
 
-        $('#snmd-nav').each(function () {
-            var nav = $(this).children('.srViewsNav');
-            Object.keys(views).forEach(function (k) {
-                this.views2id[k] = 'srView-' + (this.idCounter += 1).toString(16);
-                this.viewStates[this.views2id[k]] = {};
-                this.viewFinalStates[this.views2id[k]] = -1;
+    /*
+     * In 3D mode we need to recalculate the distance of the views from the origin.
+     */
+    GUI.prototype.resizeHandler = function () {
+        if (this.viewConf.is_3d) {
+            this.viewConf.vw = $("#snmd-vouter").width();
+            this.viewConf.r = (this.numViews > 1 ? (this.viewConf.vw / 2) / Math.tan(Math.PI / this.numViews) : 0);
 
-                var qtitle = $('<span></span>').text('Switch to view "' + this.views[k].title + '".');
-                $('<li><a id="switch-' + this.views2id[k] + '" href="#' + this.views2id[k] + '" class="snmd-nav-switch"><span>' + this.views[k].title + "</span></a></li>").qtip({
-                    content: {
-                        text: (parseInt(k, 10) > 9 ? qtitle : $('<div></div>').append($('<div class="snmd-nav-key"></div>').text((parseInt(k, 10) + 1) % 10)).append(qtitle))
-                    }
-                }).appendTo(nav);
-            }, that);
-
-            var div = $('#snmd-views');
-            var dps = 360 / Object.keys(views).length;
             var step = 0;
-            var r = (Object.keys(views).length > 1 ? (1906 / 2) / Math.tan(Math.PI / Object.keys(views).length) : 0);
-
-            Object.keys(views).forEach(function (k, idx, ary) {
-                div.append('<div class="svgview" id="' + that.views2id[k] + '"></div>');
-
-                switch (views[k].render) {
-                case 'html':
-                    HTML.srLoadHTML(that.views2id[k], that.views[k].url, that.views[k].reload);
-                    break;
-
-//              case 'svg':
-                default:
-                    SVG.srLoadSVG(that.views2id[k], that.views[k].url);
-                    break;
-                }
+            Object.keys(this.views).forEach(function (k) {
+                $('#' + this.views2id[k]).css(
+                    'transform',
+                    'rotateY(' + (this.viewConf.dps * step) + 'deg) translateZ(' + this.viewConf.r + 'px)'
+                );
 
                 step += 1;
-            });
-            that.snmdInit3D();
+            }, this);
 
-            nav.find('a').click(function () {
-                Logger.debug('[GUI] Viewing '  + this.hash);
-                that.currentView = this.hash;
+            this.snmdAlignView();
+        }
+    };
 
-                div.children().removeClass('current').filter(this.hash).removeClass('next').removeClass('prev').addClass('current');
-                $(that.currentView).prevAll().removeClass('next').addClass('prev');
-                $(that.currentView).nextAll().removeClass('prev').addClass('next');
+    /*
+     * Run resizeHandler() after 200ms of no ongoing resize to reduze CPU load while resizing (Chrome).
+     */
+    GUI.prototype.resizeHandlerThrottle = function () {
+        if (this.viewConf.is_3d) {
+            if (this.resizeTO) {
+                clearTimeout(this.resizeTO);
+            }
+            this.resizeTO = setTimeout(this.resizeHandler.bind(this), 200);
+        }
+    };
 
-                nav.find('a').removeClass('selected').filter(this).addClass('selected');
+    /*
+     * Set control button state to a explicit value.
+     */
+    GUI.prototype.setCtrlState = function (name, state) {
+        var c = this.ctrlButtons[name];
 
-                that.currenStep = $(that.currentView).prevAll().length;
-                that.snmdAlignView(r, -dps * that.currenStep);
+        c.icon.removeClass("fa-" + c.states[c.state].facls);
+        c.state = parseInt(state, 10) % c.states.length;
+        c.icon.addClass("fa-" + c.states[c.state].facls);
+        c.states[c.state].cb.call(this);
+    };
 
-                return false;
-            }).filter(':first').click();
+    GUI.prototype.setRotateTimeout = function () {
+        if (typeof this.transTO !== "undefined") {
+            window.clearTimeout(this.transTO);
+            this.transTO = undefined;
+        }
 
-            var transTO;
-            $('#snmd-views').on('transitionend', function () {
-                if (typeof transTO !== "undefined") {
-                    window.clearTimeout(transTO);
-                    transTO = undefined;
+        if (this.enableRotation) {
+            this.transTO = window.setTimeout(function (that) {
+                that.snmdNavRel(1);
+            }, 5000, this);
+        }
+    };
+
+    GUI.prototype.changeView = function (idx) {
+        Logger.debug('[GUI] Viewing #' + this.views2id[idx]);
+
+        var div = $('#snmd-views');
+        var nav = $('#snmd-nav').children('.srViewsNav');
+        var view = div
+            .children()
+            .removeClass('current')
+            .filter("#" + this.views2id[idx]);
+
+        view
+            .removeClass('next')
+            .removeClass('prev')
+            .addClass('current');
+
+        view
+            .prevAll()
+            .removeClass('next')
+            .addClass('prev');
+
+        view
+            .nextAll()
+            .removeClass('prev')
+            .addClass('next');
+
+        nav
+            .find('a')
+            .removeClass('selected')
+            .filter("#switch-" + this.views2id[idx])
+            .addClass('selected');
+
+        if (!this.viewConf.is_3d) {
+            this.setRotateTimeout();
+        }
+
+        this.snmdAlignView();
+        window.location.hash = '#' + (this.currentStep + 1);
+    };
+
+    GUI.prototype.srInit = function (views) {
+        this.views = views;
+        this.numViews = views.length;
+
+        this.viewConf.dps = 360 / this.numViews;
+        $(window).on('resize', this.resizeHandlerThrottle.bind(this));
+        this.resizeHandler();
+
+        var that = this;
+        var navbar = $('#snmd-nav');
+        var nav = navbar.children('.srViewsNav');
+        var k;
+        var fNavClick = function (ev) {
+                that.currentRotations += ev.data - that.currentStep;
+                that.currentStep = ev.data;
+                that.changeView(ev.data);
+            };
+        for (k = 0; k < views.length; k++) {
+            this.views2id[k] = 'srView-' + (k + 1);
+            this.viewStates[this.views2id[k]] = {};
+            this.viewFinalStates[this.views2id[k]] = -1;
+
+            var qtitle = $('<span></span>').text(
+                'Switch to view "' + this.views[k].title + '".'
+            );
+            var btn = $('<a id="switch-' + this.views2id[k] + '" href="#' + (k + 1) + '" class="snmd-nav-switch"></a>').text(this.views[k].title).click(k, fNavClick);
+
+            $('<li></li>').qtip({
+                content: {
+                    text: (parseInt(k, 10) > 9 ? qtitle : $('<div></div>').append($('<div class="snmd-nav-key"></div>').text((parseInt(k, 10) + 1) % 10)).append(qtitle))
                 }
+            }).append(btn).appendTo(nav);
+        }
 
-                if (that.enableRotation) {
-                    transTO = window.setTimeout(function () {
-                        $('#snmd-nav').each(function () {
-                            var a = $(this).children('.srViewsNav').find('a');
-                            var cur = 0;
-                            var i;
-                            for (i = 0; i < a.length; i++) {
-                                if (a[i].hash === that.currentView) {
-                                    cur = i;
-                                }
-                            }
+        var div = $('#snmd-views');
+        var step = 0;
+        for (k = 0; k < views.length; k++) {
+            div.append('<div class="svgview" id="' + that.views2id[k] + '"></div>');
 
-                            cur += 1;
-                            if (cur >= a.length) {
-                                cur = 0;
-                            }
+            switch (views[k].render) {
+            case 'html':
+                HTML.srLoadHTML(that.views2id[k], that.views[k].url, that.views[k].reload);
+                break;
 
-                            a[cur].click();
-                        });
-                    }, 5000);
-                }
-            });
-
-            if (window.location.hash !== "undefined") {
-                var nth = parseInt(window.location.hash.replace(/^#srView-/, ""), 10) - 1;
-                nav.find('a:eq(' + nth + ')').click();
+            default:
+                SVG.srLoadSVG(that.views2id[k], that.views[k].url);
+                break;
             }
 
-            var ctrl = $('ul.snmd-ctrl').empty();
-            Object.keys(that.ctrlButtons).forEach(function (el) {
-                var c = that.ctrlButtons[el];
-                var icon = $('<i></i>').addClass("fa fa-" + c.states[c.state].facls);
+            step += 1;
+        }
+        that.snmdInit3D();
 
-                var qtip = $("<span></span>").append($('<div class="snmd-nav-key"></div>').text(String.fromCharCode(c.shortcut))).append($('<span></span>').text(c.title));
-                var ul = $("<ul class='snmd-nav-icolist'></ul>");
-                c.states.forEach(function (el) {
-                    var ico = $("<i></i>").addClass("fa fa-" + el.facls);
-                    var descr = $("<span></span>").text(el.descr);
+        div.on('transitionend', this.setRotateTimeout.bind(that));
 
-                    ul.append(
-                        $("<li></li>").append(ico).append(descr)
-                    );
-                });
+        if (window.location.hash !== "") {
+            var nth = parseInt(window.location.hash.replace(/^#/, ""), 10) - 1;
+            var a = nav.find('a:eq(' + (nth % views.length) + ')');
+            if (a.length === 0) {
+                nav.find('a').filter(':first').click();
+            } else {
+                a.click();
+            }
+        } else {
+            nav.find('a').filter(':first').click();
+        }
 
-                var button = $('<a></a>').attr({
-                    href: "#" + el
-                }).append(
-                    icon
-                ).click(function () {
-                    icon.removeClass("fa-" + c.states[c.state].facls);
-                    c.state = (c.state + 1) % c.states.length;
-                    icon.addClass("fa-" + c.states[c.state].facls);
+        var ctrl = $('ul.snmd-ctrl').empty();
+        Object.keys(that.ctrlButtons).forEach(function (el) {
+            var c = that.ctrlButtons[el];
+            var icon = $('<i></i>').addClass("fa fa-" + c.states[c.state].facls);
 
-                    c.states[c.state].cb.call(that);
+            var qtip = $("<span></span>").append($('<div class="snmd-nav-key"></div>').text(String.fromCharCode(c.shortcut))).append($('<span></span>').text(c.title));
+            var ul = $("<ul class='snmd-nav-icolist'></ul>");
+            c.states.forEach(function (el) {
+                var ico = $("<i></i>").addClass("fa fa-" + el.facls);
+                var descr = $("<span></span>").text(el.descr);
 
-                    // Save setting to cookie
-                    cookie.set('snmd-ctrl-' + el, c.state);
-
-                    return false;
-                }).qtip({
-                    content: {
-                        title: qtip,
-                        text: ul
-                    }
-                });
-                that.ctrlButtons[el].button = button;
-
-                /* Restore setting from cookie */
-                var co = cookie.get('snmd-ctrl-' + el);
-                if (typeof co !== "undefined") {
-                    icon.removeClass("fa-" + c.states[c.state].facls);
-                    c.state = parseInt(co, 10) % c.states.length;
-                    icon.addClass("fa-" + c.states[c.state].facls);
-
-                    c.states[c.state].cb.call(that);
-                }
-
-                ctrl.append(
-                    $('<li></li>').append(
-                        button
-                    )
+                ul.append(
+                    $("<li></li>").append(ico).append(descr)
                 );
             });
-        }, this);
+
+            var button = $('<a></a>').attr({
+                href: "#" + el
+            }).append(
+                icon
+            ).click(function () {
+                icon.removeClass("fa-" + c.states[c.state].facls);
+                c.state = (c.state + 1) % c.states.length;
+                icon.addClass("fa-" + c.states[c.state].facls);
+
+                c.states[c.state].cb.call(that);
+
+                // Save setting to cookie
+                cookie.set('snmd-ctrl-' + el, c.state);
+
+                return false;
+            }).qtip({
+                content: {
+                    title: qtip,
+                    text: ul
+                }
+            });
+            that.ctrlButtons[el].icon = icon;
+            that.ctrlButtons[el].button = button;
+
+            /* Restore setting from cookie */
+            var co = cookie.get('snmd-ctrl-' + el);
+            if (typeof co !== "undefined") {
+                that.setCtrlState(el, co);
+            }
+
+            ctrl.append(
+                $('<li></li>').append(
+                    button
+                )
+            );
+        });
+
+        /* Check if Desktop Notifications are available. */
+        Notify.checkPerm(null, function () {
+            that.setCtrlState('notify', 1);
+            that.ctrlButtons.notify.states.shift();
+            that.ctrlButtons.notify.state = 0;
+        });
 
         // Update time of day
         var el_clock = $('div#snmd_clock');
@@ -578,7 +657,7 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
             if (ev.which > 47 && ev.which < 58) {
                 var key = (ev.which === 48 ? 'a' : String.fromCharCode(ev.which));
 
-                $('a[href="#srView-' + key + '"]').click();
+                $('#switch-srView-' + key).click();
 
                 ev.preventDefault();
                 return;
@@ -595,14 +674,15 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Sound", "snmd-co
             });
         }.bind(this));
 
-        $(document).on('swipeleft', function() {
+        $(document).on('swipeleft', function () {
             this.snmdNavRel(1);
         }.bind(this));
 
-        $(document).on('swiperight', function() {
+        $(document).on('swiperight', function () {
             this.snmdNavRel(-1);
         }.bind(this));
     };
 
+    
     return GUI.getInstance();
 });

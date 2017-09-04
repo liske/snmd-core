@@ -32,44 +32,68 @@ License:
 */
 
 /*global
+    DEBUG,
     define
 */
 
-define(["jquery", "js-logger"], function ($, Logger) {
+define([], function () {
     'use strict';
 
     var instance = null;
 
-    var HTML = function () {
+    var States = function () {
         if (instance !== null) {
             throw new Error("Cannot instantiate more than one instance, use getInstance()!");
         }
     };
 
-    HTML.getInstance = function () {
+    States.getInstance = function () {
         if (instance === null) {
-            instance = new HTML();
+            instance = new States();
         }
 
         return instance;
     };
 
-    HTML.prototype.srLoadHTML = function (id, url, reload) {
-        Logger.debug('Loading #' + id + ': ' + url);
-
-        var iframe = $('<iframe>', {
-            src: url,
-            width: '95%',
-            height: '95%',
-            scrolling: 'no'
-        }).addClass('htmlview').appendTo($('#' + id));
-
-        if (typeof reload !== "undefined") {
-            window.setInterval(function () {
-                iframe[0].contentWindow.location.reload(false);
-            }, reload * 1000);
+    States.prototype.stateColor = function (state) {
+        if (typeof state === "undefined") {
+            return "Grey";
         }
+            
+        if (state === 0) {
+            return 'LimeGreen';
+        }
+        
+        if (state === 1) {
+            return 'Gold';
+        }
+
+        if (state === 2) {
+            return 'Crimson';
+        }
+
+        return "Orange";
     };
 
-    return HTML.getInstance();
+    States.prototype.stateName = function (state) {
+        if (typeof state === "undefined") {
+            return "UNDEFINED";
+        }
+
+        if (state === 0) {
+            return 'OK';
+        }
+        
+        if (state === 1) {
+            return 'WARNING';
+        }
+
+        if (state === 2) {
+            return 'CRITICAL';
+        }
+
+        return 'UNKNOWN';
+    };
+
+    return States.getInstance();
 });

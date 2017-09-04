@@ -10,20 +10,30 @@ In order to rollout SNMD you require different components at the target environm
 MQTT message broker
 -------------------
 
-A MQTT v3.1 message broker with web socket support is required. The usage of `Mosquitto <https://mosquitto.org/>`_ is recommended. Rember you need to explicitly enable web socket access in *Mosqitto*::
+A MQTT v3.1 message broker with **web socket support** is required. The usage of `Mosquitto <https://mosquitto.org/>`_ is recommended.
+More details on deploying *Mosquitto* can be found in :ref:`appx-mosquitto`.
 
-   listener 9001
-   protocol websockets
 
 MQTT publishing
 ---------------
 
 Data needs to be published on MQTT so it can be visualized by SNMD. Look at `nag2mqtt <https://github.com/DE-IBH/nag2mqtt/>`_ to publish Nagios performance data to MQTT.
 
+More details on deploying *nag2mqtt* can be found in the `nag2mqtt docs <http://snmd.readthedocs.io/projects/nag2mqtt/en/latest/>`_.
+
+
 Web server for SNMD
 -------------------
 
-A simple web server publishing the static SNMD files is sufficiant. To download SNMD an installation of `bower <https://bower.io/>`_ is required.
+A web server publishing the static SNMD files is required. For more advanced setups using *https* and *HTTP Basic Authentication* the use of `nginx <>` is recommended.
+
+More details on deploying *nginx* can be found in :ref:`appx-nginx`.
+
+
+Bower
+-----
+
+To download the external JavaScript dependencies of SNMD the installation of `bower <https://bower.io/>`_ is required.
 
 
 
@@ -33,9 +43,9 @@ Installation
 Preparation
 -----------
 
-Install *git*, *nodejs*, *npm* and *bower* on the web server:
+Install *git*, *nodejs*, *npm* and *bower* on the web server. On *Debian GNU/Linux* use:
 
-.. code:: console
+.. code-block:: console
 
   # apt-get install git nodejs nodejs-legacy npm
   # npm install --global bower
@@ -48,17 +58,16 @@ Install *git*, *nodejs*, *npm* and *bower* on the web server:
 Download or clone SNMD
 ----------------------
 
-Download the latest `release archive <https://github.com/DE-IBH/snmd/releases>`_ or clone it using *git*:
+Download the latest `release archive <https://github.com/DE-IBH/snmd/releases>`_ or clone the development repository using *git*:
 
-.. code:: console
+.. code-block:: console
 
-  $~/ git clone --branch $VERSION https://github.com/DE-IBH/snmd.git
+  $~/ git clone https://github.com/liske/snmd.git
 
-Pull all *bower* dependencies by running the following command in the new
-created directory:
+You need to pull the *bower* dependencies in your local SNMD directory:
 
-.. code:: console
+.. code-block:: console
 
   $~/snmd/ bower update
 
-This will download the *snmd-core* and *snmd-widgets-nagios* components including any 3rd party library required by them.
+This will download the *snmd-core* and *snmd-widgets-nagios* components including any 3rd party libraries required by them.

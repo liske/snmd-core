@@ -5,8 +5,10 @@ DISTS:= \
 	dist/js/HTML.js \
 	dist/js/Main.js \
 	dist/js/MQTT.js \
+    dist/js/Notify.js \
 	dist/js/Polyfills.js \
 	dist/js/Sound.js \
+	dist/js/States.js \
 	dist/js/SVG.js \
 	dist/js/SVGWidget.js \
 	dist/js/SVGImpl/Chart.js \
@@ -23,7 +25,7 @@ all: $(DISTS) dist/lib/svg-1.5.0/jquery.svg.css
 dist/js/%.js: js/%.js
 	uglifyjs \
 	    --output $@ \
-	    --source-map $(subst .js,.map,$@) \
+	    --source-map \
 	    --compress \
 	    --mangle \
 	    --lint \
