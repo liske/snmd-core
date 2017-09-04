@@ -459,6 +459,11 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Notify", "snmd-c
         var navbar = $('#snmd-nav');
         var nav = navbar.children('.srViewsNav');
         var k;
+        var fNavClick = function (ev) {
+                that.currentRotations += ev.data - that.currentStep;
+                that.currentStep = ev.data;
+                that.changeView(ev.data);
+            };
         for (k = 0; k < views.length; k++) {
             this.views2id[k] = 'srView-' + (k + 1);
             this.viewStates[this.views2id[k]] = {};
@@ -467,11 +472,7 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Notify", "snmd-c
             var qtitle = $('<span></span>').text(
                 'Switch to view "' + this.views[k].title + '".'
             );
-            var btn = $('<a id="switch-' + this.views2id[k] + '" href="#' + (k + 1) + '" class="snmd-nav-switch"></a>').text(this.views[k].title).click(k, function (ev) {
-                that.currentRotations += ev.data - that.currentStep;
-                that.currentStep = ev.data;
-                that.changeView(ev.data);
-            });
+            var btn = $('<a id="switch-' + this.views2id[k] + '" href="#' + (k + 1) + '" class="snmd-nav-switch"></a>').text(this.views[k].title).click(k, fNavClick);
 
             $('<li></li>').qtip({
                 content: {
