@@ -140,14 +140,14 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Notify", "snmd-c
                 states: [
                     {
                         facls: "commenting",
-                        descr: "Enable browser notifications.",
+                        descr: "Enable desktop notifications.",
                         cb: function () {
                             Notify.enable();
                         }
                     },
                     {
                         facls: "comment-o",
-                        descr: "Disable browser notifications.",
+                        descr: "Disable desktop notifications.",
                         cb: function () {
                             Notify.disable();
                         }
