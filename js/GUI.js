@@ -357,7 +357,7 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Notify", "snmd-c
     GUI.prototype.snmdNavRel = function (offset) {
         var a = $('#snmd-nav').children('.srViewsNav').find('a');
 
-        this.currentRotations += offset;
+        this.currentRotations = (this.currentRotations + offset) % 2147483648;
         this.currentStep += offset;
         while (this.currentStep < 0) {
             this.currentStep += a.length;
