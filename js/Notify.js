@@ -88,8 +88,7 @@ define(["snmd-core/js/States", "push", "jquery", "js-logger"], function (States,
     
         try {
             var stateName = States.stateName(state);
-
-            Push.create(title + ": " + stateName, {
+            var popts = {
                 body: msg,
                 icon: 'img/notify/' + stateName + '.png',
                 tag: prefix + '_' + topic,
@@ -98,7 +97,13 @@ define(["snmd-core/js/States", "push", "jquery", "js-logger"], function (States,
                     window.focus();
                     this.close();
                 }
-            });
+            };
+
+            if (state === 0) {
+                popts.silent = true;
+            }
+
+            Push.create(title + ": " + stateName, popts);
         } catch (err) {
             Logger.error("[Notify] Exception for " + prefix + "#" + topic + ": " + err.message);
         }
