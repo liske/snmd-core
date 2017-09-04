@@ -412,6 +412,19 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Notify", "snmd-c
         c.states[c.state].cb.call(this);
     };
 
+    GUI.prototype.setRotateTimeout = function () {
+        if (typeof this.transTO !== "undefined") {
+            window.clearTimeout(this.transTO);
+            this.transTO = undefined;
+        }
+
+        if (this.enableRotation) {
+            this.transTO = window.setTimeout(function (that) {
+                that.snmdNavRel(1);
+            }, 5000, this);
+        }
+    };
+
     GUI.prototype.changeView = function (idx) {
         Logger.debug('[GUI] Viewing #' + this.views2id[idx]);
 
@@ -442,6 +455,10 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Notify", "snmd-c
             .removeClass('selected')
             .filter("#switch-" + this.views2id[idx])
             .addClass('selected');
+
+        if (!this.viewConf.is_3d) {
+            this.setRotateTimeout();
+        }
 
         this.snmdAlignView();
         window.location.hash = '#' + (this.currentStep + 1);
@@ -500,19 +517,7 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Notify", "snmd-c
         }
         that.snmdInit3D();
 
-        var transTO;
-        $('#snmd-views').on('transitionend', function () {
-            if (typeof transTO !== "undefined") {
-                window.clearTimeout(transTO);
-                transTO = undefined;
-            }
-
-            if (that.enableRotation) {
-                transTO = window.setTimeout(function () {
-                    that.snmdNavRel(1);
-                }, 5000);
-            }
-        });
+        div.on('transitionend', this.setRotateTimeout.bind(that));
 
         if (window.location.hash !== "") {
             var nth = parseInt(window.location.hash.replace(/^#/, ""), 10) - 1;
