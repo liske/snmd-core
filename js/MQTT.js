@@ -63,6 +63,7 @@ define(["snmd-core/js/Core", "jquery", "paho", "js-logger"], function (Core, $, 
 
     MQTT.prototype.srReconnect = function () {
         Logger.debug('[MQTT] Reconnecting...');
+        this.srStatus('Gold');
         this.srConnect();
     };
     
@@ -93,11 +94,11 @@ define(["snmd-core/js/Core", "jquery", "paho", "js-logger"], function (Core, $, 
                
         this.client.disconnect = function () {
             Logger.error("[MQTT] Disconnected");
-            this.srStatus('#7f0000');
+            this.srStatus('Crimson');
         }.bind(this);
 
         this.client.onConnectionLost = function (res) {
-            this.srStatus('#ff0000');
+            this.srStatus('Crimson');
             Logger.error("[MQTT] Connection lost: " + res.errorMessage);
 
             if (this.reconnTO) {
@@ -108,7 +109,7 @@ define(["snmd-core/js/Core", "jquery", "paho", "js-logger"], function (Core, $, 
         }.bind(this);
 
         this.client.onMessageArrived = function (msg) {
-            this.srStatus('#00ff00');
+            this.srStatus('LimeGreen');
             window.setTimeout(function () {
                 this.srStatus('#007f00');
             }.bind(this), 100);
@@ -135,7 +136,7 @@ define(["snmd-core/js/Core", "jquery", "paho", "js-logger"], function (Core, $, 
         this.client.connect({
             onSuccess: function () {
                 Logger.info('[MQTT] Connected to ' + this.broker_uri);
-                this.srStatus('#7f0000');
+                this.srStatus('#007f00');
 
                 Object.keys(this.topics).forEach(function (topic) {
                     this.client.subscribe(topic);
@@ -147,7 +148,7 @@ define(["snmd-core/js/Core", "jquery", "paho", "js-logger"], function (Core, $, 
                 if (this.reconnTO) {
                     window.clearTimeout(this.reconnTO);
                 }
-                this.srStatus('orange');
+                this.srStatus('Crimson');
                 this.reconnTO = window.setTimeout(this.srConnect.bind(this), 5000);
 
                 require("snmd-core/js/Core").snmdFinishLoading();
@@ -161,7 +162,8 @@ define(["snmd-core/js/Core", "jquery", "paho", "js-logger"], function (Core, $, 
         }
         this.broker_uri = broker_uri;
         this.clientId = clientId;
-         
+
+        this.srStatus('Gold');
         this.srConnect();
     };
 

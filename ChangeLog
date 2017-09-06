@@ -1,3 +1,10 @@
+nag2mqtt (0.4.2) unstable; urgency=low
+
+  * Changes:
+    - MQTT: change #snmd-hb color to match state colors
+
+ -- Thomas Liske <thomas@fiasko-nw.net>  
+
 nag2mqtt (0.4.1) unstable; urgency=low
 
   * Changes:
