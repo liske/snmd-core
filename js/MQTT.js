@@ -33,8 +33,8 @@ License:
 
 /*global
     define,
-    Paho,
-    require
+    require,
+    window
 */
 
 define(["snmd-core/js/Core", "jquery", "paho", "js-logger"], function (Core, $, Paho, Logger) {
@@ -101,15 +101,15 @@ define(["snmd-core/js/Core", "jquery", "paho", "js-logger"], function (Core, $, 
             Logger.error("[MQTT] Connection lost: " + res.errorMessage);
 
             if (this.reconnTO) {
-                clearTimeout(this.reconnTO);
+                window.clearTimeout(this.reconnTO);
             }
             this.srStatus('orange');
-            this.reconnTO = setTimeout(this.srConnect.bind(this), 5000);
+            this.reconnTO = window.setTimeout(this.srConnect.bind(this), 5000);
         }.bind(this);
 
         this.client.onMessageArrived = function (msg) {
             this.srStatus('#00ff00');
-            setTimeout(function () {
+            window.setTimeout(function () {
                 this.srStatus('#007f00');
             }.bind(this), 100);
             
@@ -145,10 +145,10 @@ define(["snmd-core/js/Core", "jquery", "paho", "js-logger"], function (Core, $, 
             }.bind(this),
             onFailure: function () {
                 if (this.reconnTO) {
-                    clearTimeout(this.reconnTO);
+                    window.clearTimeout(this.reconnTO);
                 }
                 this.srStatus('orange');
-                this.reconnTO = setTimeout(this.srConnect.bind(this), 5000);
+                this.reconnTO = window.setTimeout(this.srConnect.bind(this), 5000);
 
                 require("snmd-core/js/Core").snmdFinishLoading();
             }.bind(this)
