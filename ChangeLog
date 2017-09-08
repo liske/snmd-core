@@ -2,6 +2,8 @@ nag2mqtt (0.4.2) unstable; urgency=low
 
   * Changes:
     - MQTT: change #snmd-hb color to match state colors
+    - SVG: clear fill and stroke styles for SVG elements with 'snmd-(fill|stroke)-'
+           class applied - enables colorswapping for solarized theming in SVG
 
  -- Thomas Liske <thomas@fiasko-nw.net>  
 
