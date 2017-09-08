@@ -69,13 +69,13 @@ define(["snmd-core/js/SVGWidget", "js-logger", "jquery", "jquery.svg", "jquery.s
         var clrFill = function () {
             this.style.fill = "";
         };
-        $('[class^="snmd-fill-"]', svg.root()).each(clrFill).children().each(clrFill);
+        $('[class^="snmd-fill-"],[class*=" snmd-fill-"]', svg.root()).each(clrFill).children().each(clrFill);
 
         /* Remove 'sroke' style from any SVG element with snmd-sroke-* class. */
         var clrStroke = function () {
             this.style.stroke = "";
         };
-        $('[class^="snmd-stroke-"]', svg.root()).each(clrStroke).children().each(clrStroke);
+        $('[class^="snmd-stroke-"],[class*=" snmd-stroke-"]', svg.root()).each(clrStroke).children().each(clrStroke);
 
         /* Find and handle widget elements. */
         $('[id^="snmd_"]', svg.root()).each(function () {
