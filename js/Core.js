@@ -220,22 +220,22 @@ define(["snmd-core/js/Polyfills", "snmd-core/js/GUI", "snmd-core/js/MQTT", "snmd
     
     Core.prototype.srNagStateColor = function (state) {
         if (typeof state === "undefined") {
-            return "Grey";
+            return "var(--SNMD_undefined)";
         }
             
         if (state === 0) {
-            return 'LimeGreen';
+            return 'var(--SNMD_ok)';
         }
         
         if (state === 1) {
-            return 'Gold';
+            return 'var(--SNMD_warning)';
         }
 
         if (state === 2) {
-            return 'Crimson';
+            return 'var(--SNMD_critical)';
         }
 
-        return "Orange";
+        return "var(--SNMD_unknown)";
     };
 
     Core.prototype.srGenID = function (prefix) {
