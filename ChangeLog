@@ -9,6 +9,9 @@ nag2mqtt (0.4.2) unstable; urgency=low
            class applied - enables colorswapping for solarized theming in SVG
     - States: use CSS3 variables for state colors
 
+  * Bugfixes:
+    - SVGImpl: fix broken arc gauge calculation
+
  -- Thomas Liske <thomas@fiasko-nw.net>  
 
 nag2mqtt (0.4.1) unstable; urgency=low

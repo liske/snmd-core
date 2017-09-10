@@ -47,24 +47,32 @@ define(["snmd-core/js/GUI", "svgpathdata", "jquery"], function (GUI, SVGPathData
         this.root = root;
 
         /* Remove placeholder */
-	    opts.dim = {
+	    this.opts.dim = {
             id: svg.id,
 	        x: svg.x.baseVal.value,
 	        y: svg.y.baseVal.value + svg.height.baseVal.value,
 	        width: svg.width.baseVal.value,
-	        height: svg.height.baseVal.value
+	        height: svg.height.baseVal.value,
+            
+            cX: svg.x.baseVal.value + svg.width.baseVal.value / 2.0,
+            cY: svg.y.baseVal.value + svg.height.baseVal.value,
+            rX: svg.width.baseVal.value / 2.0,
+            rY: svg.height.baseVal.value
 	    };
+
+        if (typeof this.opts.rotate === "undefined") {
+            this.opts.dim.rotate = 180;
+        } else {
+            this.opts.dim.rotate = parseFloat(this.opts.rotate);
+        }
         
         /* Create SVG background */
         root.remove(svg);
-        this.pathdata = new SVGPathData("m " + opts.dim.x + "," + opts.dim.y + " a " + (opts.dim.width / 2) + "," + (opts.dim.height) + " 0 0 1 " + opts.dim.width + ",0");
+        this.pathdata = new SVGPathData(this.arc(180).join(" "));
 
         this.last_stroke = '';
         this.last_val = -1;
 
-        var alpha = Math.PI;
-        this.pathdata.commands[1].x = (1 - Math.cos(alpha / 2)) * 2 * this.pathdata.commands[1].rX;
-        this.pathdata.commands[1].y = -1 * Math.sin(alpha) * this.pathdata.commands[1].rY;
         var el = this.root.path(this.pathdata.encode(), {
             'class': this.cls.map(function (cl) {
                 return cl + '-BG';
@@ -78,6 +86,25 @@ define(["snmd-core/js/GUI", "svgpathdata", "jquery"], function (GUI, SVGPathData
             el.qtip(qtip);
         }
     };
+
+    Gauge.prototype.pol2Cart = function (deg) {
+        var rad = (deg + this.opts.dim.rotate) * Math.PI / 180.0;
+
+        return {
+            x: this.opts.dim.cX + (this.opts.dim.rX * Math.cos(rad)),
+            y: this.opts.dim.cY + (this.opts.dim.rY * Math.sin(rad))
+        };
+    };
+
+    Gauge.prototype.arc = function (deg){
+        var start = this.pol2Cart(0);
+        var end = this.pol2Cart(deg);
+
+        return [
+            "M", start.x, start.y,
+            "A", this.opts.dim.rX, this.opts.dim.rY, 0, 0, 1, end.x, end.y
+        ];
+    };
     
     Gauge.prototype.update = function (val, max, state) {
         if (val === this.last_val && state === this.last_state) {
@@ -87,9 +114,9 @@ define(["snmd-core/js/GUI", "svgpathdata", "jquery"], function (GUI, SVGPathData
         if (val > max) {
             val = max;
         }
-        var alpha = (val / max) * Math.PI;
-        this.pathdata.commands[1].x = (1 - Math.cos(alpha / 2)) * 2 * this.pathdata.commands[1].rX;
-        this.pathdata.commands[1].y = -1 * Math.sin(alpha) * this.pathdata.commands[1].rY;
+        var end = this.pol2Cart(180 / max * val);
+        this.pathdata.commands[1].x = end.x;
+        this.pathdata.commands[1].y = end.y;
 
         if (state !== this.last_state) {
             this.opts.cls.state.forEach(function (cl) {
