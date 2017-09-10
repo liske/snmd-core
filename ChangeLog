@@ -1,5 +1,8 @@
 nag2mqtt (0.4.2) unstable; urgency=low
 
+  * Features:
+    - Add a palette file (.gpl) with CSS3 color variable values.
+
   * Changes:
     - MQTT: change #snmd-hb color to match state colors
     - SVG: clear fill and stroke styles for SVG elements with 'snmd-(fill|stroke)-'
