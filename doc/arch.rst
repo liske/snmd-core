@@ -43,10 +43,9 @@ Any HTML5 enabled browser should work (read: IE is not a (HTML5) browser). For 3
 
 Example of frontend devices:
 
-* *Chromium* on Desktop
-* *Firefox* on Desktop (3D not recommended)
-* *Raspberry Pi* using *barkery* (2D only)
-* Samsung Digital Signage Hospitality Browser (2D only)
+* *Chromium 49+* on Desktop
+* *Firefox 31+* on Desktop (3D not recommended)
+* *Raspberry Pi* using *barkery* (*Raspbian Stretch* required)
 
 
 barkery
