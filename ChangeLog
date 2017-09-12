@@ -8,6 +8,7 @@ nag2mqtt (0.4.2) unstable; urgency=low
     - SVG: clear fill and stroke styles for SVG elements with 'snmd-(fill|stroke)-'
            class applied - enables colorswapping for solarized theming in SVG
     - States: use CSS3 variables for state colors
+    - GUI: enable endless rotation in screensaver mode
 
   * Bugfixes:
     - SVGImpl: fix broken arc gauge calculation

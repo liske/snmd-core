@@ -236,14 +236,7 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Notify", "snmd-c
             $(document.body).addClass('on-screensaver');
         }
 
-        $('#snmd-nav').each(function () {
-            var a = $(this).children('.srViewsNav').find('a');
-
-            that.currentStep += 1;
-            that.currentRotations += 1;
-            a[that.currentStep % a.length].click();
-        });
-
+        that.snmdNavRel(1);
         that.screenTimeOut = window.setTimeout(that.srScreenTimeOut, that.TO_SWITCH);
     };
 
