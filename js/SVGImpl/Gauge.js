@@ -55,20 +55,26 @@ define(["snmd-core/js/GUI", "svgpathdata", "jquery"], function (GUI, SVGPathData
 	        height: svg.height.baseVal.value,
             
             cX: svg.x.baseVal.value + svg.width.baseVal.value / 2.0,
-            cY: svg.y.baseVal.value + svg.height.baseVal.value,
+            cY: svg.y.baseVal.value + svg.height.baseVal.value / 2.0,
             rX: svg.width.baseVal.value / 2.0,
-            rY: svg.height.baseVal.value
+            rY: svg.height.baseVal.value / 2.0
 	    };
 
-        if (typeof this.opts.rotate === "undefined") {
-            this.opts.dim.rotate = 180;
+        if (typeof this.opts.rot_max === "undefined") {
+            this.opts.dim.rot_max = 359.999;
         } else {
-            this.opts.dim.rotate = parseFloat(this.opts.rotate);
+            this.opts.dim.rot_max = parseFloat(this.opts.rot_max);
+        }
+
+        if (typeof this.opts.rot_offset === "undefined") {
+            this.opts.dim.rot_offset = 180;
+        } else {
+            this.opts.dim.rot_offset = parseFloat(this.opts.rot_offset);
         }
         
         /* Create SVG background */
         root.remove(svg);
-        this.pathdata = new SVGPathData(this.arc(180).join(" "));
+        this.pathdata = new SVGPathData(this.arc(this.opts.dim.rot_max).join(" "));
 
         this.last_stroke = '';
         this.last_val = -1;
@@ -88,7 +94,7 @@ define(["snmd-core/js/GUI", "svgpathdata", "jquery"], function (GUI, SVGPathData
     };
 
     Gauge.prototype.pol2Cart = function (deg) {
-        var rad = (deg + this.opts.dim.rotate) * Math.PI / 180.0;
+        var rad = (deg + this.opts.dim.rot_offset) * Math.PI / 180.0;
 
         return {
             x: this.opts.dim.cX + (this.opts.dim.rX * Math.cos(rad)),
@@ -99,10 +105,17 @@ define(["snmd-core/js/GUI", "svgpathdata", "jquery"], function (GUI, SVGPathData
     Gauge.prototype.arc = function (deg){
         var start = this.pol2Cart(0);
         var end = this.pol2Cart(deg);
+        var laf;
+        if (deg > 180.0) {
+          laf = 1;
+        }
+        else {
+          laf = 0;
+        }
 
         return [
             "M", start.x, start.y,
-            "A", this.opts.dim.rX, this.opts.dim.rY, 0, 0, 1, end.x, end.y
+            "A", this.opts.dim.rX, this.opts.dim.rY, 0, laf, 1, end.x, end.y
         ];
     };
     
@@ -114,7 +127,10 @@ define(["snmd-core/js/GUI", "svgpathdata", "jquery"], function (GUI, SVGPathData
         if (val > max) {
             val = max;
         }
-        var end = this.pol2Cart(180 / max * val);
+
+        var deg = this.opts.dim.rot_max / max * val;
+        var end = this.pol2Cart(deg);
+        this.pathdata.commands[1].lArcFlag = (deg > 180 ? 1 : 0);
         this.pathdata.commands[1].x = end.x;
         this.pathdata.commands[1].y = end.y;
 
