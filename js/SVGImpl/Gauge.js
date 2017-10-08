@@ -131,11 +131,11 @@ define(["snmd-core/js/GUI", "svgpathdata", "jquery"], function (GUI, SVGPathData
             return;
         }
 
-        if (val > max) {
-            val = max;
+        var p = this.perimeter;
+        if (val < max) {
+            p *= val / max;
         }
 
-        var p = val / max * this.perimeter;
         this.svg.style['stroke-dasharray'] = p + " " + (this.perimeter - p);
 
         if (state !== this.last_state) {
