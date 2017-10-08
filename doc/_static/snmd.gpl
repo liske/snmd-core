@@ -1,0 +1,33 @@
+GIMP Palette
+Name: Solarized & SNMD Dark
+#
+253 246 227	SOL base 3
+238 232 213	SOL base 2
+147 161 161	SOL base 1 (emphasized)
+131 148 150	SOL base 0 (body)
+101 123 131	SOL base 00
+ 88 110 117	SOL base 01 (comment)
+  7  54  66	SOL base 02 (background highlight)
+  0  43  54	SOL base 03 (background)
+181 137   0	SOL yellow
+203  75  22	SOL orange
+220  50  47	SOL red
+211  54 130	SOL magenta
+108 113 196	SOL violet
+ 38 139 210	SOL blue
+ 42 161 152	SOL cyan
+133 153   0	SOL green
+196 150  26 SNMD yellow
+253 117  62 SNMD orange
+255  98  84 SNMD red
+255 100 170 SNMD magenta
+147 149 236 SNMD violet
+ 76 163 236 SNMD blue
+ 59 174 164 SNMD cyan
+147 167  26 SNMD green
+ 56 180  41 SNMD green2
+138 161 169 SNMD undefined
+  0 183  23 SNMD ok
+187 155   0 SNMD warning
+255  88 102 SNMD critical
+223 138   0 SNMD unknown

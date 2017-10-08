@@ -53,7 +53,6 @@ The following JavaScript libraries are minified and embedded since missing *bowe
 
 .. include:: ../AUTHORS.rst
 
-
 Copyright
 =========
 

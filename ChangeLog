@@ -1,3 +1,29 @@
+nag2mqtt (0.4.3) unstable; urgency=low
+
+  * Changes:
+    - SVG: make Gauge widgets more universal and animate them using
+           stroke-dasharray manipulation
+    - Core: make exceptions during widget creation more verbose (trace)
+
+ -- Thomas Liske <thomas@fiasko-nw.net>  Sun, 08 Oct 2017 18:28:40 +0200
+
+nag2mqtt (0.4.2) unstable; urgency=low
+
+  * Features:
+    - Add a palette file (.gpl) with CSS3 color variable values.
+
+  * Changes:
+    - MQTT: change #snmd-hb color to match state colors
+    - SVG: clear fill and stroke styles for SVG elements with 'snmd-(fill|stroke)-'
+           class applied - enables colorswapping for solarized theming in SVG
+    - States: use CSS3 variables for state colors
+    - GUI: enable endless rotation in screensaver mode
+
+  * Bugfixes:
+    - SVGImpl: fix broken arc gauge calculation
+
+ -- Thomas Liske <thomas@fiasko-nw.net>  Tue, 12 Sep 2017 07:25:32 +0200
+
 nag2mqtt (0.4.1) unstable; urgency=low
 
   * Changes:

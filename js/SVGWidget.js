@@ -115,7 +115,8 @@ define(["snmd-core/js/MQTT", "require", "js-logger"], function (MQTT, require, L
                         });
                     }
                 } catch (err) {
-                    Logger.error("[SVGWidget] Failed to create widget " + svg.id + " of type " + desc.type + ": " + err.message);
+                    Logger.error("[SVGWidget] Failed to create widget " + svg.id + " of type " + desc.type + ":");
+                    Logger.error(err);
                     return;
                 }
             });
