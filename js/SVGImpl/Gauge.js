@@ -74,17 +74,24 @@ define(["snmd-core/js/GUI", "svgpathdata", "jquery"], function (GUI, SVGPathData
         
         /* Create SVG background */
         root.remove(svg);
-        this.pathdata = new SVGPathData(this.arc(this.opts.dim.rot_max).join(" "));
+        var pathdata = new SVGPathData(this.arc(this.opts.dim.rot_max).join(" "));
 
+        var lambda = (this.opts.dim.rX - this.opts.dim.rY)/(this.opts.dim.rX + this.opts.dim.rY);
+        this.perimeter = parseInt( (this.opts.dim.rX + this.opts.dim.rY) * Math.PI * (1+(3 * Math.pow(lambda, 2)) / (10 + Math.sqrt(4 - 3 * Math.pow(lambda, 2)))) );
         this.last_stroke = '';
         this.last_val = -1;
 
-        var el = this.root.path(this.pathdata.encode(), {
+        var el = this.root.path(pathdata.encode(), {
             'class': this.cls.map(function (cl) {
                 return cl + '-BG';
             }).join(' ')
         });
-        
+
+        this.svg = this.root.path(pathdata.encode(), {
+            id: this.opts.dim.id,
+            'class': this.cls.join(' ')
+        });
+
         /* Set qtip if available */
         if (typeof qtip !== "undefined") {
             el = $(el);
@@ -128,33 +135,18 @@ define(["snmd-core/js/GUI", "svgpathdata", "jquery"], function (GUI, SVGPathData
             val = max;
         }
 
-        var deg = this.opts.dim.rot_max / max * val;
-        var end = this.pol2Cart(deg);
-        this.pathdata.commands[1].lArcFlag = (deg > 180 ? 1 : 0);
-        this.pathdata.commands[1].x = end.x;
-        this.pathdata.commands[1].y = end.y;
+        var p = val / max * this.perimeter;
+        this.svg.style['stroke-dasharray'] = p + " " + (this.perimeter - p);
 
         if (state !== this.last_state) {
             this.opts.cls.state.forEach(function (cl) {
-                
-                var idx = this.cls.indexOf(cl + this.last_state);
-                if (idx > -1) {
-                    this.cls.splice(idx, 1);
-                }
+                this.svg.classList.remove(cl + this.last_state);
             }, this);
 
             this.opts.cls.state.forEach(function (cl) {
-                this.cls.push(cl + state);
+                this.svg.classList.add(cl + state);
             }, this);
         }
-        
-        if (typeof this.svg !== "undefined") {
-            this.root.remove(this.svg);
-        }
-        this.svg = this.root.path(this.pathdata.encode(), {
-            id: this.opts.dim.id,
-            'class': this.cls.join(' ')
-        });
     
         this.last_val = val;
 
