@@ -1,11 +1,14 @@
 nag2mqtt (0.4.3) unstable; urgency=low
 
+  * Features:
+    - Core: add duration time formating
+
   * Changes:
     - SVG: make Gauge widgets more universal and animate them using
            stroke-dasharray manipulation
     - Core: make exceptions during widget creation more verbose (trace)
 
- -- Thomas Liske <thomas@fiasko-nw.net>  Sun, 08 Oct 2017 18:28:40 +0200
+ -- Thomas Liske <thomas@fiasko-nw.net>  Sun, 08 Oct 2017 22:52:47 +0200
 
 nag2mqtt (0.4.2) unstable; urgency=low
 
