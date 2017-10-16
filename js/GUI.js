@@ -304,6 +304,8 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Notify", "snmd-c
             }
 
         }
+
+        $(document.body).addClass('snmd-stop-ani').delay(1).removeClass('snmd-stop-ani');
     };
 
     GUI.prototype.snmdInit3D = function (is_3d) {
