@@ -50,6 +50,8 @@ define(["snmd-core/js/Polyfills", "snmd-core/js/GUI", "snmd-core/js/MQTT", "snmd
         this.version = '0.4.3';
         this.si_prefs = ['T', 'G', 'M', 'k', '']; //, 'm', 'µ'
         this.si_facts = [ Math.pow(10, 12), Math.pow(10, 9), Math.pow(10, 6), Math.pow(10, 3), 1]; //, Math.pow(10, -3), Math.pow(10, -6)
+        this.time_prefs = ['d', 'h', '"', "'"];
+        this.time_facts = [86400, 3600, 60, 1];
         this.genid = 0;
 
         this.loadDiv = $("#snmd-load-div");
@@ -184,7 +186,7 @@ define(["snmd-core/js/Polyfills", "snmd-core/js/GUI", "snmd-core/js/MQTT", "snmd
         }
     };
     
-    Core.prototype.srSiFormatNum = function (value, unit, defstr, fracts) {
+    Core.prototype.genericFormatNum = function (facts, prefs, value, unit, defstr, fracts) {
         if (typeof value === "undefined") { return defstr; }
         if (isNaN(value)) { return defstr; }
 
@@ -195,27 +197,37 @@ define(["snmd-core/js/Polyfills", "snmd-core/js/GUI", "snmd-core/js/MQTT", "snmd
         }
 
         var i,
-            j = 4;
-        for (i = 0; i < this.si_facts.length; i++) {
-            if (value >= this.si_facts[i] * 0.99) {
+            j = this.si_facts.length - 1;
+        for (i = 0; i < facts.length; i++) {
+            if (value >= facts[i] * 0.99) {
                 j = i;
                 break;
             }
         }
 
-        value = value / this.si_facts[j];
+        value = value / facts[j];
         if (typeof fracts === "undefined" || isNaN(fracts)) {
-            if (value < 10 && this.si_facts[j] > 1) {
+            if (value < 10 && facts[j] > 1) {
                 fracts = 1;
             } else {
                 fracts = 0;
             }
         }
+
         if (neg) {
             value = value * -1;
         }
 
-        return sprintf.sprintf("%." + fracts + "f%s%s", value, this.si_prefs[j], unit);
+        return sprintf.sprintf("%." + fracts + "f%s%s", value, prefs[j], unit);
+    };
+
+    Core.prototype.srSiFormatNum = function (value, unit, defstr, fracts) {
+
+        if (typeof unit !== "undefined" && unit == '__TIME__') {
+            return this.genericFormatNum(this.time_facts, this.time_prefs, value, '', defstr, fracts);
+        } else {
+            return this.genericFormatNum(this.si_facts, this.si_prefs, value, unit, defstr, fracts);
+        }
     };
     
     Core.prototype.srNagStateColor = function (state) {
