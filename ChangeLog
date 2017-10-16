@@ -7,8 +7,9 @@ nag2mqtt (0.4.3) unstable; urgency=low
     - SVG: make Gauge widgets more universal and animate them using
            stroke-dasharray manipulation
     - Core: make exceptions during widget creation more verbose (trace)
+    - GUI: synchronize animations on state changes
 
- -- Thomas Liske <thomas@fiasko-nw.net>  Sun, 08 Oct 2017 22:52:47 +0200
+ -- Thomas Liske <thomas@fiasko-nw.net>  Mon, 16 Oct 2017 19:22:59 +0200
 
 nag2mqtt (0.4.2) unstable; urgency=low
 
