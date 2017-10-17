@@ -60,19 +60,17 @@ define(["jquery"], function ($) {
     };
     
     Class.prototype.update = function (state) {
-        if (state === this.last_state) {
-            return;
+        if (state !== this.last_state && (!isNaN(state) || !isNaN(this.last_state))) {
+            this.opts.cls.state.forEach(function (cl) {
+                this.el.classList.remove(cl + this.last_state);
+            }, this);
+
+            this.opts.cls.state.forEach(function (cl) {
+                this.el.classList.add(cl + state);
+            }, this);
+
+            this.last_state = state;
         }
-        
-        this.opts.cls.state.forEach(function (cl) {
-            this.el.classList.remove(cl + this.last_state);
-        }, this);
-
-        this.opts.cls.state.forEach(function (cl) {
-            this.el.classList.add(cl + state);
-        }, this);
-
-        this.last_state = state;
     };
 
     return Class;

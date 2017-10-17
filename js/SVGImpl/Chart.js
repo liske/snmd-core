@@ -271,7 +271,7 @@ define(["snmd-core/js/Core", "snmd-core/js/GUI", "js-logger", "jquery"], functio
             this.root.remove(s);
         }
 
-        if (state !== this.last_state) {
+        if (state !== this.last_state && (!isNaN(state) || !isNaN(this.last_state))) {
             this.opts.cls.state.forEach(function (cl) {
                 this.rect.classList.remove(cl + this.last_state);
             }, this);

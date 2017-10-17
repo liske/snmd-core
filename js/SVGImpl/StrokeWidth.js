@@ -66,17 +66,21 @@ define(["jquery"], function ($) {
     };
     
     StrokeWidth.prototype.update = function (val, state) {
-        if (this.last_val === val && this.last_state === state) {
+        if (state !== this.last_state && (!isNaN(state) || !isNaN(this.last_state))) {
+            this.opts.cls.state.forEach(function (cl) {
+                this.el.classList.remove(cl + this.last_state);
+            }, this);
+
+            this.opts.cls.state.forEach(function (cl) {
+                this.el.classList.add(cl + state);
+            }, this);
+
+            this.last_state = state;
+        }
+
+        if (this.last_val === val) {
             return;
         }
-        
-        this.opts.cls.state.forEach(function (cl) {
-            this.el.classList.remove(cl + this.last_state);
-        }, this);
-
-        this.opts.cls.state.forEach(function (cl) {
-            this.el.classList.add(cl + state);
-        }, this);
 
         if (this.opts.abs) {
             val = Math.abs(val);
@@ -101,7 +105,6 @@ define(["jquery"], function ($) {
         this.el.style.strokeWidth = f;
         
         this.last_val = val;
-        this.last_state = state;
     };
 
     return StrokeWidth;

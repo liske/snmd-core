@@ -150,7 +150,7 @@ define(["snmd-core/js/GUI", "svgpathdata", "jquery"], function (GUI, SVGPathData
     
         this.last_val = val;
 
-        if (state !== this.last_state) {
+        if (state !== this.last_state && (!isNaN(state) || !isNaN(this.last_state))) {
             this.last_state = state;
 
             GUI.srStateChanged(this.root._svg.parentElement.id, this.opts.dim.id, state);

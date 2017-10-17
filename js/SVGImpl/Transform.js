@@ -60,23 +60,24 @@ define(["jquery"], function ($) {
     };
     
     Transform.prototype.update = function (val, state) {
-        if (this.last_val === val && this.last_state === state) {
-            return;
+        if (state !== this.last_state && (!isNaN(state) || !isNaN(this.last_state))) {
+            this.opts.cls.state.forEach(function (cl) {
+                this.el.classList.remove(cl + this.last_state);
+            }, this);
+
+            this.opts.cls.state.forEach(function (cl) {
+                this.el.classList.add(cl + state);
+            }, this);
+
+            this.last_state = state;
         }
-        
-        this.opts.cls.state.forEach(function (cl) {
-            this.el.classList.remove(cl + this.last_state);
-        }, this);
 
-        this.opts.cls.state.forEach(function (cl) {
-            this.el.classList.add(cl + state);
-        }, this);
+        if (this.last_val !== val) {
+            var f = val / this.opts.max;
+            this.el.style.transform = this.opts.transform.split('%').join(f);
 
-        var f = val / this.opts.max;
-        this.el.style.transform = this.opts.transform.split('%').join(f);
-        
-        this.last_val = val;
-        this.last_state = state;
+            this.last_val = val;
+        }
     };
 
     return Transform;

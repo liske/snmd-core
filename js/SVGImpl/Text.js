@@ -63,20 +63,18 @@ define(["snmd-core/js/Core", "snmd-core/js/GUI", "jquery"], function (Core, GUI,
     };
     
     Text.prototype.update = function (val, state, formatNumeric) {
-        if (this.last_val === val && state === this.last_state) {
-            return;
-        }
+        if (this.last_val !== val) {
+            if (typeof formatNumeric === "undefined") {
+                formatNumeric = true;
+            }
 
-        if (typeof formatNumeric === "undefined") {
-            formatNumeric = true;
+            /* Update text elements. */
+            this.txt.textContent = (formatNumeric ? Core.srSiFormatNum(val, this.opts.uom, '-', this.opts.fracts) : val);
+            this.last_val = val;
         }
-        
-        /* Update text elements. */
-        this.txt.textContent = (formatNumeric ? Core.srSiFormatNum(val, this.opts.uom, '-', this.opts.fracts) : val);
-        this.last_val = val;
 
         /* Add state classes. */
-        if (state !== this.last_state) {
+        if (state !== this.last_state && (!isNaN(state) || !isNaN(this.last_state))) {
             this.opts.cls.state.forEach(function (cl) {
                 this.txt.classList.remove(cl + this.last_state);
             }, this);

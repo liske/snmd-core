@@ -78,7 +78,7 @@ define(["snmd-core/js/Core", "jquery"], function (Core, $) {
     };
 
     Gradient.prototype.update = function (stops, state) {
-        if (state !== this.last_state) {
+        if (state !== this.last_state && (!isNaN(state) || !isNaN(this.last_state))) {
             this.opts.cls.state.forEach(function (cl) {
                 this.svg.classList.remove(cl + this.last_state);
             }, this);
