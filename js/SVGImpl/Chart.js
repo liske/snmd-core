@@ -38,6 +38,8 @@ License:
 define(["snmd-core/js/Core", "snmd-core/js/GUI", "js-logger", "jquery"], function (Core, GUI, Logger, $) {
     'use strict';
 
+    var maxy_groups = {};
+  
     var Chart = function (root, svg, opts, lines, qtip) {
         /* Meta data */
         this.opts = opts;
@@ -56,11 +58,22 @@ define(["snmd-core/js/Core", "snmd-core/js/GUI", "js-logger", "jquery"], functio
             }
         }
 
-        /* Prepare scaling line classes */
-        if (typeof this.opts.mcls !== "undefined") {
-            this.maxline_style =  {
-                'class': this.opts.mcls.join(' ')
-            };
+        /* Scale graphs by group */
+        if (typeof this.opts.desc.group === "undefined") {
+            /* Prepare scaling line classes */
+            if (typeof this.opts.mcls !== "undefined") {
+                this.maxline_style =  {
+                    'class': this.opts.mcls.join(' ')
+                };
+            }
+
+            this.group_max = false;
+        }
+        else {
+            this.group_max = true;
+            this.group_view = root._container.id;
+            this.group_name = this.opts.desc.group;
+            this.group_widget = svg.id;
         }
 
         /* SVG container */
@@ -126,6 +139,20 @@ define(["snmd-core/js/Core", "snmd-core/js/GUI", "js-logger", "jquery"], functio
         this.axis_maxlasts = [];
     };
     
+    Chart.prototype.group_maxy = function(maxy) {
+        if (typeof maxy_groups[this.group_view] === "undefined") {
+            maxy_groups[this.group_view] = {};
+        }
+
+        if (typeof maxy_groups[this.group_view][this.group_name] === "undefined") {
+            maxy_groups[this.group_view][this.group_name] = {};
+        }
+
+        maxy_groups[this.group_view][this.group_name][this.group_widget] = maxy;
+
+        return Math.max.apply(null, Object.values( maxy_groups[this.group_view][this.group_name] ));
+    };
+
     Chart.prototype.update = function (ts, data, state) {
         /* Record current data points */
         this.data_ts.push(ts);
@@ -140,7 +167,14 @@ define(["snmd-core/js/Core", "snmd-core/js/GUI", "js-logger", "jquery"], functio
             this.data_lines[i].push(v);
             maxy = Math.max(maxy, Math.max.apply(null, this.data_lines[i]));
         }
-        
+
+        /* Scale maxy by group. */
+        if (this.group_max) {
+            var f = maxy;
+            maxy = this.group_maxy(maxy);
+            console.warn(f + " => " + maxy);
+        }
+
         /* Drop old data reaching TS window */
         var shift_ts;
         var shift_data = [];
@@ -186,7 +220,7 @@ define(["snmd-core/js/Core", "snmd-core/js/GUI", "js-logger", "jquery"], functio
         var last = [];
 
         /* Axis max lines */
-        if (typeof this.opts.axis[0].max !== "undefined") {
+        if (!this.group_max && typeof this.opts.axis[0].max !== "undefined") {
             var numlines = (this.opts.axis[0].max < this.axis_maxlasts[0] ? Math.floor(this.axis_maxlasts[0] / this.opts.axis[0].max) : 0);
             for (i = 0; i < numlines; i++) {
                 if (typeof this.axis_maxlines[i] !== "undefined") {
