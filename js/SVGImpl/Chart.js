@@ -170,9 +170,7 @@ define(["snmd-core/js/Core", "snmd-core/js/GUI", "js-logger", "jquery"], functio
 
         /* Scale maxy by group. */
         if (this.group_max) {
-            var f = maxy;
             maxy = this.group_maxy(maxy);
-            console.warn(f + " => " + maxy);
         }
 
         /* Drop old data reaching TS window */
