@@ -52,6 +52,7 @@ define(["snmd-core/js/Core", "snmd-core/js/GUI", "js-logger", "jquery"], functio
                 var classes = this.opts.lcls.slice(0);
                 var f = function (cl) {
                     classes.push(cl + "-" + this.lines[l].name);
+                    classes.push(cl + "-" + l);
                 };
                 this.opts.lcls.forEach(f, this);
                 this.lines[l].style = { 'class': classes.join(' ') };
@@ -120,6 +121,7 @@ define(["snmd-core/js/Core", "snmd-core/js/GUI", "js-logger", "jquery"], functio
                 this.opts.tcls.forEach(function (cl) {
                     this.txt[l].classList.add(cl);
                     this.txt[l].classList.add(cl + "-" + this.lines[l].name);
+                    this.txt[l].classList.add(cl + "-" + l);
                 }, this);
             }
         }
