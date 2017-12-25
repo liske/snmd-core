@@ -15,7 +15,7 @@ Contents:
    arch.rst
    install.rst
    config.rst
-   usage.rst
+   views.rst
    widgets.rst
    appx_mosquitto.rst
    appx_nginx.rst

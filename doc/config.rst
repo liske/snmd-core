@@ -51,11 +51,44 @@ library packages and some global configurations.
    }
 
 
+Terminal config
+===============
+
+While loading SNMD a terminal name can be passed using the ``terminal`` URL parameter. SNMD will try to load the terminal's
+configuration from ``configs/${TERMINAL}.json``. SNMD will fallback to ``configs/default.json`` if it is unable to load
+the terminal file or no parameter has been passed. Terminal names can be used to load a predefined views configuration
+without user interaction.
+
+.. code:: json
+
+    {
+        "view": {
+            "title" : "Monitoring",
+            "json" : "views/view1.json"
+        },
+        "vlinks": [
+            {
+                "name": "terminal1",
+                "title": "NOC"
+            },
+            {
+                "name": "terminal2",
+                "title": "Bathroom"
+            }
+        ]
+    }
+
+The terminal configuration is a hash with the following keys:
+
+* **view** (required) - A object configuring the path to the views config *json* and the *title* shown in the UI.
+* **vlinks** (optional) - An array of objects which are added as hyperlinks so the user can switch to alternative terminal configs.
+
+
 Views configuration
 ===================
 
-You need at least one views configuration. The views configuration is a JSON structure defining the views
-visible at SNMD. These views configs are located in the ``views/`` directory. Example content of a view list file:
+The views configuration referenced by terminal configurations are a JSON structures defining the views
+visible at the SNMD UI. These views configs are located in the ``views/`` directory.
 
 .. code:: json
 
@@ -70,7 +103,7 @@ The JSON structure is an array of objects with the following keys:
 
 * **title** (required) - The label of the view used for the navigation bar.
 * **render** (optional) - The rendering type of the view. Defaults to 'svg'. The 'html' renderer will load
-  a html site in an *iframe* to embed arbitrary websites into the SNMD GUI. Could be used to embed
+  a html site in an *iframe* to embed arbitrary websites into the SNMD UI. Could be used to embed
   a state or event dashboard of your network monitoring system.
 * **url** (required) - URL to load the content of the renderer (i.e. path to the SVG file).
 * **reload** (html; optional) - Reload the *iframe* content periodically (value in seconds).
@@ -79,11 +112,3 @@ The JSON structure is an array of objects with the following keys:
   If you want to embed the nagios or Check_MK dashboard you might want to use a reverse proxy to inject
   an HTTP authentication header for read-only access to your monitoring dashboard with-out any user query
   (i.e. digital signage).
-
-
-Terminal config
-===============
-
-The views config is not loaded directly. While loading SNMD a terminal name can be passed using the ``terminal`` URL parameter.
-SNMD will try to load the terminal's configuration at ``terminals/${TERMINAL}.json``. SNMD will fallback to ``default.json`` if
-it is unable to load the terminal file or no parameter has been passed.
