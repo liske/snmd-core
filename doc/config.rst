@@ -78,7 +78,7 @@ without user interaction.
         ]
     }
 
-The terminal configuration is a hash with the following keys:
+The terminal configuration is a object with the following keys:
 
 * **view** (required) - A object configuring the path to the views config *json* and the *title* shown in the UI.
 * **vlinks** (optional) - An array of objects which are added as hyperlinks so the user can switch to alternative terminal configs.
