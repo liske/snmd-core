@@ -17,7 +17,7 @@ on one of the basic widget implementations:
 Widget Definition
 =================
 
-Any SVG element where the ID begins with the string :code::code:`snmd_` will be treated as a SNMD widget. The behavior of a widget is configured using a :code:`desc` child element.
+Any SVG element where the ID begins with the string :code:`snmd_` will be treated as a SNMD widget. The behavior of a widget is configured using a :code:`desc` child element.
 
 This is an example widget which will plot the interface bandwidth monitored by Nagios. The escaping of quotes has been remomved to improve readability:
 
@@ -66,9 +66,9 @@ Chart
 .. figure:: _static/widgets_impl_chart.png
     :align: center
 
-    :code:`Chart` widget showing interface bandwidth usage over time
+    *Chart* widget showing interface bandwidth usage over time
 
-:code:`Chart` widgets are used to plot time series monitoring data.
+*Chart* widgets are used to plot time series monitoring data.
 
 
 Class
@@ -76,7 +76,7 @@ Class
 
 - **SVG Element:** *kept*
 
-:code:`Class` widgets get CSS classes applied depending on monitoring states.
+*Class* widgets get CSS classes applied depending on monitoring states.
 
 
 Gauge
@@ -87,9 +87,9 @@ Gauge
 .. figure:: _static/widgets_impl_gauge.png
     :align: center
 
-    :code:`Gauge` widget (arc) showing storage allocation
+    *Gauge* widget (arc) showing storage allocation
 
-:code:`Gauge` widgets will show a radial gauge for a monitored value.
+*Gauge* widgets will show a radial gauge for a monitored value.
 
 
 Gradient
@@ -100,9 +100,9 @@ Gradient
 .. figure:: _static/widgets_impl_gradient.png
     :align: center
 
-    :code:`Gradient` widget showing cabinet temperatur distribution
+    *Gradient* widget showing cabinet temperatur distribution
 
-:code:`Gradient` widgets will show a *linear* gradient where the gradient stops are replaced by monitoring values.
+*Gradient* widgets will show a *linear* gradient where the gradient stops are replaced by monitoring values.
 The monitoring values are mapped to a color using HSL a like coloring scheme.
 
 
@@ -111,7 +111,7 @@ RadialGradient
 
 - **SVG Element:** *replaced*
 
-:code:`RadialGradient` widgets are simular to :code:`Gradient` widgets but use a radial gradient.
+*RadialGradient* widgets are simular to *Gradient* widgets but use a radial gradient.
 
 
 StrokeWidth
@@ -119,7 +119,7 @@ StrokeWidth
 
 - **SVG Element:** *kept*
 
-:code:`StrokeWidth` widgets will clear the SVG element's stroke property and replace it by the current monitoring value.
+*StrokeWidth* widgets will clear the SVG element's stroke property and replace it by the current monitoring value.
 
 
 Text
@@ -130,9 +130,9 @@ Text
 .. figure:: _static/widgets_impl_text.png
     :align: center
 
-    :code:`Text` widget using current temperature
+    *Text* widget using current temperature
 
-:code:`Text` widgets will replace the SVG element's text content by the monitoring value.
+*Text* widgets will replace the SVG element's text content by the monitoring value.
 
 
 Transform
@@ -140,12 +140,12 @@ Transform
 
 - **SVG Element:** *kept*
 
-.. figure:: _static/widgets_impl_gauge.png
+.. figure:: _static/widgets_impl_transform.png
     :align: center
 
-    :code:`Transform` widget (light blue rectangle) used as linear gauge
+    *Transform* widget (light blue rectangle) used as linear gauge
 
-:code:`Transform` widgets will apply CSS transformations depending on monitoring values.
+*Transform* widgets will apply CSS transformations depending on monitoring values.
 
 
 
