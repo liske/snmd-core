@@ -41,10 +41,10 @@ This is an example widget which will plot the interface bandwidth monitored by N
     </rect>
 
 .. hint::
-    Remember that the text content of the `dect` element is interpreted as JSON notation. The JSON syntax does **not** allow a comma after the last element within arrays or objects.
-    SNMD will not be able to use the widget if there is a JSON syntax error. Use the browser debugging console to check for parsing errors.
+    Remember that the text content of the `dect` element is interpreted as JSON. The JSON syntax does **not** allow a comma after the last element within arrays or objects.
+    SNMD will not be able to use the widget if there is an JSON syntax error. Use your browser's debugging console to check for parsing errors if widgets do not work as expected.
 
-The *Object Properties* editor of *Inkscape* allows to edit the `desc` field easely.
+The *Object Properties* editor of *Inkscape* is a easy way to set the SVG element ID and edit the `desc` field to defined widgets.
 
 .. figure:: _static/widgets_objprops.png
    :align: center
@@ -126,5 +126,5 @@ Transform
 
 
 .. hint::
-    SNMD is view in dark mode (default) and can be switched to light mode. Although the HTML colors uses CSS variables which can be easely redefined to switch between
-    *Solarized Dark* and *Solarized Light* colors it is not possible for the SVG files since *Inkscape* does not support to use CSS variables for stroke or fill colors.
+    SNMD is view in dark mode (default) and can be switched to light mode. Although SNMD uses CSS variables which can be easely redefined to switch between
+    *Solarized Dark* and *Solarized Light* colors it is not possible to use them for the SVG files since *Inkscape* does not support to use CSS variables(, yet).
