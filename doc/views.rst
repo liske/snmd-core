@@ -17,7 +17,7 @@ on one of the basic widget implementations:
 Widget Definition
 =================
 
-Any SVG element where the ID begins with the string `snmd_` will be treated as a SNMD widget. The behavior of a widget is configured using a `desc` child element.
+Any SVG element where the ID begins with the string :code::code:`snmd_` will be treated as a SNMD widget. The behavior of a widget is configured using a :code:`desc` child element.
 
 This is an example widget which will plot the interface bandwidth monitored by Nagios. The escaping of quotes has been remomved to improve readability:
 
@@ -41,15 +41,15 @@ This is an example widget which will plot the interface bandwidth monitored by N
     </rect>
 
 .. hint::
-    Remember that the text content of the `dect` element is interpreted as JSON. The JSON syntax does **not** allow a comma after the last element within arrays or objects.
+    Remember that the text content of the :code:`dect` element is interpreted as JSON. The JSON syntax does **not** allow a comma after the last element within arrays or objects.
     SNMD will not be able to use the widget if there is an JSON syntax error. Use your browser's debugging console to check for parsing errors if widgets do not work as expected.
 
-The *Object Properties* editor of *Inkscape* is a easy way to set the SVG element ID and edit the `desc` field to defined widgets.
+The *Object Properties* editor of *Inkscape* is a easy way to set the SVG element ID and edit the :code:`desc` field to defined widgets.
 
 .. figure:: _static/widgets_objprops.png
-   :align: center
+    :align: center
 
-   *Object Properties* editor
+    *Object Properties* editor
 
 
 Widgets Implementations
@@ -63,7 +63,12 @@ Chart
 
 - **SVG Element:** *replaced*
 
-`Chart` widgets are used to plot time series monitoring data.
+.. figure:: _static/widgets_impl_chart.png
+    :align: center
+
+    :code:`Chart` widget showing interface bandwidth usage over time
+
+:code:`Chart` widgets are used to plot time series monitoring data.
 
 
 Class
@@ -71,7 +76,7 @@ Class
 
 - **SVG Element:** *kept*
 
-`Class` widgets get CSS classes applied depending on monitoring states.
+:code:`Class` widgets get CSS classes applied depending on monitoring states.
 
 
 Gauge
@@ -79,7 +84,12 @@ Gauge
 
 - **SVG Element:** *replaced*
 
-`Gauge` widgets will show a radial gauge for a monitored value.
+.. figure:: _static/widgets_impl_gauge.png
+    :align: center
+
+    :code:`Gauge` widget (arc) showing storage allocation
+
+:code:`Gauge` widgets will show a radial gauge for a monitored value.
 
 
 Gradient
@@ -87,7 +97,12 @@ Gradient
 
 - **SVG Element:** *replaced*
 
-`Gradient` widgets will show a *linear* gradient where the gradient stops are replaced by monitoring values.
+.. figure:: _static/widgets_impl_gradient.png
+    :align: center
+
+    :code:`Gradient` widget showing cabinet temperatur distribution
+
+:code:`Gradient` widgets will show a *linear* gradient where the gradient stops are replaced by monitoring values.
 The monitoring values are mapped to a color using HSL a like coloring scheme.
 
 
@@ -96,7 +111,7 @@ RadialGradient
 
 - **SVG Element:** *replaced*
 
-`RadialGradient` widgets are simular to `Gradient` widgets but use a radial gradient.
+:code:`RadialGradient` widgets are simular to :code:`Gradient` widgets but use a radial gradient.
 
 
 StrokeWidth
@@ -104,7 +119,7 @@ StrokeWidth
 
 - **SVG Element:** *kept*
 
-`StrokeWidth` widgets will clear the SVG element's stroke property and replace it by the current monitoring value.
+:code:`StrokeWidth` widgets will clear the SVG element's stroke property and replace it by the current monitoring value.
 
 
 Text
@@ -112,7 +127,12 @@ Text
 
 - **SVG Element:** *kept*
 
-`Text` widgets will replace the SVG element's text content by the monitoring value.
+.. figure:: _static/widgets_impl_text.png
+    :align: center
+
+    :code:`Text` widget using current temperature
+
+:code:`Text` widgets will replace the SVG element's text content by the monitoring value.
 
 
 Transform
@@ -120,7 +140,12 @@ Transform
 
 - **SVG Element:** *kept*
 
-`Transform` widgets will apply CSS transformations depending on monitoring values.
+.. figure:: _static/widgets_impl_gauge.png
+    :align: center
+
+    :code:`Transform` widget (light blue rectangle) used as linear gauge
+
+:code:`Transform` widgets will apply CSS transformations depending on monitoring values.
 
 
 
