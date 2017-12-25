@@ -66,7 +66,7 @@ Chart
 .. figure:: _static/widgets_impl_chart.png
     :align: center
 
-    *Chart* widget showing interface bandwidth usage over time
+    *Chart* widget plotting interface bandwidth usage over time
 
 *Chart* widgets are used to plot time series monitoring data.
 
@@ -130,7 +130,7 @@ Text
 .. figure:: _static/widgets_impl_text.png
     :align: center
 
-    *Text* widget using current temperature
+    *Text* widget showing current temperature
 
 *Text* widgets will replace the SVG element's text content by the monitoring value.
 
