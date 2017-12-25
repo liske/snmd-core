@@ -9,14 +9,54 @@ The visualization of SNMD is based on SVG files. It is highly recommended to use
     SNMD provides a GIMP palette file which can be used with Inkscape. Put the `snmd.gpl <_static/snmd.gpl>`_ into `~/.config/inkscape/palettes/` and after
     (re)starting *Inkscape* you are able to select the new palette *Solarized & SNMD Dark*.
 
-
-Widgets
-=======
-
 A view is a common SVG file. When the SVG file is loaded by SNMD it will replace any SVG element matching the special ID pattern by a corresponding SNMD *widget*. SNMD widgets
 may replace the original SVG elements completly, change their style, do some CSS transformations or replace their text content. Widgets are provided by widget libraries and based
 on one of the basic widget implementations:
 
+
+Widget Definition
+=================
+
+Any SVG element where the ID begins with the string `snmd_` will be treated as a SNMD widget. The behavior of a widget is configured using a `desc` child element.
+
+This is an example widget which will plot the interface bandwidth monitored by Nagios. The escaping of quotes has been remomved to improve readability:
+
+.. code:: xml
+
+    <rect
+     id="snmd_mywidget1"
+     y="..."
+     x="..."
+     height="..."
+     width="..."
+     style="...">
+    <desc>
+        {
+            "type":"Nagios:Chart-IfBw",
+            "topics":[
+                "nagios/checks/switch-1.demo.lan/Interface TenGigabitEthernet1/1"
+            ]
+        }
+    </desc>
+    </rect>
+
+.. hint::
+    Remember that the text content of the `dect` element is interpreted as JSON notation. The JSON syntax does **not** allow a comma after the last element within arrays or objects.
+    SNMD will not be able to use the widget if there is a JSON syntax error. Use the browser debugging console to check for parsing errors.
+
+The *Object Properties* editor of *Inkscape* allows to edit the `desc` field easely.
+
+.. figure:: _static/widgets_objprops.png
+   :align: center
+
+   *Object Properties* editor
+
+
+Widgets Implementations
+=======================
+
+This is the list of available widget implementations. They can't be used directly but all widgets provided by *widget libraries* do use them. Some of the implementations
+have common options to change their layout or behavior.
 
 Chart
 -----
