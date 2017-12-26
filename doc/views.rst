@@ -22,7 +22,7 @@ Any SVG element where the ID begins with the string :code:`snmd_` will be treate
 This is an example widget which will plot the interface bandwidth monitored by Nagios. The escaping of quotes has been removed to improve readability:
 
 .. code-block:: xml
-    :caption: widget configuration
+    :caption: *example widget configuration*
 
     <rect
      id="snmd_mywidget1"
@@ -57,7 +57,26 @@ Widgets Implementations
 =======================
 
 This is the list of available widget implementations. They can't be used directly but all widgets provided by *widget libraries* do use them. Some of the implementations
-have common options to change their layout or behavior.
+have common configuration options to change their layout or behavior.
+
+All widget do support the following configuration options:
+
+    **type**
+
+        *(required)* This defines the widget type to be used. The value is the concatination of the widget library names space, a literal colon and the name of the widget class.
+
+        ..code: none
+
+            Nagios:Chart-IfBw
+
+    **bcls**
+
+        *(optional)* An array of additional CSS base classes of this widget for :ref:`customize-style`.
+
+    **scls**
+
+        *(optional)* An array of additional CSS state classes of this widget for :ref:`customize-style`.
+
 
 Chart
 -----
