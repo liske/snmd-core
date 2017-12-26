@@ -6,7 +6,8 @@ Customizing Style
 
 The SNMD UI loads additional CSS definitions from :code:`css/local.css`. This allows customizing the layout of widgets using CSS selectors.
 
-The following example uses the :code:`Class-State` widget type from the *snmd-widgets-nagios* library and changes the stroke color of the state :code:`OK` to blue:
+The following example uses the :code:`Class-State` widget type from the `snmd-widgets-nagios <http://snmd.readthedocs.io/projects/snmd-widgets-nagios/en/latest/>`_
+library and changes the stroke color of the state :code:`OK` to blue:
 
 .. code-block:: json
     :caption: *example widget configuration*
