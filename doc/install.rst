@@ -25,7 +25,7 @@ More details on deploying *nag2mqtt* can be found in the `nag2mqtt docs <http://
 Web server for SNMD
 -------------------
 
-A web server publishing the static SNMD files is required. For more advanced setups using *https* and *HTTP Basic Authentication* the use of `nginx <>` is recommended.
+A web server publishing the static SNMD files is required. For more advanced setups using *https* and *HTTP Basic Authentication* the use of `nginx <https://nginx.org/>`_ is recommended.
 
 More details on deploying *nginx* can be found in :ref:`appx-nginx`.
 
