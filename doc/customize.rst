@@ -1,8 +1,8 @@
+.. _customize-style:
+
 *****************
 Customizing Style
 *****************
-
-.. _customize-style:
 
 The SNMD UI loads additional CSS definitions from :code:`css/local.css`. This allows customizing the layout of widgets using CSS selectors.
 
