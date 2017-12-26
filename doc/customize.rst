@@ -6,7 +6,7 @@ The SNMD UI loads additional CSS definitions from :code:`css/local.css`. This al
 
 The following example uses the :code:`Class-Sate` widget type from the *snmd-widgets-nagios` library and changes the stroke color of the state :code:`OK` to blue:
 
-.. code:: json
+.. code-block:: json
     :caption: `widget description`
 
     {
@@ -22,7 +22,7 @@ The following example uses the :code:`Class-Sate` widget type from the *snmd-wid
         ]
     }
 
-.. code:: css
+.. code-block:: css
     :caption: `:code:`css/local.css``
 
     .snmd-bcl-opacity-stroke.my-bcl-test.snmd-scl-0 {
