@@ -8,9 +8,10 @@ Usage
 
 Widget libraries can be added by installing them (i.e. using *bower*) and configure *SNMD* to load them using a namespace of your choice. The libraries need to be added to the *snmd_widgets* option within the global *config.json* file:
 
-.. code:: json
+.. code-block:: json
+    :caption: :code:`config.json`
 
-   {
+    {
        /* ... */
    
        /* Load widget packages

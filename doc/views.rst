@@ -21,7 +21,8 @@ Any SVG element where the ID begins with the string :code:`snmd_` will be treate
 
 This is an example widget which will plot the interface bandwidth monitored by Nagios. The escaping of quotes has been removed to improve readability:
 
-.. code:: xml
+.. code-block:: xml
+    :caption: widget configuration
 
     <rect
      id="snmd_mywidget1"
