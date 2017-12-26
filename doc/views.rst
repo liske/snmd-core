@@ -65,7 +65,7 @@ All widget do support the following configuration options:
 
         *(required)* This defines the widget type to be used. The value is the concatination of the widget library names space, a literal colon and the name of the widget class.
 
-        ..code: none
+.. code:: none
 
             Nagios:Chart-IfBw
 
