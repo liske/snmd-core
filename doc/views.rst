@@ -14,12 +14,12 @@ may replace the original SVG elements completly, change their style, do some CSS
 on one of the basic widget implementations:
 
 
-Widget Definition
-=================
+Widget Usage
+============
 
 Any SVG element where the ID begins with the string :code:`snmd_` will be treated as a SNMD widget. The behavior of a widget is configured using a :code:`desc` child element.
 
-This is an example widget which will plot the interface bandwidth monitored by Nagios. The escaping of quotes has been remomved to improve readability:
+This is an example widget which will plot the interface bandwidth monitored by Nagios. The escaping of quotes has been removed to improve readability:
 
 .. code:: xml
 
@@ -44,7 +44,7 @@ This is an example widget which will plot the interface bandwidth monitored by N
     Remember that the text content of the :code:`dect` element is interpreted as JSON. The JSON syntax does **not** allow a comma after the last element within arrays or objects.
     SNMD will not be able to use the widget if there is an JSON syntax error. Use your browser's debugging console to check for parsing errors if widgets do not work as expected.
 
-The *Object Properties* editor of *Inkscape* is a easy way to set the SVG element ID and edit the :code:`desc` field to defined widgets.
+The *Object Properties* editor of *Inkscape* is the prefered way to set the SVG element ID and edit the :code:`desc` element.
 
 .. figure:: _static/widgets_objprops.png
     :align: center
