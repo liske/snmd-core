@@ -33,4 +33,4 @@ The following example uses the :code:`Class-Sate` widget type from the *snmd-wid
 
 .. hint::
     Remember that SVG elements have some custom CSS attributes. You need to use the :code:`stroke` and :code:`fill` properties to change their color, they
-    do not have a :code:`color` or :code:`background` property. A overview of styling properties can be found in the *`Scalable Vector Graphs W3C Recommendation <https://www.w3.org/TR/SVG/styling.html>`_*.
+    do not have a :code:`color` or :code:`background` property. A overview of styling properties can be found in the `Scalable Vector Graphs W3C Recommendation <https://www.w3.org/TR/SVG/styling.html>`_.
