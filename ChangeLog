@@ -1,4 +1,11 @@
-nag2mqtt (0.4.3) unstable; urgency=low
+snmd-core (0.4.5) unstable; urgency=low
+
+  * Features:
+    - UI: add URL parameters for UI settings
+
+ -- Thomas Liske <thomas@fiasko-nw.net>  
+
+snmd-core (0.4.3) unstable; urgency=low
 
   * Features:
     - Core: add duration time formating
@@ -11,7 +18,7 @@ nag2mqtt (0.4.3) unstable; urgency=low
 
  -- Thomas Liske <thomas@fiasko-nw.net>  Mon, 16 Oct 2017 19:22:59 +0200
 
-nag2mqtt (0.4.2) unstable; urgency=low
+snmd-core (0.4.2) unstable; urgency=low
 
   * Features:
     - Add a palette file (.gpl) with CSS3 color variable values.
@@ -28,7 +35,7 @@ nag2mqtt (0.4.2) unstable; urgency=low
 
  -- Thomas Liske <thomas@fiasko-nw.net>  Tue, 12 Sep 2017 07:25:32 +0200
 
-nag2mqtt (0.4.1) unstable; urgency=low
+snmd-core (0.4.1) unstable; urgency=low
 
   * Changes:
     - Notification: requeuest permissions on init
@@ -39,7 +46,7 @@ nag2mqtt (0.4.1) unstable; urgency=low
 
  -- Thomas Liske <thomas@fiasko-nw.net>  Mon, 04 Sep 2017 23:16:59 +0200
 
-nag2mqtt (0.4.0) unstable; urgency=low
+snmd-core (0.4.0) unstable; urgency=low
 
   * Features:
     - support desktop notifications (push.js)
