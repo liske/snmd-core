@@ -3,6 +3,9 @@ snmd-core (0.4.5) unstable; urgency=low
   * Features:
     - UI: add URL parameters for UI settings
 
+  * Changes:
+    - Core: add SI prefixes 'm' and 'µ' to format fractional values
+
  -- Thomas Liske <thomas@fiasko-nw.net>  
 
 snmd-core (0.4.3) unstable; urgency=low
