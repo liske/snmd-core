@@ -6,7 +6,7 @@ snmd-core (0.4.5) unstable; urgency=low
   * Changes:
     - Core: add SI prefixes 'm' and 'µ' to format fractional values
 
- -- Thomas Liske <thomas@fiasko-nw.net>  
+ -- Thomas Liske <thomas@fiasko-nw.net>  Thu, 28 Dec 2017 23:46:10 +0100
 
 snmd-core (0.4.3) unstable; urgency=low
 
