@@ -8,7 +8,19 @@ snmd-core (0.4.5) unstable; urgency=low
 
  -- Thomas Liske <thomas@fiasko-nw.net>  Thu, 28 Dec 2017 23:46:10 +0100
 
-snmd-core (0.4.3) unstable; urgency=low
+nag2mqtt (0.4.4) unstable; urgency=low
+
+  * Features:
+    - Chart: add group option to sync scaling along different chart
+             widgets
+
+  * Changes:
+    - Chart: add graph counter as another CSS class
+    - add more documentation on widgets
+
+ -- Thomas Liske <thomas@fiasko-nw.net>  Wed, 27 Dec 2017 09:11:56 +0100
+
+nag2mqtt (0.4.3) unstable; urgency=low
 
   * Features:
     - Core: add duration time formating
