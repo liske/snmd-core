@@ -50,11 +50,12 @@ library packages and some global configurations.
        ]
    }
 
+.. _terminal-config:
 
 Terminal config
 ===============
 
-While loading SNMD a terminal name can be passed using the ``terminal`` URL parameter. SNMD will try to load the terminal's
+While loading SNMD a terminal name can be passed using the *config* :ref:`url-parameters`. SNMD will try to load the terminal's
 configuration from ``configs/${TERMINAL}.json``. SNMD will fallback to ``configs/default.json`` if it is unable to load
 the terminal file or no parameter has been passed. Terminal names can be used to load a predefined views configuration
 without user interaction.

@@ -7,10 +7,10 @@ Customizing Style
 The SNMD UI loads additional CSS definitions from :code:`css/local.css`. This allows customizing the layout of widgets using CSS selectors.
 
 The following example uses the :code:`Class-State` widget type from the `snmd-widgets-nagios <http://snmd.readthedocs.io/projects/snmd-widgets-nagios/en/latest/>`_
-library and changes the stroke color of the state :code:`OK` to blue:
+library and changes the stroke color of the state :code:`OK` to *DarkBlue*:
 
 .. code-block:: json
-    :caption: *example widget configuration*
+    :caption: *widget configuration*
 
     {
         "type": "Nagios:Class-State",
@@ -34,4 +34,5 @@ library and changes the stroke color of the state :code:`OK` to blue:
 
 .. hint::
     Remember that SVG elements have some custom CSS attributes. You need to use the :code:`stroke` and :code:`fill` properties to change their color, they
-    do not have a :code:`color` or :code:`background` property. A overview of styling properties can be found in the `Scalable Vector Graphs W3C Recommendation <https://www.w3.org/TR/SVG/styling.html>`_.
+    do not have a :code:`color` or :code:`background` property. An overview of styling properties can be found in the
+    `Scalable Vector Graphs W3C Recommendation <https://www.w3.org/TR/SVG/styling.html>`_.

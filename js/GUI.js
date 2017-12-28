@@ -566,10 +566,16 @@ define(["snmd-core/js/Core", "snmd-core/js/HTML", "snmd-core/js/Notify", "snmd-c
             that.ctrlButtons[el].icon = icon;
             that.ctrlButtons[el].button = button;
 
-            /* Restore setting from cookie */
+            /* Set/restore setting from URL param or cookie */
             var co = cookie.get('snmd-ctrl-' + el);
-            if (typeof co !== "undefined") {
-                that.setCtrlState(el, co);
+            var res = new RegExp('[\?&]' + el + '=([^&#]*)').exec(window.location.href);
+            if(res !== null) {
+                that.setCtrlState(el, res[1]);
+            }
+            else {
+                if (typeof co !== "undefined") {
+                    that.setCtrlState(el, co);
+                }
             }
 
             ctrl.append(
