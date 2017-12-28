@@ -199,7 +199,7 @@ define(["snmd-core/js/Polyfills", "snmd-core/js/GUI", "snmd-core/js/MQTT", "snmd
             neg = 1;
         }
 
-        if ((typeof fracts === "undefined" || isNaN(fracts) || fracts > 0) && value < 1) {
+        if (value < 1 && (typeof fracts === "undefined" || isNaN(fracts) || fracts > 0 || unit == '__TIME__')) {
             facts = this.fract_facts;
             prefs = this.fract_prefs;
         }
