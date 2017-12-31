@@ -1,3 +1,10 @@
+snmd-core (0.4.7) unstable; urgency=low
+
+  * Fixes:
+    - Core: remove SI prefix for values almost zero
+
+ -- Thomas Liske <thomas@fiasko-nw.net>  Sun, 31 Dec 2017 10:15:01 +0100
+
 snmd-core (0.4.5) unstable; urgency=low
 
   * Features:

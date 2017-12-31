@@ -48,7 +48,7 @@ define(["snmd-core/js/Polyfills", "snmd-core/js/GUI", "snmd-core/js/MQTT", "snmd
             throw new Error("Cannot instantiate more than one instance, use getInstance()!");
         }
 
-        this.version = '0.4.5';
+        this.version = '0.4.7';
         this.si_prefs = ['T', 'G', 'M', 'k', ''];
         this.si_facts = [ Math.pow(10, 12), Math.pow(10, 9), Math.pow(10, 6), Math.pow(10, 3), 1];
         this.fract_prefs = ['m', 'µ']; //, 'm', 'µ'
@@ -199,7 +199,7 @@ define(["snmd-core/js/Polyfills", "snmd-core/js/GUI", "snmd-core/js/MQTT", "snmd
             neg = 1;
         }
 
-        if (value < 1 && (typeof fracts === "undefined" || isNaN(fracts) || fracts > 0 || unit == '__TIME__')) {
+        if (value > 0.0000009 && value < 1 && (typeof fracts === "undefined" || isNaN(fracts) || fracts > 0 || unit == '__TIME__')) {
             facts = this.fract_facts;
             prefs = this.fract_prefs;
         }
